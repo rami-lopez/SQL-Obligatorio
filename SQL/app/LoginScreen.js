@@ -55,7 +55,7 @@ export default function LoginScreen() {
       <View style={styles.card}>
         <View style={styles.headerRow}>
           <View style={styles.logoCircle}>
-            <Text style={styles.logoLetter}>S</Text>
+            <Text style={styles.logoLetter}>👤</Text>
           </View>
           <Text style={styles.title}>{recoverMode ? 'Recuperar contraseña' : 'Iniciar sesión'}</Text>
         </View>
@@ -114,7 +114,7 @@ export default function LoginScreen() {
         )}
       </View>
 
-      <Text style={styles.footer}>© 2025 TuApp - Todos los derechos reservados</Text>
+      <Text style={styles.footer}>© 2025 UCU Obligatorio - Todos los derechos (?) reservados </Text>
     </KeyboardAvoidingView>
   );
 }
@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 12,
     marginHorizontal: 10,
-    // make the card narrower on wide screens
     maxWidth: 480,
     alignSelf: 'center',
   },
