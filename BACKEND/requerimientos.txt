@@ -2,5 +2,4 @@ fastapi
 uvicorn
 mysql-connector-python
 python-dotenv
-
-instalar con 'pip install -r requerimientos.txt' (BORRAR ESTA LINEA ANTES DE HACERLO)
+pydantic
