@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from db import connection
+from BACKEND.db import connection
+from BACKEND.api.participante import router
 
 app = FastAPI()
-
+app.include_router(router=router)
 @app.get("/")
 def home():
     return {"mensaje": "API funcionando 🚀"}

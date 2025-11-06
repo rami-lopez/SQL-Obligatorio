@@ -1,6 +1,6 @@
-from fastapi import APIRouter, HTTPException, status
-from BACKEND.models.participante_model import ParticipanteCreate, ParticipanteResponse
-from services.participante_service import crear_participante, listar_participantes
+from fastapi import APIRouter, HTTPException, status,FastAPI
+from ..models.participante_model import ParticipanteCreate, ParticipanteResponse
+from ..services.participante_service import crear_participante, listar_participantes
 
 router = APIRouter(prefix="/participantes", tags=["participante"])
 

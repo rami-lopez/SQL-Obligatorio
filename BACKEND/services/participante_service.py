@@ -1,6 +1,6 @@
 from fastapi import HTTPException
-from db import execute_query, fetch_all
-from models.participante_model import ParticipanteCreate
+from BACKEND.db import execute_query, fetch_all
+from BACKEND.models.participante_model import ParticipanteCreate
 
 def validar_ci_unico(ci: str):
     result = fetch_all("SELECT ci FROM participante WHERE ci = %s", (ci,))
@@ -11,13 +11,18 @@ def validar_email_unico(email: str):
     result = fetch_all("SELECT email FROM participante WHERE email = %s", (email,))
     if result:
         raise HTTPException(status_code=409, detail="Email ya existe")
+    
+def validar_email_registrado(email: str):
+    result = fetch_all("SELECT email FROM login WHERE email = %s", (email,))
+    if not result:
+        raise HTTPException(status_code=409, detail="Email sin registrar")
 
 def crear_participante(p: ParticipanteCreate):
     try:
+        validar_email_registrado(p.email)
         validar_ci_unico(p.ci)
         validar_email_unico(p.email)
         
-        # TODO: Validar que el email exista en tabla login
         
         query = """
             INSERT INTO participante (ci, nombre, apellido, email, rol) 
@@ -34,6 +39,6 @@ def crear_participante(p: ParticipanteCreate):
 
 def listar_participantes():
     try:
-        return fetch_all("SELECT * FROM participante WHERE activo = TRUE")
+        return fetch_all("SELECT * FROM participante")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
