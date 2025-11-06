@@ -13,6 +13,44 @@ def validar_participante_sin_sancion(ci_participante: int):
     if resultado[0]["total"] > 0:
         raise HTTPException(status_code=400, detail="El participante tiene una sanción vigente")
 
+def validar_fechas_sancion(fecha_inicio: date, fecha_fin: date):
+    if fecha_fin < fecha_inicio:
+        raise HTTPException(
+            status_code=400, 
+            detail="La fecha de fin debe ser posterior a la fecha de inicio"
+        )
+    
+def validar_participante_existe(id_participante: int):
+    result = fetch_all(
+        "SELECT id_participante FROM participante WHERE id_participante = %s AND activo = TRUE",
+        (id_participante,)
+    )
+    if not result:
+        raise HTTPException(status_code=404, detail="Participante no encontrado o inactivo")
+
+def validar_sancion_superpuesta(id_participante: int, fecha_inicio: date, fecha_fin: date, id_sancion: int = None):
+    query = """
+        SELECT id_sancion 
+        FROM sancion 
+        WHERE id_participante = %s
+          AND NOT (fecha_fin < %s OR fecha_inicio > %s)
+    """
+    params = [id_participante, fecha_inicio, fecha_fin]
+    
+    # si estamos actualizando, excluir la actual
+    if id_sancion:
+        query += " AND id_sancion != %s"
+        params.append(id_sancion)
+    
+    result = fetch_all(query, tuple(params))
+    if result:
+        raise HTTPException(
+            status_code=409, 
+            detail="Ya existe una sanción para este participante en el período especificado"
+        )
+
+
+
 def validar_limite_horas_diarias(ci_participante: int, fecha: date, horas_a_reservar: int):
     query = """
         SELECT COALESCE(SUM(r.end_turn_id - r.start_turn_id + 1), 0) AS horas_reservadas
