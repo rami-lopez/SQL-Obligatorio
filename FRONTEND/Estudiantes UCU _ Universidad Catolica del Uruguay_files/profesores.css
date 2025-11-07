@@ -1,0 +1,332 @@
+@charset "utf-8";
+/* CSS Document */
+:root {
+	--color-agora: rgb(1, 142, 67);
+	--color-gris: rgb(153 153, 153);
+   	--color-berit: rgb(122, 197, 191);
+	--color-ignis: rgb(233, 90, 12);
+	--color-blanco: #FFFFFF;
+	--verde-profes: #37b087;
+	--color-uno: #0eafb1;
+	--color-tres: #a189bd;
+	--clr-violeta: #a189bd;
+	--text-azul: #173363;
+	--clr-amarillo: #f7c600;
+	--color-verde: #90be20;
+	--flamabook: 'flamabook', sans-serif;
+	--flamabold: 'flamabold', sans-serif; 
+	--flamaextra: 'flamaextrabold', sans-serif;
+	--clr-ithaka: rgb(0, 171, 232);
+	--clr-ludus: rgb(233, 82, 131);
+	--asap: 'Asap', sans-serif;
+	--w800: 800;
+	--w600: 600;
+	--w400: 400}
+
+
+#notas_inter .col-sm-4:nth-child(6n+1) .infomas {color: var(--clr-ithaka)}
+#notas_inter .col-sm-4:nth-child(6n+2) .infomas {color: var(--clr-violeta)}
+#notas_inter .col-sm-4:nth-child(6n+3) .infomas {color: var(--color-uno) }
+#notas_inter .col-sm-4:nth-child(6n+4) .infomas {color: var(--color-ignis)}
+#notas_inter .col-sm-4:nth-child(6n+5) .infomas {color: var(--clr-ludus)}
+#notas_inter .col-sm-4:nth-child(6n+6) .infomas {color: var(--color-verde) }
+#notas_inter .h3 { font-size: 2.5em }
+
+@media (min-width: 768px){
+	#notas_inter .h3 { font-size: 3em }
+#notas_inter .row {
+    margin-right: -50px;
+}}
+
+	@media (min-width: 1400px) {
+#notas_inter .row {
+    margin-right: -70px;
+    overflow: hidden;
+}
+	
+#notas_inter .col-sm-4 {
+    margin-bottom: 20px;
+    margin-right: -25px;
+}}
+
+
+.profesores_notas .row {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+}
+
+.profesores_notas img {
+     margin: 0 0 -2px 0 }
+
+
+
+	
+.profesores_notas .profesores_na_texto {
+    padding: 25px 30px }
+
+.profesores_notas .fill-btn {
+        			color: var(--color-blanco); text-transform: uppercase;border-radius: 0; font-weight: 500; margin-top: 20px; padding: 6px 12px 5px; width: 115px }
+
+.profesores_notas .fill-btn:hover {
+        box-shadow: inset 0px 0px 0px 2px var(--color-blanco);
+	background-color: transparent !important; color: var(--color-blanco); opacity: 1
+}
+
+.profesores_notas .fill-btn.boton2 {
+        box-shadow: inset 0px 0px 0px 2px var(--color-berit); background-color: var(--color-berit) }
+
+.profesores_notas .fill-btn.boton2:hover {
+        box-shadow: inset 0px 0px 0px 2px var(--color-berit);
+	background-color: transparent; color: var(--color-berit); opacity: 1
+}
+
+@media (min-width: 980px) {
+	.profesores_notas .row {
+		align-items: center;
+		display: flex;
+		min-height: 305px;
+		margin-left: 0px;
+		margin-right: 0px;
+	}	
+
+	.profesores_notas .profesores_na_texto { padding: 0 50px  }
+	
+}
+
+/* dudas */
+	#faqs .h2, #postulaciones .h2 {  font-family: var(--flamabold) }
+	#postulaciones .fill-btn, #faqs .fill-btn { margin-top: 0; font-family: var(--asap)}
+
+	#faqs .fill-btn {
+			box-shadow: inset 0px 0px 0px 2px var(--clr-ludus); font-size: .7em; background-color: var(--clr-ludus); color: #FFFFFF; text-transform: uppercase;border-radius: 0; font-weight: 400;margin-top: 0; padding: 6px 12px 5px; margin-left: 15px }
+
+	#faqs .fill-btn:hover {
+			box-shadow: inset 0px 0px 0px 2px var(--clr-ludus);
+		background-color: transparent; color: var(--clr-ludus); opacity: 1
+	}
+
+	@media (min-width: 768px){
+		#faqs .h2  { display: inline-flex; align-items: center}
+	}
+
+	@media (max-width: 767px){
+		#faqs .fill-btn {margin-top: 10px; margin-left: 0 }
+
+	}
+
+
+
+.profes_trescontenidos .bg-content  {
+    padding: 15px 40px;
+}
+
+.profes_trescontenidos .fill-btn, .estudiantes_trescontenidos .fill-btn {
+        box-shadow: inset 0px 0px 0px 1px #ffffff;
+	background-color: transparent; color: #FFFFFF; text-transform: uppercase;border-radius: 0; padding: 6px 10px 7px; 
+}
+.profes_trescontenidos .fill-btn:hover, .estudiantes_trescontenidos .fill-btn:hover {
+        box-shadow: inset 0px 0px 0px 2px #FFFFFF;
+		background-color: #FFFFFF; color: var(--text-azul)
+}
+
+.profes_trescontenidos .h4, .profes_trescontenidos p { color: var(--color-blanco); font-family: var(--flamabook)}
+.profes_trescontenidos .h5  {   font-family: var(--flamabold)}
+
+.profes_trescontenidos .col-sm-4:nth-child(3n+1) .bg-content {  background: var(--verde-profes) }
+.profes_trescontenidos .col-sm-4:nth-child(3n+2) .bg-content {  background: var(--text-azul) }
+.profes_trescontenidos .col-sm-4:nth-child(3n+3) .bg-content {  background: var(--verde-profes) }
+
+.profes_trescontenidos .col-sm-4 { margin-bottom: 20px }
+
+@media (min-width: 768px){
+	.profes_trescontenidos .col-sm-4 { margin-bottom: 0 }
+	.profes_trescontenidos .bg-content {
+		min-height: 130px;
+		display: flex;
+		align-items: center; justify-content: center
+	}
+}
+
+
+#dudas p {
+    margin-top: 0;
+    font-size: 1em;
+}
+
+
+#postulaciones .fill-btn {
+        box-shadow: inset 0px 0px 0px 2px var(--color-ignis); font-size: .7em; background-color: var(--color-ignis); color: #FFFFFF; text-transform: uppercase;border-radius: 0; font-weight: 400;margin-top: 0; padding: 6px 12px 5px; margin-left: 15px }
+
+#postulaciones .fill-btn:hover {
+        box-shadow: inset 0px 0px 0px 2px var(--color-ignis);
+	background-color: transparent; color: var(--color-ignis); opacity: 1
+}
+
+
+
+
+
+
+/* veni al centro... */
+
+.testimonios_carreras {
+    background-image: url(../images/fdo_testimonios_profesores.png);
+    z-index: auto !important;
+}
+
+#testimonios .h3 strong {
+    font-family: var(--flamabold)}
+
+#testimonios p, #testimonios a { color: var(--color-blanco)}
+
+
+#testimonios .h3, #programas .h4 {
+    color: #FFFFFF;
+    font-family:  var(--flamabook) }
+
+#testimonios .fill-btn {
+    box-shadow: none;
+    color: #FFFFFF;
+    text-transform: uppercase;
+    border-radius: 0;
+    font-weight: 400;
+    padding: 8px 15px 7px;
+}
+
+#testimonios .fill-btn:hover {
+ background-color: transparent !important
+	 ;
+	 box-shadow: inset 0px 0px 0px 2px var(--color-blanco);
+}
+
+@media (min-width: 980px){
+.testimonios_carreras {
+    padding: 40px 0;
+    background-position: 200px}
+}
+
+/* acordeones abajo  */
+
+.programas_abajo .col-sm-3 {
+    	position: relative; margin-bottom: 30px }
+	
+.programas_abajo p:first-child {padding-top: 0}
+
+.programas_abajo .h5 {color: var(--color-blanco); font-weight: var(--w600)}
+
+
+.programas_abajo .accordion-btn:after {
+    position: absolute;
+    bottom: 20px;
+    top: auto;
+    left: calc(50% - 8px);
+    border-width: 0 3px 3px 0;
+    min-width: 15px;
+    min-height: 15px;
+}
+
+.programas_abajo .col-sm-3:nth-of-type(3n+1) > .accordion-btn::after {
+    border: solid var(--color-ignis);
+    border-width: 0 2px 2px 0;
+}
+
+.programas_abajo .col-sm-3:nth-of-type(3n+2) > .accordion-btn::after {
+    border: solid var(--clr-ithaka);
+    border-width: 0 2px 2px 0;
+}
+.programas_abajo .col-sm-3:nth-of-type(3n+3) > .accordion-btn::after {
+    border: solid var(--clr-amarillo);
+    border-width: 0 2px 2px 0;
+}
+.programas_abajo .col-sm-3:nth-of-type(3n+4) > .accordion-btn::after {
+    border: solid var(--clr-violeta);
+    border-width: 0 2px 2px 0;
+}
+
+
+.programas_abajo .col-sm-3 .backprogramas {
+    position: relative;
+    min-height: 102px;
+}
+
+
+.programas_abajo .padding2040 { padding: 10px 25px }
+
+
+
+@media (min-width: 980px){
+.programas_abajo .col-sm-3 .backprogramas {
+    display: flex;
+    align-items: center;
+    min-height: 132px;
+}
+
+	.programas_abajo .col-sm-4 {
+    	margin-bottom: 0 }
+
+}
+
+
+/* estudiantes */
+.intro.internacionales .overlay {
+    opacity: 0.4;
+}
+
+
+
+#programas .ucu-carousel .owl-carousel .owl-item:nth-child(3n+1) .slide { background-color: var(--verde-profes) }
+#programas .ucu-carousel .owl-carousel .owl-item:nth-child(3n+2) .slide { background-color: var(--text-azul) }
+#programas .ucu-carousel .owl-carousel .owl-item:nth-child(3n+3) .slide { background-color: var(--clr-ithaka) }
+
+.profes_trescontenidos .h4, 
+#programas .h4 { font-weight: 600;    font-size: 2.5em }
+
+
+@media (min-width: 980px) {
+	
+	.profes_trescontenidos .h4, 
+#programas .h4 { font-weight: 600;    font-size: 3em }
+	
+#programas .slide {
+    min-height: 180px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100% }
+}
+
+/* carrouseles notInit  */
+#programas .notInit .slide
+{
+    min-height: 180px;
+    display: inline-flex;
+    align-items: center;
+}
+
+@media (min-width:760px){
+#programas .slider.activateSlider.notInit > .slide:nth-child(3n+1) {
+    width: 33% 
+}
+
+}
+
+	#programas .slider.activateSlider.notInit > .slide:nth-child(3n+1) {
+    background-color: var(--color-centro) }
+
+#programas .slider.activateSlider.notInit > .slide:nth-child(3n+2) {
+    background-color: var(--text-azul) }
+
+
+
+@media (min-width:760px){
+	#programas .slider.activateSlider.notInit > .slide:nth-child(3n+1) {
+    width: 33% 
+}
+
+}
+
+
+@media (max-width: 767px) {
+	#programas .slide { margin: 0 30px }
+}

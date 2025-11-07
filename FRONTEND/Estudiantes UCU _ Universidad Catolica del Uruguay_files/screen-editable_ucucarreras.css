@@ -1,0 +1,3380 @@
+/* Carreras UCU */
+:root {
+	--color-postgrados: #804E80;
+	--color-postgrados2: #ab8eb0;
+	--color-postgrados3: #cdafca;
+	--color-postgrados4: #CFAE38; 
+	--color-ucucaf: #29acaf; 
+	--celeste-ucu009: #0096D1;
+	--doctorados: #FF4D47 ;
+	--maestrias: #CFAE38;
+	--especializaciones: #009DA0;
+ 	--diplomas: #3EA4A4  ;
+	--diplomaturas: #804E80;
+	--text-azul: #173363;
+	--color-blanco: #FFFFFF;
+	--color-naranja: #ff6600;	
+	--color-amarillo: #f7c600;
+	--gris-eee: #EEEEEE;
+	--gris-buscador: #dedfe1;
+ 	--flamabook: 'flamabook', sans-serif;
+	--flamabold: 'flamabold', sans-serif; 
+	--flamaextra: 'flamaextrabold', sans-serif;
+	--w900: 900;
+	--w800: 800;
+	--w600: 600;
+	--w500: 500;
+	--w400: 400}
+
+@font-face {
+    font-family: 'trashhand';
+    src: url('/plantillas/fonts/trashhand-webfont.woff2') format('woff2'),
+         url('/plantillasfonts/trashhand-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal }
+/* generales */
+.content_carreras h1,
+.content_carreras h2,
+.content_carreras h3,
+.content_carreras h4,
+.content_carreras h5,
+.content_carreras h6{
+    line-height: 1.1;
+    margin-top: 40px;
+}
+.content_carreras h1:not([class*="text-"]),
+.content_carreras h2:not([class*="text-"]),
+.content_carreras h3:not([class*="text-"]),
+.content_carreras h4:not([class*="text-"]),
+.content_carreras h5:not([class*="text-"]),
+.content_carreras h6:not([class*="text-"]){
+    color: var(--text-azul);
+}
+.content_carreras h1:not([class*="font-"]),
+.content_carreras h2:not([class*="font-"]){
+    font-weight: var(--w600);
+}
+.content_carreras h1{
+    font-size: 3.4em;
+    line-height: 0.8; color: var(--color-blanco)
+}
+.content_carreras h2{
+    font-size: 2.8em;
+}
+.content_carreras h1:not([class*="font-"]),
+.content_carreras h2:not([class*="font-"]){
+    font-weight: var(--w600);
+}
+.content_carreras h3{
+    font-size: 2.3em;
+}
+.content_carreras h4{
+    font-size: 2.3em;
+}
+.content_carreras h5{
+    font-size: 2.1em;
+}
+.content_carreras h6{
+    font-size: 2em;
+}
+.content_carreras h1 a,
+.content_carreras h2 a,
+.content_carreras h3 a,
+.content_carreras h4 a,
+.content_carreras h5 a,
+.content_carreras h6 a{
+    color: inherit;
+}
+.content_carreras h1 small,
+.content_carreras h2 small,
+.content_carreras h3 small,
+.content_carreras h4 small,
+.content_carreras h5 small,
+.content_carreras h6 small{
+    font-size: 0.7em;
+    opacity: 0.6;
+    margin: 0 5px;
+}
+.content_carreras p,
+.content_carreras ul li,
+.content_carreras ol li{
+    font-size: 1.6em;
+    line-height: 1.4;
+    margin-top: 22px; list-style: none
+}
+.content_carreras blockquote{
+    display: block;
+    padding: 0 15px 0 35px;
+    margin: 30px 0;
+    position: relative;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.content_carreras p a{
+    color: var(--celeste-ucu009);
+    text-decoration: underline;
+}
+.content_carreras img,
+.content_carreras iframe{
+    display: block;
+    max-width: 100%;
+    margin-top: 28px;
+}
+.content_carreras ul,
+.content_carreras ol{
+    padding-top: 0;
+    counter-reset: section;
+}
+.content_carreras ul li,
+.content_carreras ol li{
+    margin-top: 10px;
+    padding-left: 24px;
+    position: relative; list-style: none
+}
+.popup.show { z-index: 99999}
+.owl-next, .owl-prev  {  cursor: pointer }
+	
+/* intro */
+.intro.introcarreras .h1 {  color: var(--color-blanco);line-height: 0.9em; margin-bottom: 19px; font-weight: normal }
+.intro .h1 strong { font-weight: var(--w500)}
+.intro.introcarreras .h1 u {
+color:var(--color-blanco);  padding-top: 3px;
+  border-bottom: 6px solid var(--color-naranja) }
+	.intro.introcarreras .picturegde, .intro .overlay {
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 0;
+	}
+.intro.align-middle:before {
+    min-height: 260px }
+	.bg_buscador { background-color: var(--gris-buscador) }
+	.intro.intro-xxl .holder, .intro.intro-full-height .holder {
+    padding: 0;
+    overflow: hidden;
+}
+.intro .picture:not([class*="img-"]) {
+    filter:grayscale()
+}
+/*fondo intro carreras*/
+.fondointro_carreras {
+    padding: 20px 30px 30px; opacity:1 
+}
+.fondointro_carreras .h1 { font-weight:400; font-family: 'flamaregular'; line-height: 1.1; color: var(--color-blanco) }
+.fondointro_carreras .h1 strong,
+.ficha_agenda_homecarreras strong {font-family: 'flamabold';
+   font-weight: normal !important;
+}
+
+.fondointro_carreras .h1:after {
+    content: "";
+    display: block;
+    width: 120px;
+    height: 5px;
+    background-color: var(--text-azul);
+    margin-top: 15px;
+	margin-left: -30px
+}
+.fondointro_carreras .text {
+    color: var(--color-blanco) }
+
+/* nota y testimonios */
+.testimonios_carreras .intro:not([class*="bg-"]) { background-color: var(--text-azul) }
+.testimonios_carreras { background-image: url(../images/fdo_testimonios_carreras.png); background-repeat: no-repeat;
+    background-position: 0 130px }
+.testimonios_carreras .img_testimonios { margin-top: -11px }	
+.testimonios_carreras .h6 {  color:var(--color-blanco); z-index: 9999; line-height: 1.5em; font-size: 1.8em; margin-top: 0; text-transform: uppercase; font-weight: 300 }
+.testimonios_carreras .h6 strong { font-weight: var(--w800) }
+.testimonios_carreras .owl-carousel .owl-item img { float: none; padding-right: 0; padding-bottom: 30px }
+.testimonios_carreras .intro .bx-controls-direction a {
+    background-color: var(--especializaciones); top: 19% 
+}
+.testimonios_carreras.intro.align-middle:before {  min-height:30px;
+}
+.testimonios_carreras .content-out { position: relative;; margin: 20px 10px 0 10px }
+/*.testimonios_carreras .content { position: relative; margin-top:20px; height: 100% }*/
+.testimonios_carreras .content-out:before{
+    content: "";
+    width: 65px;
+    height: 56px;
+    display: block;
+    position: absolute;
+    background-image: url(../images/comillas_testimonios_inicio.svg);
+	background-repeat: no-repeat; z-index: -2 }
+.testimonios_carreras .content-out:after{
+    content: "";
+    width: 65px;
+    height: 56px;
+    display: block;
+    position: absolute;
+    background-image: url(../images/comillas_testimonios_fin.svg);
+    right: 20px;
+    bottom: 50px; background-repeat: no-repeat; z-index: -2
+}
+
+/* sector noticias */
+.noticias.blocks-carousel .block-card .holder { padding-right: 0; padding-left: 0 }
+.noticias.owl-carousel .owl-item { background-color: var(--especializaciones);  padding: 0; padding-bottom: 0 }
+.noticias.blocks-carousel .owl-nav div{
+    background-color: var(--text-azul);
+    border-radius: 50%}
+.noticias.blocks-carousel .owl-nav a:before {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: 2px;
+    border: solid var(--color-blanco);
+    border-width: 2px 0 0 2px;
+    -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+    -ms-transform: translate(-50%, -50%) rotate(-45deg);
+    -o-transform: translate(-50%, -50%) rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-45deg);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.noticias .h2 { font-size: 4em }
+.noticias p { font-size: 1.6em }		
+.noticias .news-relation-container figure {  position: relative;box-sizing: border-box; flex: 1 1 22% }
+.noticias .news-relation-container {  display: flex; vertical-align:middle }
+.noticias .news-relation-titular { margin: 0 40px 0 23px; flex: 1 1 24%  }
+.noticias .news-relation-container figure a {
+    display: block;
+    position: relative;
+    height: 100%;
+}
+.noticias .news-relation-container figure a img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.noticias .news-relation-titular .h4:after {
+	content: "";
+    display: block;
+    width: 70px;
+    height: 4px;
+	margin-top: 10px;
+	background-color:var(--color-blanco) 
+}
+#noticias .owl-carousel .owl-item {padding-bottom: 0 }
+#formalpie .h2 {  margin-top: 30px; color: var(--color-blanco); line-height: .9em  }
+.h2 strong { font-weight: 900 }
+#iconos_carreras svg {-webkit-transition:fill .25s ease-in-out;transition:fill .25s ease-in-out}
+ #iconos_carreras, #formalpie {
+    overflow: hidden}
+
+/* Noticias */
+	#noticias .news-relation-texto {   max-height: 237px; overflow: hidden }
+
+	#noticias .news-relation-container figure{
+		flex: 1 1 20%; display: flex
+	}
+#noticias .news-relation-container {display: flex; margin: -1px;    align-items: center }
+#noticias .h4  {color: var(--color-blanco); font-size: 2.2em}
+#noticias figure a{
+		display: block;
+		position: relative;  
+		height: 100%;
+	}
+	#noticias figure a:before{
+		content: "";
+		display: block;
+		padding-bottom: 230.53%;
+		height: 0;
+		width: 100%;
+	}
+#noticias figure a img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: left;
+}
+	#noticias .news-relation-titular{
+		position: relative;
+		flex: 1 1 50%; display: flex; align-items: center
+	}
+	#noticias .news-relation-titular:before{
+		content: "";
+/*		display: inline-block;
+*/		vertical-align: middle;
+		height: 100%;
+	}
+	#noticias .news-relation-texto{
+		display: inline-block;
+		vertical-align: middle;
+	}
+#noticias .news-relation-titular a {
+		color: var(--color-blanco)
+	}
+#noticias .news-relation-titular a:hover {
+		color: var(--color-blanco); opacity: .6
+	}
+	#noticias .news-relation-titular .h4:after {
+	content: "";
+    display: block;
+    width: 70px;
+    height: 3px;
+	margin-top: 10px;
+	background-color:var(--color-blanco) 
+}
+	#noticias .news-relation-titular{
+		margin: 0;
+		padding: 15px 20px;
+	}
+.noticias .h3:after {
+	content: "";
+    display: block;
+    width: 100px;
+    height: 3px;
+    margin-top: 10px;
+	background-color: var(--color-blanco)
+}
+/* por que carrera */
+#iconos_carreras img { height: 45px }
+#iconos_carreras .col-xs-4 { padding: 40px 0 20px 0; min-height: 95px }
+#iconos_carreras .h5 { color: var(--color-blanco) }
+#iconos_carreras_abajo .item img { height: 90px }
+#iconos_carreras_abajo .h5 { color: var(--color-blanco) }
+#iconos_carreras_abajo a { color: var(--color-blanco) }
+
+/* buscador de carreras */
+.buscador_carreras .h2:after {
+   		margin: 10px auto 
+	}
+	.buscador_carreras .h2{
+		text-align: center 
+	}
+	.buscador_carreras .h2:after { content: ""; display: block; width: 50px;
+    height: 6px;
+    background-color:  var(--color-naranja); margin: 5px 0 0 200px;  }
+.buscador_carreras form { 
+	border-radius: 50px;
+    background-color: var(--especializaciones);
+    padding: 12px 20px;
+    width: 88%;  display: inline-flex; align-items: center; margin-top: 20px; text-align: left }
+.buscador_carreras label { width: 90% }
+.buscador_carreras input { background-color: var(--especializaciones); color: #307698; font-size: 2em; padding: 6px 2px 6px 22px }
+.buscador_carreras input::selected { background-color: var(--especializaciones) !important }
+.buscador_carreras input#busqueda { background-color: var(--especializaciones) !important }
+.buscador_carreras .submit-btn {	
+	background-image: url(../images/icons/lupa_ama.svg);	
+	background-repeat: no-repeat;
+	background-size: 55px;  width: 40px; height: 30px
+}
+.buscador_carreras input::-webkit-input-placeholder{
+    font-style: italic;
+    color: #307698;
+}
+.buscador_carreras input::-moz-placeholder{
+    font-style: italic;
+    color:rgb(48,118,152)
+}
+	.buscador_carreras input::-ms-input-placeholder{
+    font-style: italic;
+    color: rgb(48,118,152) }
+	
+/* home todas las carreras ini */
+.listado-carreras .h4 {
+    font-family: 'flamaregular'; margin-left: 20px
+}
+.listado-carreras .h4 strong {
+    font-family: 'flamabold';
+}
+.contenido_carrera .h3 {   font-weight: 400 }
+.ficha_carrera .news-relation-container figure {  position: relative;box-sizing: border-box; flex: 1 1 22%; margin-bottom: -2px	 }
+	.ficha_carrera .news-relation-container {  display: flex; align-items: center}
+	.ficha_carrera img  { min-height:200px }
+	.ficha_carrera .news-relation-titular { margin: 0 20px; flex: 1 1 36%  }
+	.h2 strong, .ficha_carrera strong { font-weight: 900 }
+	.ficha_carrera .h5 {  font-size: 2em; font-weight: 600}
+	.ficha_carrera p {   font-size: 1.6em }
+	.ficha_carrera .h5 a { color: var(--color-blanco) }
+	.ficha_carrera .h5 a:hover { color: var(--color-blanco); opacity: .65 }
+.news-relation-container figure {  position: relative;box-sizing: border-box; flex: 1 1 22% }
+	.txtcampus {font-size: 1.8em }
+.campus .fill-btn {
+    padding: 6px 20px;
+    font-weight: 400;
+	font-style: italic;
+    line-height: 1.1;
+    border: 2px solid var(--especializaciones);
+    border-radius: 35px;
+    margin-right: 0;
+	margin-left: 10px ; margin-top: -6px !important;
+	background: var(--color-blanco); color: var(--color-ucucaf); 
+}
+.campus .fill-btn:hover {
+    border: 2px solid var(--especializaciones);
+    border-radius: 35px;
+	background: var(--especializaciones); color: var(--color-blanco); 
+}
+.filtroscarreras{ padding-left: 15px}
+.bg-primary-sec-carreras { background-color:var(--color-naranja); }/*naranja*/
+
+/************************ FICHA CARRERA INTERNA  ************************/
+/* evento agenda home carreras ini */
+:root .ficha_agenda_homecarreras .ucu-carousel {
+     padding-bottom: 0}
+.ficha_agenda_homecarreras
+{
+    color: var(--color-blanco) !important;
+font-weight: 400;
+    font-family: 'flamalight';
+}
+
+.ficha_agenda_homecarreras .ucu-carousel { background-color: var(--text-azul) }
+.ficha_agenda_homecarreras .ucu-carousel .owl-nav div {
+    background-color: transparent;
+	box-shadow: none;
+    border-radius: 0;
+    top: 90%;
+}
+.ficha_agenda_homecarreras .ucu-carousel .owl-nav .owl-next {
+    right: 5px !important }
+.ficha_agenda_homecarreras .ucu-carousel .owl-nav .owl-prev {
+    left: 5px !important }
+.ficha_agenda_homecarreras .ico_fichaagenda  {float: left; margin-right: 10px}
+.ficha_agenda_homecarreras .ucu-carousel .holder { padding: 20px 30px; opacity: 1 }
+.ficha_agenda_homecarreras .ucu-carousel .h6 { color: var(--color-blanco) }
+.ficha_agenda_homecarreras .ucu-carousel a:hover { opacity: .8 }
+
+/* ficha agenda carrera ini */
+.ficha_agenda_homecarreras .ucu-carousel .h5 {
+    display: flex;
+    align-items: center; color: var(--color-blanco)
+}
+.ficha_agenda_homecarreras .ucu-carousel {
+    background-color: var(--text-azul)}
+
+/* por que carrera  ini */
+#porque_carrera .owl-carousel .owl-item .svg, #carrera_diferenciales .owl-carousel .owl-item .svg { margin: 0 auto 20px}
+#porque_carrera .owl-carousel .owl-item:nth-child(2n){ color: var(--text-azul) }
+#porque_carrera .owl-carousel .owl-item:nth-child(2n) .svg {filter: invert(12%) sepia(72%) saturate(2082%) hue-rotate(216deg) brightness(86%) contrast(91%)}
+#porque_carrera .owl-carousel .owl-item:nth-child(2n+1){ color: var(--color-naranja) }
+#porque_carrera .owl-carousel .owl-item:nth-child(2n+1) .svg { filter: invert(48%) sepia(83%) saturate(636%) hue-rotate(348deg) brightness(90%) contrast(95%)  }
+
+/* videos asociados a la carrera ini */
+#carrera_videos .fondo_color { background-color: var(--color-naranja); z-index: -3 }
+#carrera_videos .iframe-videos img, #graduados_ucu .iframe-videos img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin-top: 0!important }
+#carrera_videos .testimonio_video .h6 { line-height: 1.4em; font-size: 1.8em; letter-spacing: .04em; color: var(--color-blanco); margin: 0 10px}
+#carrera_videos .testimonio_video p {  margin: 50px 10px 0 10px }
+#carrera_videos .testimonio_video2 .h5 { line-height: 1.4em; font-size: 1.8em; letter-spacing: .04em; color: var(--color-blanco); margin: 0 10px}
+#carrera_videos .testimonio_video2 p {  margin: 50px 10px 0 10px }
+#carrera_videos .testimonio_video strong{  font-weight: 800}
+#carrera_videos .fondo_video{  z-index: 2}
+#carrera_videos .testimonio_video:before {
+    content: "";
+    width: 65px;
+    height: 56px;
+    display: block;
+    position: absolute;
+    background-image: url(../../carreras/images/comillas_testimonios_inicio.svg);
+    background-repeat: no-repeat;
+    filter: invert(62%) sepia(88%) saturate(1109%) hue-rotate(10deg) brightness(109%) contrast(104%);
+	top: 240px;
+	z-index: -2}
+#carrera_videos .testimonio_video:after {
+    content: "";
+    width: 65px;
+    height: 56px;
+    display: block;
+    position: absolute;
+    background-image: url(../../carreras/images/comillas_testimonios_fin.svg);
+    right: 30px;
+	bottom: 100px;
+    background-repeat: no-repeat;
+    filter: invert(62%) sepia(88%) saturate(1109%) hue-rotate(10deg) brightness(109%) contrast(104%);
+z-index: -2
+}
+
+ /* Minors */
+#minors_videos .bg-primary-sec {
+    background-color: var(--especializaciones)
+}
+.block-card-height {
+    position: relative;
+    overflow: hidden;
+    }
+.block-card-height .icono {
+    padding: 0;
+    position: absolute;
+    bottom: 50px;
+    right: 0;
+    z-index: 10; width: 160px
+}
+	.block-card .icono img {
+    width: 100% !important }
+/* Ficha carrera interna */
+
+/* docentes ini */
+#docentes .news-relation-container {
+    display: flex;
+    vertical-align: middle; margin-bottom: -2px
+}
+	#docentes figure a{
+		display: block;
+		position: relative;  
+		height: 100%;
+	}
+#docentes figure a img {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#docentes figure a{
+		display: block;
+		position: relative;  
+		height: 100%;
+	}
+	#docentes figure a:before{
+		content: "";
+		display: block;
+		padding-bottom: 230.53%;
+		height: 0;
+		width: 100%;
+	}
+#docentes figure a img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: left;
+}
+	#docentes .news-relation-texto{
+		display: inline-block;
+		vertical-align: middle;
+	}
+#docentes .news-relation-titular a {
+		color: var(--color-blanco)
+	}
+#docentes .news-relation-titular a:hover {
+		color: var(--color-blanco); opacity: .6
+	}
+#docentes .news-relation-titular .h5 {color: var(--color-blanco) }
+#docentes .news-relation-titular .h5:after {
+	content: "";
+    display: block;
+    width: 70px;
+    height: 3px;
+	margin-top: 10px;
+	background-color:var(--color-blanco) 
+}
+#docentes .infomas {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+	}
+	#docentes .news-relation-titular .h4:after {
+	content: "";
+    display: block;
+    width: 70px;
+    height: 3px;
+	margin-top: 10px;
+	background-color:var(--color-blanco) 
+}
+#docentes .ucu-carousel figure {
+        min-height: 302px;
+        max-height: 302px
+    }
+#docentes .ucu-carousel .h4 { text-transform: inherit; font-family: 'Asap', sans-serif }
+#docentes .news-relation-container figure {
+    flex: 1 1 22%; margin: -1px 0 0 -1px
+}
+#docentes .news-relation-titular {
+    position: relative;
+    flex: 1 1 33%;
+    margin: 0 52px 0 0;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+}
+/* violeta  */
+#docentes .owl-carousel .owl-item:nth-child(4n+1){
+background-color: var(--color-postgrados2) }
+
+/* turquesa  */
+#docentes .owl-carousel .owl-item:nth-child(4n+2){
+background-color: var(--color-ucucaf) }
+
+/* naranja  */
+#docentes .owl-carousel .owl-item:nth-child(4n+3){
+background-color: var(--color-naranja) }
+
+/* amarillo */
+#docentes .owl-carousel .owl-item:nth-child(4n+4){
+background-color: var(--color-amarillo) }
+
+/* accesos */
+#accesos .img_ppal, #accesos .mas_horario, #popup-horarios .ichorario {
+    filter: invert(57%) sepia(57%) saturate(5642%) hue-rotate(354deg) brightness(92%) contrast(100%);
+}
+#accesos .mas_horario {padding-left: 10px; cursor: default}
+#accesos .features-list .h6  { color:var(--text-azul); font-size: 1.8em; line-height: 1.2em}
+#accesos .features-list .h6 .texto_ch_intermedia {font-size: .85em }
+#accesos .features-list .feature.font-bold {   font-weight: var(--w800) }
+#accesos .features-list .styled-form .input-holder .input, 
+#accesos .features-list .styled-form .input-holder .select select { box-shadow: none;  padding: 0; cursor: pointer}
+#accesos .features-list .styled-form .input-holder .select:before {   
+   border: solid var(--text-azul);
+    border-width: 0 2px 2px 0; width: 10px; height: 10px;margin-top: -6px }
+#accesos .features-list .styled-form .input-holder .select {
+		margin: 4px auto;
+	color: var(--text-azul) !important;
+		text-align: center;
+    border: 1px solid var(--gris-eee);
+    padding: 5px 0;}
+#accesos .features-list .styled-form .input-holder .select:before {
+    right: 10px;
+}
+#accesos .features-list .styled-form .input-holder .select selected {
+  font-weight: 800 !important; outline: none }
+#accesos .features-list .styled-form .input-holder .select select {
+    font-weight: 800;
+	color: var(--color-naranja); /*#e07219 naranja*/
+	text-align: center }
+#accesos .features-list .styled-form .input-holder .select select:focus, 
+#accesos .features-list .styled-form .input-holder .select select:active
+ {
+    font-weight: 800;
+	color: var(--text-azul);  outline: none; background-color: var(--color-blanco)}
+#accesos .features-list .accordion-btn {
+    margin: 4px auto;
+    color: var(--text-azul);
+    text-align: center;
+    border: 1px solid var(--gris-eee);
+    padding: 5px 0; position: relative 
+}
+#accesos .features-list .accordion-btn.open  {
+    border-left: 1px solid var(--gris-eee);
+    border-bottom: 0;
+    border-right: 1px solid var(--gris-eee);
+    border-top: 1px solid var(--color-blanco)
+}
+ #accesos .features-list .accordion-btn.active {
+    border-left: 1px solid var(--gris-eee);
+    border-bottom: 0;
+    border-right: 1px solid var(--gris-eee);
+    border-top: 1px solid var(--gris-eee)
+}
+#accesos .features-list .accordion-btn:after {
+    position: absolute;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    left: calc(100% - 34px) 
+}
+#accesos .features-list .accordion-btn.active:after{
+    top: 12px}
+#accesos .features-list a:hover {
+	opacity: 1 }
+#accesos .features-list .accordion-content p {
+      font-size: 1em;
+    border-left: 1px solid var(--gris-eee);
+    border-bottom: 1px solid var(--gris-eee);
+    border-right: 1px solid var(--gris-eee);
+    border-top: 0;
+    margin-top: -5px;
+    background: var(--color-blanco);
+    padding: 5px 0;
+}
+#accesos .features-list .styled-form .input-holder {
+    margin-top: 0px 
+}
+/* slide porque carrera ini  */
+.video_slide .col-sm-7, .video_slide .col-sm-12 {
+    vertical-align: middle }
+ 
+/* perfil graduado */
+#perfil_graduado .holder ul {font-size: 1.6em; color: var(--text-azul) }
+#perfil_graduado .owl-carousel .owl-item:nth-child(4n+1){
+	background: var(--color-postgrados2) }
+#perfil_graduado .owl-carousel .owl-item:nth-child(4n+2){
+	background: var(--color-ucucaf) }
+#perfil_graduado .owl-carousel .owl-item:nth-child(4n+3){
+	background: var(--color-naranja) }
+#perfil_graduado .owl-carousel .owl-item:nth-child(4n+4){
+background: var(--color-amarillo) }
+#perfil_graduado .owl-carousel.owl-loaded, #perfil_graduado .owl-carousel .owl-stage {
+    display: flex }
+/* perfil graduado */
+
+/* estudiantes */
+#trabajos_estudiantes .ucu-carousel .holder { position:relative;  margin-top: -30px;
+    margin-bottom: -30px;}
+#trabajos_estudiantes .ucu-carousel .holder .icono { position:absolute; bottom: 50px; right: 60px; width:75px;  z-index: 9999 }
+ 
+ /* POPUP HORARIOS*/
+#popup-horarios .h2 {
+    font-size: 5em;
+    font-weight: 700 !important;
+    font-family: 'Asap', sans-serif; margin-top: 20px }
+
+
+ .popup > .holder { max-width: 700px }
+	#formalpie .error_msg, #formalpie .sug_msg { background-color: #DDDDDD; color: #990000; font-size: 1.6em; padding: 6px; font-weight: 500 }
+	#formalpie .sug_msg a, #formalpie .sug_msg button { color: #990000; font-size: 1em; font-weight: 500; text-decoration: underline }
+	#formalpie .styled-form .msg_enviado { color: #EEEEEE; font-size: 1.8em; font-weight: 400 }
+	#formalpie .titular:after, #formalpie .titular_movil:after { margin: 8px  0 0 0; content: "";
+    display: block;
+    width: 70px;
+    height: 5px;
+    background-color: var(--color-naranja) }
+#formalpie .styled-form .input-holder {  margin-top: 10px; margin-left: 10px }
+#formalpie .botones .fill-btn  { border-radius: 0; font-size: 1.5em}
+#formalpie .botones_borde:before {
+    margin: 0 0 5px;
+    content: "";
+    display: inline-block;
+    width: 170px;
+    height: 2px;
+    background-color: #f7c600 }
+#formalpie .fill-btn.infoeconomica { background-color: #197a8a; box-shadow: inset 0px 0px 0px 1px #197a8a; padding: 10px 5px; text-align: center }
+#formalpie .botones {
+   padding: 0 20px; margin-bottom: 20px }
+#formalpie .fill-btn.infoeconomica:hover, #formalpie .fill-btn.infoeconomica:focus
+ { background-color: transparent; color: var(--color-blanco); box-shadow: inset 0px 0px 0px 2px #197a8a;  }
+#formalpie .fill-btn.entrevista { background-color: #215b73; box-shadow: inset 0px 0px 0px 1px #215b73; padding: 10px 5px; text-align: center }
+#formalpie .fill-btn.entrevista:hover, #formalpie .fill-btn.entrevista:focus
+ { background-color: transparent; color: var(--color-blanco); box-shadow: inset 0px 0px 0px 2px #215b73 }
+#formalpie .img_carreras {position: relative}
+#formalpie .fill-btn.entrevistamovil { width: 200px; background-color: #ea5b0c; box-shadow: inset 0px 0px 0px 1px #ea5b0c; padding: 10px 5px; text-align: center; border-radius: 0; margin: 0 }
+#formalpie .fill-btn.entrevistamovil:hover, #formalpie .fill-btn.entrevistamovil:focus
+ { background-color: transparent; color: var(--color-blanco); box-shadow: inset 0px 0px 0px 2px #ea5b0c}
+
+#formalpie .tuentrevistamovil{     position: absolute;
+    top: calc(50% - 57px);
+    left: calc(25%);
+}
+
+
+#formalpie .infomas {
+    position: absolute;
+    bottom: 6px;
+    right: 8px;font-size: 1.8em;
+    font-weight: 600;
+    line-height: 1.1;
+    color: #fff;
+}
+
+#formalpie .ts-control {
+    border-radius: 0 }
+#formalpie .h2 { font-weight: 400 }
+#formalpie .styled-form .input-holder .label { display: none }
+#formalpie .styled-form  .fill-btn { padding: 8px 21px 12px; font-size: 1.8em; font-weight: 400 }
+#formalpie .styled-form .input-holder .input { background-color: #25345d; color: var(--color-blanco);box-shadow:none; opacity: 1  }
+
+#formalpie .styled-form .input-holder .input, #formalpie .styled-form .input-holder .select select {
+    padding: 12px 12px 13px }
+
+#formalpie .msg_enviado {
+color: var(--color-blanco) }
+
+#formalpie .fill-btn.entrevista, 
+#formalpie .fill-btn.infoeconomica { width: 92%; margin-top: 0 }
+
+#formalpie .styled-form .input-holder .label, #formalpie .styled-form .input-holder .select select {
+    color: #c0c0c0 !important }
+
+#formalpie .styled-form .input-holder .input::placeholder {
+    background-color: #25345d; color: #c0c0c0 !important }
+	
+#formalpie .styled-form .input-holder .input selected  { background: #25345d; color: #c0c0c0; box-shadow:none; opacity: 1 }
+
+#formalpie .styled-form .submit {  background: #25345d; color: var(--color-blanco); text-transform: uppercase; border-radius: 0; padding: 10px 20px; margin-top: 10px }
+
+#formalpie .select2-container--default .select2-selection--single { background: #25345d; color: var(--color-blanco); border-radius: 0; padding: 8px 15px 7px;
+        font-size: 1.8em;border: 0; font-style: italic }
+
+.select2-container .select2-selection--single {  height: auto }
+.select2-container .select2-selection--single .select2-selection__rendered {  padding-left: 0;  padding-right: 0; color: #c1c1c1; }
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #c0c0c0 transparent transparent transparent;
+    border-width: 8px 6px 0 6px }
+
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #c0c0c0 !important; font-size: .9em  }
+
+.select2-dropdown, .select2-container--open .select2-dropdown--below {
+    background-color: #25345d;
+    border: 0;
+    border-radius: 0; color: #666
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px ;
+    top: 1px;
+    right: 4px;
+    width: 35px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    border-color: #666 transparent transparent transparent;
+    border-width: 8px 7px 0 7px}
+	
+
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: #ff6600;
+    color: var(--color-blanco); padding-top: 10px
+}
+
+#formalpie .styled-form .input-holder .input:-webkit-autofill,
+#formalpie .styled-form .input-holder .input:autofill,
+#formalpie .styled-form .input-holder .input:autofill::hover,
+#formalpie .styled-form .input-holder .input:autofill::focus,
+#formalpie .styled-form .input-holder .input:-webkit-autofill::hover, 
+#formalpie .styled-form .input-holder .input:-webkit-autofill::focus { background-color: #25345d!important;  color: var(--color-blanco)  }
+
+#formalpie label.aceptar_condiciones { font-size: 1.5em;
+    color: var(--text-azul);
+    font-weight: 500  }
+
+
+#formalpie label.aceptar_condiciones a { text-decoration: underline; font-weight: 800 }
+#formalpie label.aceptar_condiciones a:hover,
+#formalpie label.aceptar_condiciones a:active { text-decoration: none }
+
+.select2-results__option {	
+			color: #c0c0c0; 
+			padding: 0px 21px 30px; 
+			font-size: 1.8em; 
+			font-style: italic }
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+			border: 2px solid var(--color-naranja);
+			padding:10px 15px 11px; font-size: 1.9em; color: var(--color-naranja) }
+
+.select2-search--dropdown {
+	padding: 12px 21px  }
+
+
+.img_carreras {background: no-repeat center/cover; padding-bottom: 59.6%; height: 100%; background-color: transparent;}
+
+.titular_movil { display:inline-block }
+
+
+	#formalpie .styled-form .input-holder .select   {
+background-color: #25345d;  font-style: italic; color: #c0c0c0;  }
+
+
+#formalpie .styled-form .input-holder .select option {
+  background-color: #25345d;
+  color: #c0c0c0;
+}
+
+#formalpie .styled-form .input-holder .select option:checked {
+  font-weight: 800
+}
+
+
+
+	#formalpie .styled-form .input-holder .select select {
+  	 font-style: italic; box-shadow: none  }
+
+
+#formalpie .styled-form .input-holder .select select:not(:-internal-list-box):not([multiple]) option 
+
+ {
+background-color: #25345d;  font-style: italic; color: #c0c0c0;  }
+
+#formalpie .styled-form .input-holder .select:before {
+    border: solid #c0c0c0;
+    border-width: 0 2px 2px 0 }
+	#formalpie .titular { display: none}
+
+/*captcha ini*/
+#formalpie .rc-anchor-light.rc-anchor-normal,
+#formalpie .g-recaptcha{
+   margin-left: 10px !important; margin-top: 10px !important
+}
+/*captcha fin*/
+
+
+/* bloque_ucu modificacion Bloque */
+/* 01/04/2022 17:01           */
+
+/* centros */
+#centros .caja{  cursor:pointer }
+#centros .caja a{ display:block }
+#centros .news-relation-container figure{
+    flex: 1 1 50%;
+}
+#centros figure:before{
+    content: "";
+    display: block;
+    padding-bottom: 230.53%;
+    height: 0;
+    width: 100%;
+}
+#centros figure img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+#centros .bottom-line{
+    display: block;
+    height: 2px;
+    width: 60px;
+    margin-top: 20px;
+}
+#centros .news-relation-texto{
+        height: 100%}
+#centros .news-relation-titular{
+    flex: 1 1 50%;
+    margin: 20px 0 0 0;
+    padding: 0 20px;
+	height: 100%
+}
+#centros .news-relation-texto .infomas{
+    position: absolute;
+    bottom: 20px;
+    right: 20px}
+
+/* Numeros */
+.js-countUp-num{
+    visibility: hidden;
+}
+
+
+/* ************** CONTENIDO ************** */
+#js-sidebar-waypoint-limit {
+    position: absolute;
+    height: 10px;
+    left: 0;
+    right: 0;
+}
+
+.shares{
+    margin-top: 20px;
+}
+.shares .iconos li {
+    display: inline-block;
+}
+.shares .iconos li a{
+    display: block;
+}
+
+#sidebar-news{
+    margin: 0 -20px;
+}
+
+#sidebar-news .news-content-titular{
+    flex: 1 1 50%;
+    padding: 20px 20px 45px;
+    background-color: #fff;
+}
+
+#sidebar-news .news-relation-container figure {
+    margin-left: 0;
+    flex: 1 1 20%;
+}
+
+#sidebar-news .news-relation-container{
+    position: relative;
+    min-height: 90px }
+
+
+#sidebar-news .infomas{
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    font-size: 4.2em;
+}
+
+/* ************** CAROUSELS ************** */
+
+.ucu-carousel {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.ucu-carousel .owl-carousel .owl-item{
+    padding-bottom: 0!important;
+}
+
+/*.ucu-carousel.ucu-carousel-4 img{
+    width: 100vw !important;
+}
+*/
+.wrapper .ucu-carousel {
+    width: auto;
+    margin-right: -30px;
+    margin-left: -30px;
+    margin-top: auto;
+}
+
+.ucu-carousel .owl-nav div {
+    display: block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    z-index: 10;
+    margin-top: -19px;
+    box-shadow: 0px 6px 20px -4px rgba(23,51,99, .4);
+}
+
+.ucu-carousel .owl-nav div {
+    background-color: #173363;
+    border-radius: 50%;
+    top: 50%;
+}
+
+.ucu-carousel .owl-nav .owl-next {
+    left: auto;
+    right: 15px;
+}
+
+.ucu-carousel .owl-nav div:before {
+    content: "";
+    display: block;
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: 3px;
+    border: solid #fff;
+    border-width: 2px 0 0 2px;
+    -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+    -ms-transform: translate(-50%, -50%) rotate(-45deg);
+    -o-transform: translate(-50%, -50%) rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-45deg);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.ucu-carousel .owl-nav .owl-next:before {
+    border-width: 0 2px 2px 0;
+    margin-left: -1px;
+}
+
+.ucu-carousel.ucu-carousel-4.blocks-list .block-card{
+    min-height: 0 !important;
+}
+
+
+.ucu-carousel.ucu-carousel-4.blocks-list .block-card{
+    margin: -1px !important }
+
+	
+
+
+    /* DOTS AGENDA */
+
+.ficha_agenda_homecarreras .owl-controls{
+    display: block;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: -26px;
+    text-align: center;
+}
+
+.ficha_agenda_homecarreras .owl-controls .owl-dot{
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #fff;
+    border-radius: 50%;
+    margin: 0 5px;
+    opacity: 0.7;
+    transition: opacity 200ms ease-out;
+}
+.ficha_agenda_homecarreras .owl-controls .owl-dot.active{
+    opacity: 1;
+}
+
+/* 01/04 - Fix estilo editable */
+:root .ficha_agenda_homecarreras .ucu-carousel{
+    min-height: initial;
+}
+:root .ficha_agenda_homecarreras .ucu-carousel .owl-nav div{
+    display: none !important
+}
+
+
+/* TINY SLIDER */
+.vertical-carousel .tns-controls button[data-controls="prev"]{
+    position: absolute;
+    left: 4px;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+    top: 50%;
+}
+.vertical-carousel .tns-controls button[data-controls="next"]{
+    position: absolute;
+    right: -25px;
+    left: auto;
+    bottom: auto;
+    top: 50%;
+    -webkit-transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+
+}
+
+
+/* ************** GALERIA LIGHTBOX ************** */
+.galeria-lightbox{
+    width: 100%;
+    text-align: center;
+    line-height: 0;
+}
+.galeria-lightbox-link {
+    display: inline-block;
+    width: 50%;
+    -webkit-transition: opacity 300ms ease-out;
+    -moz-transition: opacity 300ms ease-out;
+    -o-transition: opacity 300ms ease-out;
+    transition: opacity 300ms ease-out;
+}
+.galeria-lightbox-img{
+    display: block;
+    width: 100%;
+}
+
+/* ************** CAMPUS POPUP ************** */
+.campus-popup{
+    display: none;
+    background-color: #24335a !important;
+    text-align: center !important;
+    padding: 40px 40px 50px !important;
+    max-width: 450px;
+}
+.popup > .holder.campus-popup .close-btn span {
+    background-color: var(--color-blanco) }
+.popup > .holder.campus-popup .close-btn span:before {	
+	background-color: var(--color-blanco) }
+.overlay.overlay-white{
+    background-color: rgba(255,255,255,0.5);
+}
+
+/* Show */
+.campus-popup.show{
+    opacity: 1;
+    -webkit-transition-delay: 0ms;
+    -o-transition-delay: 0ms;
+    transition-delay: 0ms;
+}
+.campus-popup-title{
+    display: block;
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1.3;
+}
+.campus-popup-title-strong{
+    position: relative;
+    font-weight: 700;
+}
+.campus-popup-title-strong:after{
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    background-color: #e07219;
+    width: 100%;
+    height: 4px;
+}
+.campus-popup-list{
+    margin-top: 30px;
+}
+.campus-popup-item{
+    display: block;
+    margin-top: 20px;
+}
+.campus-popup-item:first-child{
+    margin-top: 0;
+}
+.campus-popup-link{
+    position: relative;
+    display: inline-block;
+    font-weight: 600;
+    color: #fff;
+    border: 2px solid #009DD6;
+    padding: 12px 15px;
+}
+.campus-popup-presence{
+    display: inline-block;
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translate(-50%,50%);
+    text-align: center;
+    text-transform: uppercase;
+    font-size: .6em;
+    font-weight: 600;
+    background-color: #009DD6;
+    padding: 3px 5px;
+    letter-spacing: 1.2px;
+}
+.campus-popup-item {
+    margin-bottom: 12px;
+}
+
+
+/* ************** PLAN DE ESTUDIOS ************** */
+.plan-viewport{
+    position: relative;
+    overflow: hidden;
+    height: 0px}
+.plan-viewport:after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    background: #fff;
+    transition: all 200ms ease;
+	margin-top: 20px;
+}
+.plan-viewport.is-open{
+    height: 100%;
+}
+.plan-viewport__btn{
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    margin-left: -12px;
+    z-index: 99;
+    border: solid #1F335D;
+    border-width: 3px 0 0 3px;
+    -webkit-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.plan-viewport__btn:before{
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 48px;
+    min-width: 48px;
+    margin-top: -25px;
+    margin-left: -15px;
+}
+.plan-viewport .bg-primary{
+	position: relative}
+.btn-viewport {
+    position: absolute;
+    bottom: 24px;
+    right: 30px;
+    width: 20px;
+    height: 21px;
+    z-index: 99;
+    border: solid var(--color-blanco);
+    border-width: 3px 0 0 3px;
+    -webkit-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    cursor: pointer;
+  -webkit-transition:
+        -webkit-transform 200ms ease-out,
+        top 200ms ease-out;
+    -o-transition:
+        -o-transform 200ms ease-out,
+        top 200ms ease-out;
+    transition:
+        transform 200ms ease-out,
+        top 200ms ease-out;}
+.btn-viewport.active {
+    bottom: 12px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+	  -webkit-transition:
+        -webkit-transform 200ms ease-out,
+        top 200ms ease-out;
+    -o-transition:
+        -o-transform 200ms ease-out,
+        top 200ms ease-out;
+    transition:
+        transform 200ms ease-out,
+        top 200ms ease-out;
+}
+.plan-viewport.is-open .plan-viewport__btn{
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+.plan{
+    font-size: 1rem }
+.plan .bg-primary, .plan .year { font-family: 'flamaregular'}
+#ficha_carrera .plan .bg-primary strong, #ficha_carrera .plan .year strong, #ficha_carrera .h4 strong { font-family: 'flamabold'; font-weight: normal !important}
+.plan .plan__title{
+    font-size: 1.8em;
+    color: #223668;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+.plan .plan__title strong{
+    font-weight: 700;
+}
+.plan .plan__years{
+    position: relative;
+    white-space: nowrap;
+ margin-bottom: 15px;
+	 padding-bottom: 0;    margin-right: -20px; margin-left: 4px
+}
+.plan .year{
+    display: inline-block;
+    /*width: 25%;*/
+      margin: 0 -4px 
+}
+.plan .year__content {
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+	padding-top: 15px
+}
+.plan .year__title{
+    display: block;
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px 0;
+    font-size: .8rem;
+    font-weight: 500;
+    color: #1F335D;
+    cursor: pointer;
+}
+.plan .year__title.year__title--1{
+    background-color: #f4e0d5;
+}
+.plan .year__title.year__title--2{
+    background-color: #eac1ad;
+}
+.plan .year__title.year__title--3{
+    background-color: #e0a180;
+}
+.plan .year__title.year__title--4{
+    background-color: #d68256;
+}
+.plan .year__title.year__title--5{
+    background-color: #d17242;
+}
+.plan .year__title.year__title--6{
+    background-color: #cc632c;
+}
+.plan .year__title:before{
+    content: "";
+    display: none;
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateX(-50%);
+}
+
+
+.plan .year__title.is-open:before{
+    display: block;
+}
+
+.plan .year__title.year__title--1:before{
+    border-top: 10px solid #f4e0d5;
+}
+.plan .year__title.year__title--2:before{
+    border-top: 10px solid #eac1ad;
+}
+.plan .year__title.year__title--3:before{
+    border-top: 10px solid #e0a180;
+}
+.plan .year__title.year__title--4:before{
+    border-top: 10px solid #d68256;
+}
+.plan .year__title.year__title--5:before{
+    border-top: 10px solid #d17242;
+}
+
+.plan .year__title.year__title--6:before{
+    border-top: 10px solid #cc632c;
+}
+.plan .year__number{
+    font-weight: 700;
+}
+  .plan[data-years='1'] .year{
+        width: 100%;
+    }	
+	.plan[data-years='2'] .year{
+        width: calc(50% - 10px);
+    }
+.plan[data-years='3'] .year{
+        width: calc(33.333333% - 4px);
+    }
+    .plan[data-years='4'] .year{
+        width: calc(25% - 4px);
+    }
+	 .plan[data-years='5'] .year{
+        width:calc(20% - 3px);
+    }
+	 .plan[data-years='6'] .year{
+        width: calc(16.666666% - 3px);
+    }
+.plan .annual-content{
+    width: 100%;
+    display: inline-block;
+}
+.plan .year__content{
+    display: inline-block;
+    vertical-align: top 
+}
+.plan .annual-content--obligatorios .year__content-list{
+    display: none;
+}
+.plan .annual-content--obligatorios .year__content-list.is-showing{
+    display: block;
+}
+.plan .year__content-item{
+    padding: 20px 20px 40px 20px;
+    color: #1F335D;
+    background-color: #A6DDDE;
+}
+.plan .year__content-title{
+    font-size: 1em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.plan .year__content-text{
+    font-size: 0.9em;
+	vertical-align: middle
+}
+.plan .year__item{
+    color: #223668;
+    text-align: center;
+    padding: 5px 8px;
+    margin-top: 5px;
+    font-size: .9em;
+    font-weight: 500; 
+}
+.plan .year__item:first-child{
+    margin-top: 0
+}
+.plan .year__content-list:last-child{
+margin-right: 0
+}
+.plan .year__content-list:first-child{
+     margin-left: 0 }
+.plan .annual-content--obligatorios .year__item{
+    background-color: #b7b4c9; position: relative }
+    .plan .year__ampliar{ padding: 0 11px  }
+    .plan .year__ampliar:before,
+.plan .year__ampliar:after {
+    background-color: #223668;   
+	content: "";
+    display: block;
+    width: 12px;
+    height: 3px;
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    margin-top: -1px;
+}
+.plan .year__ampliar:after {
+     -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+.plan .annual-content--core .year__item{
+    background-color: #f9f0de; position: relative
+}
+.plan .electives__item{
+    display: block;
+    margin-top: 10px;
+}
+.plan .year__content-item--intercambio{
+    display: none;
+}
+.plan .year__content-item.is-showing{
+    display: block;
+}
+.plan .electives__link{
+    display: block;
+    position: relative;
+    padding: 5px 27px 5px 7px;
+    color: #fff;
+    font-weight: 600;
+}
+.plan .electives__link:hover,
+.plan .electives__link:focus{
+    opacity: 0.5;
+}
+.plan .electives__item {  background-color: #243a6b}
+.plan .year__content-item--courses .electives__link:before,
+.plan .year__content-item--courses .electives__link:after{
+    background-color: #009FA1;
+}
+
+.plan .year__content-item--trayectorias .electives__link:before,
+.plan .year__content-item--trayectorias .electives__link:after{
+    background-color: #009FA1;
+}
+
+.plan .electives__link:before,
+.plan .electives__link:after{
+    content: "";
+    display: block;
+    width: 14px;
+    height: 3px;
+    position: absolute;
+    right: 7px;
+    top: 50%;
+    margin-top: -1px;
+}
+
+.plan .electives__link:after{
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.plan .year__link{
+    font-weight: 700;
+    position: relative;
+    text-transform: uppercase; background-color: #f5e3bd
+}
+
+
+.plan .annual-content--core .year__item.year__link {background-color: #f5e3bd}
+
+/*
+.plan .annual-content--core .year__content-list{
+    margin-top: 40px;
+}*/
+.plan .annual-content--core .year__content-list:first-child{
+    margin-top: 0;
+}
+
+.item-ingles {background-color: #b7b4c9; text-align: left !important; padding: 20px; margin: 10px 0; min-height: 70px}
+
+/* item minors sin link */
+.plan .electives__item.text-white-minors {
+     padding: 5px 12px;
+    color: #fff;
+    font-weight: 600;
+}
+.plan-cta .icon-holder {
+    display: inline-block
+}
+/* ajustes ficha carrera visualizacion moviles con 6 aÃ±os en horizontal INI */
+.plan[data-years='1'] .year,
+    .plan[data-years='2'] .year,
+    .plan[data-years='3'] .year,
+    .plan[data-years='4'] .year, 
+	.plan[data-years='5'] .year,
+	.plan[data-years='6'] .year{
+        margin-right: 0;
+    }
+	 .plan[data-years='1'] .year__content-list,
+	 .plan[data-years='2'] .year__content-list,
+	 .plan[data-years='3'] .year__content-list,
+	 .plan[data-years='4'] .year__content-list,
+	 .plan[data-years='5'] .year__content-list,
+	 .plan[data-years='6'] .year__content-list {
+			margin-right: 0;
+    }
+.textcore{
+    padding-bottom: 15px    
+}
+	.plan .year__content-list ul:last-child{
+    padding-right: 0
+}
+/* lightcase */
+#lightcase-nav a[class*='lightcase-icon-'].lightcase-icon-close {
+	top: 115px }
+	
+#trabajos_estudiantes .wrapper .ucu-carousel {
+    margin-right: 0;
+    margin-left: 0}
+.aviso_cursos { font-size: 1em; position: relative; z-index: 2 }
+.span_aviso {background-color: var(--color-blanco); padding: 0 12px }
+.hraviso_cursos {  width: 100%; height: 1px; background-color: #c9ccd3; position: absolute; top: 2px; vertical-align: middle; border: 0 }
+
+.hraviso_cursos2 {  width: 100%; height: 1px; background-color: #c9ccd3; position: absolute; top: 15px; vertical-align: middle; border: 0 }
+
+
+ 
+/* CONCURSO DE BECAS INI */
+
+.intro .introbecas.overlay {
+    opacity: 0.6 !important
+}
+
+#postulaciones1 .tit_postulaciones strong { font-family: 'flamabold', sans-serif}
+
+ .tit_postulaciones2 strong  { font-weight: 900}
+
+#postulaciones2 .tit_postulaciones2 { font-family: 'trashhand', sans-serif;font-weight: 500;
+    font-size: 6em}
+#postulaciones2 .fill-btn.bg-naranja {
+    border: 2px solid #ea5b0c;
+    border-radius: 0;
+	background: #ea5b0c; color: var(--color-blanco); 
+}
+#postulaciones2 .fill-btn.bg-naranja:hover, #postulaciones2 .fill-btn.bg-naranja:focus {
+    border-radius: 0;
+	background: transparent; color: #ea5b0c;   box-shadow: inset 0px 0px 0px 1px #ea5b0c;
+}
+#postulaciones1 .plan-cta strong { font-family: 'flamabold', sans-serif}
+#postulaciones1 .plan-cta .h6 { color: var(--color-blanco); font-size: 1.8em; font-family: 'flamalight', sans-serif; padding: 0 0 0 20px }
+#postulaciones1 .plan-cta { border-radius: 5px; background-color: #243a6b; padding: 10px 5px 10px 20px; text-align: left }
+#postulaciones1 .plan-cta .icon-holder .icon { margin-left:-40px }
+#postulaciones1 .h3 {  line-height: 1em; font-weight: 800}
+#postulaciones1 .col-sm-12 {  padding: 0}
+#postulaciones1 .plan-cta .icon-holder { width: 21.88%; display: inline;  }
+#tipos_becas .h5 strong{ font-family: var(--flamabold) }
+#tipos_becas .h6 { font-family: var(--fllamaextrabold); color: var(--color-blanco) }
+#tipos_becas .col-sm-3, #inscripcion_becas .col-sm-3, #descuentos .col-sm-2 {  position: relative }
+#tipos_becas .accordion-btn:after {
+    position: absolute;
+    bottom: 15px;    top: auto;
+    margin-left: 0; 
+    border: solid var(--color-blanco); border-width: 0 2px 2px 0 }
+
+#tipos_becas .accordion-content p.text { font-size: 1.6em; padding-top: 0 }
+#tipos_becas .col-sm-3:nth-of-type(4n+1) {
+	background: var(--color-postgrados2) }
+/*#tipos_becas .col-sm-3:nth-of-type(4n+1) .accordion-content {
+	background: #c8b5d8 }
+*/
+#tipos_becas .col-sm-3:nth-of-type(4n+2){
+	background: var(--color-ucucaf) }
+/*#tipos_becas .col-sm-3:nth-of-type(4n+2) .accordion-content {
+	background: #87d7d8 }
+*/
+#tipos_becas .col-sm-3:nth-of-type(4n+3){
+	background: var(--color-naranja)  }
+/*#tipos_becas .col-sm-3:nth-of-type(4n+3) .accordion-content {
+	background: #da926c }*/
+
+#tipos_becas .col-sm-3:nth-of-type(4n+4){
+background: #f7c600  }
+/*#tipos_becas .col-sm-3:nth-of-type(4n+4) .accordion-content {
+	background: #fbdd7f }*/
+.btnbig { min-width: 200px; font-size: 2.3em; padding: 12px 30px; border-radius: 0 }
+
+ .fill-btn.btnbig:hover,
+    .fill-btn.btnbig:focus{
+        background-color: rgba(69, 184, 187, 0);
+        color: var(--color-ucucaf); opacity: 1;
+		        box-shadow: inset 0px 0px 0px 2px var(--color-ucucaf);
+    }
+#tipos_becas p.textoch  { font-size: 1.4em}
+#postulaciones2 p { font-size: 2.3em }
+#postulaciones2 .h3 {
+    display: inline-flex;
+    align-items: center;
+}
+#postulaciones2 .h3 .text-primary-comp { font-size: 2em; font-family: 'flamabold', sans-serif }
+#postulaciones2 .h3 .text-primary { font-family: 'flamaregular', sans-serif; font-weight: normal }
+#postulaciones2 .prox_edicion .text-verde-carreras, #postulaciones2 .prox_edicion .text-primary-comp { font-family: 'flamabold', sans-serif }
+#ejercicios_orientadores .col-sm-6:nth-child(4n+1) .ejercicios-btn { min-width: 180px; padding: 7px 17px; border-radius: 0;background-color: rgba(234, 91, 12, 0);  color: #ea5b0c; box-shadow: inset 0px 0px 0px 1px #ea5b0c;  }
+#ejercicios_orientadores .col-sm-6:nth-child(4n+1) .ejercicios-btn:hover { min-width: 180px; padding: 7px 17px; border-radius: 0;background-color: rgba(234, 91, 12, 1);  color: var(--color-blanco); box-shadow: inset 0px 0px 0px 1px #ea5b0c;  }
+#ejercicios_orientadores .col-sm-6:nth-child(4n+2) .ejercicios-btn { min-width: 180px; padding: 7px 17px; border-radius: 0;background-color: rgba(234, 91, 12, 0);  color: #75b7ba;  box-shadow: inset 0px 0px 0px 1px #75b7ba; }
+#ejercicios_orientadores .col-sm-6:nth-child(4n+2) .ejercicios-btn:hover { min-width: 180px; padding: 7px 17px; border-radius: 0;background-color: rgba(117, 183, 186, 1);  color: var(--color-blanco);  box-shadow: inset 0px 0px 0px 1px #75b7ba; }
+#ejercicios_orientadores p.text { font-size: 1.4em}
+#becas_pie .wrapper { display: flex;  
+    align-items: center}
+
+
+
+/* ADMISIONES Y BECAS INI */
+#admisionesybecas_intro.intro .h1 u, #actividades_intro.intro .h1 u {
+    border-bottom: 6px solid #e7c200;
+}
+#admisionesybecas_intro.intro .overlay, #actividades_intro.intro .overlay, #concursobecas_intro.intro .overlay {
+    opacity: 0.7;
+}
+#inscripcion_becas .col-sm-3:nth-of-type(4n+1) {background: var(--color-blanco) }
+#inscripcion_becas .col-sm-3:nth-of-type(4n+2) {background: #9b83bc }
+#inscripcion_becas .col-sm-3:nth-of-type(4n+2) .accordion-content {
+background: #b69bce }
+
+#inscripcion_becas .col-sm-3:nth-of-type(4n+3) {background: #00b2b2 }
+#inscripcion_becas .col-sm-3:nth-of-type(4n+3) .accordion-content {
+background: #51c4c1 }
+
+#inscripcion_becas .col-sm-3:nth-of-type(4n+4) {background: #dc6114 }
+#inscripcion_becas .col-sm-3:nth-of-type(4n+4) .accordion-content {
+background: #e38150 }
+
+#inscripcion_becas .accordion-btn:after {
+    width: 0.48em;
+    height: 0.48em;
+    min-width: 12px;
+    min-height: 12px;		
+    position: absolute;
+    bottom: auto;    top: 32px; right: 30px;
+    margin-left: 0; 
+    border: solid var(--color-blanco); border-width: 0 3px 3px 0 }
+#inscripcion_becas .accordion-content p.text { font-size: 1.6em }
+#inscripcion_becas .h3, #inscripcion_becas .h4 strong, #descuentos .h4 {font-family: 'flamabold', sans-serif }
+#inscripcion_becas .solicitaentrevista { border: 1px solid #243a6b; padding: 8px 10px }
+#inscripcion_becas .solicitaentrevista:hover { background: #243a6b; color: var(--color-blanco); border: 1px solid #243a6b }
+#inscripcion_becas .h4 { margin-top: 0; padding: 0 0 20px 0 }
+.bg-fucsia {background-color: #b84998} /* fondo concurso de becas */
+.text-fucsia {color: #b84998}
+#admisiones_concursobecas .h5, #admisiones_concursobecas .h4, #admisiones_concursobecas .h3 { color: var(--color-blanco); margin: 15px 0 10px }
+#admisiones_concursobecas .h3 { margin: 20px 0 10px }
+#admisiones_concursobecas .botconcurso {max-width: 80%}
+#admisiones_concursobecas .btnconocemas { background: #243a6b; padding: 9px 29px; color: var(--color-blanco); border: 2px solid #243a6b;font-size: 1.9em; }
+#admisiones_concursobecas .btnconocemas:hover { border: 2px solid #243a6b; color: var(--color-blanco); background: #b84998 }
+#admisiones_concursobecas .postulaciones { border: 2px solid #59c0c1; padding: 8px 25px; position: relative; margin: 70px auto 0 auto; width: 75% }
+#admisiones_concursobecas .postulaciones_icono { position: absolute; margin: -50px auto; width: 60px; left: calc(50% - 30px) }
+#admisiones_concursobecas .postulaciones_icono img { width: 60px }
+#admisiones_concursobecas .h3, #suma_innovacion .h4 strong { font-weight: 800 }
+#admisiones_concursobecas .col-sm-12 { margin-top: 50px }
+#admisiones_concursobecas .h3 { margin-top: -10px }
+/*concurso de becas fin */
+
+
+/*descuentos  */
+#descuentos .accordion-btn:after 
+{position: absolute;
+    bottom: 15px;
+    top: auto;
+    left: calc(50% - 8px) }
+#descuentos .col-sm-2 .accordion-content { padding: 20px 20px 50px }
+#descuentos .col-sm-2:nth-of-type(5n+1) .titulo_descuento, #descuentos .col-sm-2:nth-of-type(5n+1) .porcentaje {color: var(--color-postgrados2) }
+#descuentos .col-sm-2:nth-of-type(5n+1) .accordion-content { background: var(--color-postgrados2)}
+#descuentos .col-sm-2:nth-of-type(5n+2) .titulo_descuento, #descuentos .col-sm-2:nth-of-type(5n+2) .porcentaje {color: var(--color-ucucaf)  }
+#descuentos .col-sm-2:nth-of-type(5n+2) .accordion-content { background: var(--color-ucucaf) }
+#descuentos .col-sm-2:nth-of-type(5n+3) .titulo_descuento, #descuentos .col-sm-2:nth-of-type(5n+3) .porcentaje {color: #ea5b0c   }
+#descuentos .col-sm-2:nth-of-type(5n+3) .accordion-content { background: #ea5b0c }
+#descuentos .col-sm-2:nth-of-type(5n+4) .titulo_descuento, #descuentos .col-sm-2:nth-of-type(5n+4) .porcentaje {color: #f7c600    }
+#descuentos .col-sm-2:nth-of-type(5n+4) .accordion-content { background: #f7c600  }
+#descuentos .col-sm-2:nth-of-type(5n+5) .titulo_descuento, #descuentos .col-sm-2:nth-of-type(5n+5) .porcentaje {color: #f03771 }
+#descuentos .col-sm-2:nth-of-type(5n+5) .accordion-content { background: #f03771 }
+#descuentos .col-sm-2 { margin-bottom: 20px }
+#descuentos .col-sm-2 .backdescuento { display: flex;align-items: center; position: relative}
+#descuentos .col-sm-2 .notas_descuento { position: absolute; top: 15px ; right: 15px; font-size: 1.5em; letter-spacing: .3em }
+#descuentos .col-sm-2 .small { font-size: .6em}
+#descuentos .col-sm-2 p.text:first-of-type { padding-right: 1px; width: 60%;line-height: 1.1em; }
+#descuentos .col-sm-2 p.text_descuento{ font-size: 1.4em; text-align: center; margin-top: 10px; line-height: 1em }
+#descuentos .col-sm-2 p.text_descuento strong { font-size: 1.9em;line-height: 1em }
+#descuentos p.small { font-size: 1.4em }
+#descuentos .titulo_descuento{ font-size: 1.6em; font-weight: 600 }
+#descuentos .col-sm-2.tresdesc .bg-descuentos { background-color: var(--celeste-ucu009) }
+#descuentos .text-descuentos2 { color: var(--celeste-ucu009) }
+#descuentos .col-sm-2.tresdesc .accordion-content { background: var(--text-azul) !important }
+#descuentos .col-sm-2.tresdesc .porcentaje {color: var(--color-blanco) }
+#descuentos .col-sm-2.tresdesc .titulo_descuento {
+    color: var(--text-azul) }
+ #descuentos .col-sm-2.tresdesc .porcentaje {
+    color: var(--color-blanco);
+}
+
+#desafios .masinfo_desafios { background: #48afb0; padding: 9px 29px; color: #243a6b; border: 2px solid #48afb0 }
+#desafios .masinfo_desafios:hover { border: 2px solid #48afb0; color: #243a6b; background: transparent }
+
+/* Estudiar en ucu ini */
+#carrera_diferenciales .owl-carousel .owl-item:nth-child(3n+1){ color: #48afb0 }
+#carrera_diferenciales .owl-carousel .owl-item:nth-child(3n+1) .svg {filter: invert(70%) sepia(6%) saturate(3372%) hue-rotate(132deg) brightness(86%) contrast(89%) }
+
+#carrera_diferenciales .owl-carousel .owl-item:nth-child(3n+2){ color: #ea5b0c }
+#carrera_diferenciales .owl-carousel .owl-item:nth-child(3n+2) .svg { filter: invert(46%) sepia(36%) saturate(7229%) hue-rotate(2deg) brightness(97%) contrast(91%)  }
+
+#carrera_diferenciales .owl-carousel .owl-item:nth-child(3n+3){ color: #9b83bc }
+#carrera_diferenciales .owl-carousel .owl-item:nth-child(3n+3) .svg { filter: invert(58%) sepia(7%) saturate(1887%) hue-rotate(223deg) brightness(95%) contrast(89%)  }
+
+.bg-intercambio { background: #94d7d0 }
+#intercambio strong{ font-weight: 800}
+
+	#graduados_ucu .h4, #graduados_ucu .h5 { color: var(--color-blanco)}
+	#graduados_ucu img { margin-bottom: -1px }
+	
+	#graduados_ucu .graduados_ucu_li li { color: var(--color-blanco); font-size: 1.8em; margin-bottom: 20px }
+	#graduados_ucu .graduados_ucu_li li:before {font-weight: 800; color: #243a6b; content: ">"; padding: 5px 8px 5px 12px }
+	#graduados_ucu .graduados_ucu_li li:nth-child(4n+1)::before {background-color: #48afb0}
+	#graduados_ucu .graduados_ucu_li li:nth-child(4n+2)::before {background-color: #ea5b0c }
+	#graduados_ucu .graduados_ucu_li li:nth-child(4n+3)::before {background-color: #f7c600}
+	#graduados_ucu .graduados_ucu_li li:nth-child(4n+4)::before {background-color: #57a7dc }
+	#graduados_ucu .graduados_ucu_li li:nth-child(4n+1) span { background-color: #48afb0; padding: 5px 12px 5px 0  }
+	#graduados_ucu .graduados_ucu_li li:nth-child(4n+2) span { background-color: #ea5b0c; padding: 5px 12px 5px 0 }
+	#graduados_ucu .graduados_ucu_li li:nth-child(4n+3) span { background-color: #f7c600; padding: 5px 12px 5px 0}
+	#graduados_ucu .graduados_ucu_li li:nth-child(4n+4) span { background-color: #57a7dc; padding: 5px 12px 5px 0 }
+/* Estudiar en ucu fin */
+
+/* Minors ini */
+.intro.introminors .h1 {  color: var(--color-blanco);line-height: 1; margin-bottom: 19px; font-weight: normal }
+.intro.introminors .h1 strong { font-weight: 800}
+.intro.introminors .h1 u {
+color:var(--color-blanco);  padding-top: 3px;
+  border-bottom: 6px solid #ff6600 }
+	.intro.introminors .picturegde, .intro .overlay {
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: 0;
+	}
+#minors_textos .h3 strong {font-family: 'flamabold', sans-serif }
+#minors_textos .num_minors {margin-top: 30px}
+#minors_textos .num_minors .h3 strong {font-size: 2em}
+#minors_textos .num_minors .h4 strong {font-weight: 800 }
+
+#minors_razones .razones strong {font-size: 1.1em; font-weight: 800 }
+#minors_razones .border-primary-comp{border: 2px solid var(--color-postgrados2) }
+#minors_razones .border-verde-carreras {border: 2px solid var(--color-ucucaf) }
+#minors_razones .border-naranja {border: 2px solid #ea5b0c }
+#minors_razones .border-amarillo {border: 2px solid #f7c600 }
+#minors_razones .razones { margin-bottom: 30px}
+#minors_razones .h4 {font-weight: 500 }
+#minors_razones .h4 strong {font-weight: 900 }
+#minors_videos .h5 { color: var(--color-blanco)}
+#minors_videos .h6 { font-size: 1.8em}	
+
+#despliegue_minor .objetivos .h5 { color: var(--color-blanco) }
+#mostrar_cursos .h5 { color: var(--color-ucucaf); padding: 30px 0 }
+
+#despliegue_minor .objetivos .bg-verde-carreras { 
+	height: 86px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around }
+
+
+#despliegue_minor .accordion-btn 
+{ position: relative}
+
+#despliegue_minor .accordion-btn:after {
+    position: absolute;
+    top: 33px;width: 12px; height: 12px;
+    left: calc(100% - 40px) }
+
+		#despliegue_minor .tit_referentes { display: flex; align-items: center; color: #243a6b !important; padding-top: 30px}
+		#despliegue_minor .tit_cursosdelminor {  font-family: 'flamaregular'  }
+		#despliegue_minor .tit_cursosdelminor strong {font-family: 'flamabold'}
+
+
+ 
+#agrupacion_minors .ficha_carrera .h5 {font-weight: 300}
+	
+	
+.style-color-fondo-1 {
+    background-color: #db6e00;
+}
+.style-color-fondo-2 {
+    background-color: #B03F81;
+}
+.style-color-fondo-3 {
+    background-color: #937eae;
+}
+.style-color-fondo-4 {
+    background-color: #0096D1;
+}
+.style-color-fondo-5 {
+    background-color: #80AA2C;
+}
+
+	
+	/* minors despliegue */
+	#despliegue_minor .bg-minor {
+    background-color: rgba(14, 175, 177, 1);
+}
+
+
+#page-content .h5 {color: var(--color-ucucaf) }
+
+#page-content .accordion-btn:after {
+    border-color: #fff;
+	position: absolute;
+    bottom: 12px;
+    top: auto;
+    left: calc(50% - 8px);
+}
+
+#page-content .border-b {
+    border-bottom: 1px solid #243a6b;
+}
+
+#page-content.todos_los_cursos li {background-color: #b7b4c9;
+	color: #223668;
+    text-align: center;
+    padding: 6px 10px ;font-size: 1.6em; margin: 0 15px 15px 0; }
+
+
+#page-content.todos_los_cursos li .small {font-size: .8em }
+#despliegue_minor #docentes .news-relation-titular {background-color: var(--color-ucucaf) }
+.cursos-minors{ padding-bottom: 30px }
+.text_cursosdelminor .small, .cursos-minors .small{   font-size: 0.8em	}
+.cursos-minors .bg-primary-lighter{   background-color: #c8cdd9	}
+.bloque_separa_cursosdelminor {  font-weight: 900; padding: 2px	}
+
+
+	#despliegue_minor .intro .picture:not([class*="img-"]) {
+		filter: none }
+.pagination {
+    display: -ms-flexbox;
+    display: inline-flex;
+    list-style: none;
+    border-radius: .25rem;
+}
+a.page-link {
+    position: relative;
+    display: block;
+    padding: .5rem .75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #009ce6;
+    background-color: #fff;
+    border: 1px solid #dee2e6; font-size: 1.6em
+}
+li.page-item.active {font-weight: 900 }
+
+/* color unico minors docentes MINORS */
+#despliegue_minor #docentes .owl-carousel .owl-item:nth-child(4n+1),
+#despliegue_minor #docentes .owl-carousel .owl-item:nth-child(4n+2),
+#despliegue_minor #docentes .owl-carousel .owl-item:nth-child(4n+3),
+#despliegue_minor #docentes .owl-carousel .owl-item:nth-child(4n+4){
+background-color: var(--color-ucucaf) !important }
+
+/*  Agregado owl Carousel Dots   */
+.owl-theme .owl-dots,.owl-theme .owl-nav{text-align:center;-webkit-tap-highlight-color:transparent}.owl-theme .owl-nav{margin-top:10px}.owl-theme .owl-nav [class*=owl-]{color:#FFF;font-size:14px;margin:5px;padding:4px 7px;background:#D6D6D6;display:inline-block;cursor:pointer;border-radius:3px}.owl-theme .owl-nav [class*=owl-]:hover{background:#869791;color:#FFF;text-decoration:none}.owl-theme .owl-nav .disabled{opacity:.5;cursor:default}.owl-theme .owl-nav.disabled+.owl-dots{margin-top:10px}.owl-theme .owl-dots .owl-dot{display:inline-block;zoom:1}.owl-theme .owl-dots .owl-dot span{width:10px;height:10px;margin:5px 7px;background:#D6D6D6;display:block;-webkit-backface-visibility:visible;transition:opacity .2s ease;border-radius:30px}.owl-theme .owl-dots .owl-dot.active span,.owl-theme .owl-dots .owl-dot:hover span{background:#869791}
+
+/*  boton ver todas las carreras   */
+.buscador_carrerashome .fill-btn.vertodaslasc { background-color: transparent; box-shadow: inset 0px 0px 0px 2px #ea5b0c; padding: 10px 12px; text-align: center; color: #173363 !important; border-radius: 0; margin-top: 15px !important }
+.buscador_carrerashome .fill-btn.vertodaslasc:hover, .buscador_carrerashome .fill-btn.vertodaslasc:focus
+ { background-color: #ea5b0c; color: var(--color-blanco) !important; box-shadow: inset 0px 0px 0px 2px #ea5b0c }
+.buscador_carrerashome .fill-btn.vertodaslasc strong { font-weight: 800 }
+.buscador_carrerashome .h2 {
+    text-align: center; margin-left: auto
+}
+.buscador_carrerashome .h2:after {
+    content: none
+}
+.buscador_carrerashome input#busqueda {
+    color: var(--color-blanco) !important}
+	.buscador_carrerashome input::-webkit-input-placeholder{
+    font-style: italic;
+    color: #6ae4f0;
+}
+.buscador_carrerashome input::-moz-placeholder{
+    font-style: italic;
+	color:rgb(106,228,240)
+}
+/* formulario  */
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+      display: none;
+  }
+
+  100% {
+      opacity: 1;
+      display: inline-block
+  }
+}
+
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        display: inline-block;
+    }
+
+    100% {
+        opacity: 0;
+        display: none }
+}
+.styled-form.cursosporarea.input-holder .select select.placeholder {
+    color: rgba(23, 51, 99, 1);
+}
+.styled-form.cursosporarea .input-holder .label {
+    color: #173363;
+}
+.styled-form .fade-in {
+    animation: fadeIn .5s ease-in-out forwards;
+}
+ 
+.styled-form .fade-out {
+    animation: fadeOut .5s ease-in-out forwards;
+}
+
+
+.styled-form .error_msg.fade-in {
+    animation: fadeIn .5s ease-in-out forwards;
+}
+
+.styled-form .error_msg.fade-out {
+    animation: fadeOut .5s ease-in-out forwards;
+}
+.styled-form .error_msg {
+    border: 0;
+    color: rgba(241, 100, 100, 1);
+    padding: 0;
+    font-size: 1.6em;
+    margin-top: 5px;
+    font-weight: var(--w600);
+ }
+
+/* botones Mas info y Agenda tu entrevista  */
+ 	.btn-piepagina{ 
+		position: fixed; 
+		bottom: 0; width: 100%;
+		z-index: 9999; text-align: center; border-top: 2px solid var(--text-azul);box-shadow: 0px -12px 18px -2px rgba(51, 51, 51, 0.15) }
+	.btn-piepagina img { 
+ padding: 10px ; max-width: 80%; 
+		max-width: 240px}
+/* boton descripcion opcional  */
+.descripcion-extra { font-size: 1.6em ;
+	line-height: 1 }
+.descripcion-extra h4 {font-size: 1.3em;
+    font-family: 'flamaregular'
+}
+.descripcion-extra h4 strong {
+    font-family: 'flamabold';
+}
+.descripcion-extra small { font-size: .8em }
+
+
+/* INI MEDIA QUERYS*/
+@media (min-width: 980px){
+	.salto_linea { display: block }
+		.saltomovil { display: inline }
+
+	
+		#accesos .features-list {
+		max-height: 210px; 
+		overflow: hidden
+}
+	#testimonios .intronotas .news-relation-titular {
+    margin: 0 40px;
+    display: flex;
+    align-items: center;
+}
+	#testimonios.holder { align-items: center;  display: flex; padding: 0 0 0 0 }
+	.testimonios_carreras	 .news-relation-container {
+    display: flex;
+    vertical-align: middle;
+}
+	.testimonios_carreras { /*background-color: #a189bd !important;*/ padding: 22px 0 }
+	#testimonios .ucu-carousel .owl-nav div {  top: 50% }
+	.testimonios_carreras .h6 {
+    font-size: 2.2em; margin: 0 40px }
+	.intro .titular { width: 500px; margin: 0 auto }
+	.intro .titular:after {
+			width: 80px; margin: 15px auto }	
+	.testimonios_carreras {  background-position: 140px }
+	  .wrapper .video_slide .ucu-carousel .owl-nav .owl-prev {
+		left: 0  !important }
+	   
+    /* Simple menu */
+
+    #side-nav .simple-menu .trigger:before,
+    #side-nav .simple-menu .simple-menu .trigger:before{
+        -webkit-transition:
+            border-color 200ms ease-out,
+            -webkit-transform 200ms ease-out;
+        -o-transition:
+            border-color 200ms ease-out,
+            -o-transform 200ms ease-out;
+        transition:
+            border-color 200ms ease-out,
+            transform 200ms ease-out;
+    }
+    #side-nav .simple-menu .trigger:hover:before,
+    #side-nav .simple-menu .trigger:focus:before,
+    #side-nav .simple-menu .simple-menu .trigger:hover:before,
+    #side-nav .simple-menu .simple-menu .trigger:focus:before{
+        border-color: var(--color-ucucaf) !important;
+    }
+    #side-nav .simple-menu .submenu .list > .item > a:hover,
+    #side-nav .simple-menu .submenu .list > .item > a:focus{
+        color: var(--color-blanco) !important; opacity: .8
+    }
+	
+    /* Close btn */
+
+    #side-nav .close-btn:before,
+    #side-nav .close-btn:after{
+        -webkit-transition: background-color 200ms ease-out;
+        -o-transition: background-color 200ms ease-out;
+        transition: background-color 200ms ease-out;
+    }
+    #side-nav .close-btn:hover:before,
+    #side-nav .close-btn:hover:after,
+    #side-nav .close-btn:focus:before,
+    #side-nav .close-btn:focus:after{
+        background-color: var(--color-ucucaf);
+    }
+	/* centros */
+	#noticias.wrapper .blocks-carousel .owl-nav .owl-next {  right: -20px}
+	#noticias.wrapper .blocks-carousel .owl-nav .owl-prev {  left: -20px }
+	#noticias p {margin-top: 15px; font-size: 1.6em}
+	#noticias .h6 {   font-size: 2em}
+
+		.bg-primary-sec-carreras { background-color:rgba(219, 109, 0, 0.7); }/*naranja*/
+
+	#iconos_carreras_abajo .item { padding: 40px 0 20px 0; min-height: 138px }
+	#iconos_carreras .col-xs-4, #iconos_carreras_abajo .item { padding: 40px 0 }
+	#iconos_carreras .item img { height: 60px}
+	#iconos_carreras_abajo .item img { height: 120px; margin-bottom: 10px}
+		/* buscador carreras */
+.buscador_carreras .h2 { text-align: left }
+	.buscador_carreras .h2 {
+			font-size: 4em;
+			line-height: 0.9;
+			font-weight: 300 !important ;    margin-left: 50px 
+			}
+	
+	.buscador_carreras .h2:after { width: 100px; margin: 10px 0 0 0 }
+	.buscador_carreras .col-busqueda { padding-left: 30px }
+
+/* ficha carrera */
+	.ficha_carrera {min-height: 250px }
+			.ficha_carrera img  { min-height:250px }
+			.ficha_carrera .h5 {  font-size: 2.1em }
+			
+			.ficha_carrera p.duracion { min-height: 30px }
+			.ficha_carrera p.quecampus { min-height: 50px }
+				.campus {margin-bottom:20px }
+		/************************ FICHA CARRERA INTERNA  ************************/
+.ficha_agenda_homecarreras .ucu-carousel { background-color: rgba(23, 51, 99, 0.65); min-height: 245px }
+	.ficha_agenda_homecarreras {
+		display: block;position: absolute;
+		right: 50%;
+		top: 52%;
+		width: 270px; 
+		height: 245px; 
+		z-index: 50;
+		margin-right: -442px
+	}
+		#ficha_carrera .intro.intro-xxl.scaled{ min-height: 780px; padding-top: 120px }
+		.ficha_agenda_homecarreras .ico_fichaagenda{ margin-left: 28px }
+	.ficha_agenda_homecarreras .ucu-carousel .h5 {
+    margin-right: 0;
+}
+.ficha_agenda_homecarreras .ucu-carousel {
+    background-color: rgba(23, 51, 99, 1)}
+	.ficha_agenda_homecarreras .ucu-carousel .h5 {
+ margin-left: -31px;
+}
+	#carrera_videos .testimonio_video:before {
+    	top: 40px 	
+}
+	#carrera_videos .testimonio_video:after {
+		bottom: 140px }
+#carrera_videos .holder, #graduados_ucu .holder, #minors_videos .holder
+{
+	display: flex;
+    align-items: center }
+	#carrera_videos .h5 {  font-size: 2em } 
+	
+	/* docentes */
+		#docentes .news-relation-titular{
+		flex: 1 1 50%;
+		padding: 20px; margin: 0
+}
+	#docentes .ucu-carousel figure {
+        min-height: 302px;
+    }
+	#docentes .h6 {   font-size: 2em}
+		#docentes p {   font-size: 1.6em}
+	#docentes .news-relation-container figure {
+    flex: 1 1 35% }
+	
+	/*PERFIL GRADUADO*/
+	#perfil_graduado .ucu-carousel .holder{ min-height: 150px; overflow: hidden}
+		.margenizq { padding-left:65px}
+	#iconos_carreras_abajo .row {  margin: 0 0 0 0}
+
+	/*formulario pie de pagina */
+	#formalpie .styled-form .input-holder .input { font-size: 1.6em }
+		#formalpie .styled-form .submit {  margin-top: 0 !important}
+		#formalpie .titular { display: block;  padding-left: 40px}
+		.titular_movil { display:none }
+		#formalpie .h2 {margin-top: 0 }
+		#formalpie .formcarrera_pie  {max-width: 590px }
+	
+	
+    /* ************** HOME ************** */
+    #centros .news-relation-titular{
+        margin: 30px 0 0 0;
+    }
+	#centros .h3.font-bold.decoration a:hover span,
+    #centros .h3.font-bold.decoration a:focus span,
+    #centros .infomas:hover span,
+    #centros .infomas:focus span,
+    .intronotas-news .infomas:focus span,
+    .intronotas-news .infomas:hover span{
+        color: #009DA0 !important;
+        -webkit-transition: color 200ms ease-out;
+        -moz-transition: color 200ms ease-out;
+        -o-transition: color 200ms ease-out;
+        transition: color 200ms ease-out;
+    }
+    #centros figure{
+        min-height: 500px;
+    }
+	#noticias figure{ min-height: 272px}
+	#noticias .news-relation-texto {   max-height: 237px; overflow: hidden }
+	#noticias .news-relation-container figure {
+    flex: 1 1 30% }
+	
+		
+
+    /* ************** CONTENIDO ************** */
+
+    #sidebar-news.is-fixed{
+        position: fixed;
+        top: 100px;
+    }
+
+    #sidebar-news #tns1-iw{
+        padding: 0;
+    }
+
+
+    .shares .iconos li a{
+        -webkit-transition: opacity 200ms ease-out;
+        -moz-transition: opacity 200ms ease-out;
+        -o-transition: opacity 200ms ease-out;
+        transition: opacity 200ms ease-out;
+    }
+    .shares .iconos li a:hover,
+    .shares .iconos li a:focus{
+        opacity: .6;
+        -webkit-transition: opacity 200ms ease-out;
+        -moz-transition: opacity 200ms ease-out;
+        -o-transition: opacity 200ms ease-out;
+        transition: opacity 200ms ease-out;
+    }
+
+    #sidebar-news .infomas:focus span,
+    #sidebar-news .infomas:hover span{
+        color: #009DA0 !important;
+        -webkit-transition: color 200ms ease-out;
+        -moz-transition: color 200ms ease-out;
+        -o-transition: color 200ms ease-out;
+        transition: color 200ms ease-out;
+    }
+
+    /* ************* CAROUSELS ************** */
+    .wrapper .ucu-carousel {
+        margin-right: 0;
+        margin-left: 0;
+        overflow: visible;
+    }
+	.ucu-carousel .owl-nav div {
+    width: 38px;
+    height: 38px }
+    .wrapper .ucu-carousel .owl-nav .owl-next {
+        right: -20px;
+    }
+    .wrapper .ucu-carousel .owl-nav .owl-prev {
+        left: -20px;
+    }
+
+    /* TINY SLIDER */
+    .vertical-carousel .tns-controls button[data-controls="prev"]{
+        position: absolute;
+        left: 50%;
+        -webkit-transform: translate(-50%,-50%) rotate(90deg);
+        -ms-transform: translate(-50%,-50%) rotate(90deg);
+        -o-transform: translate(-50%,-50%) rotate(90deg);
+        transform: translate(-50%,-50%) rotate(90deg);
+        top: 0;
+    }
+    .vertical-carousel .tns-controls button[data-controls="next"]{
+        position: absolute;
+        left: 50%;
+        top: auto;
+        bottom: -15px;
+        -webkit-transform: translate(-50%, -50%) rotate(90deg);
+        -ms-transform: translate(-50%, -50%) rotate(90deg);
+        -o-transform: translate(-50%, -50%) rotate(90deg);
+        transform: translate(-50%, -50%) rotate(90deg);
+
+    }
+
+    /* ************** FOOTER ************** */
+    #footer{
+        position: relative;
+        z-index: 10;
+    }
+	
+	/* galeria lightbox*/
+    .galeria-lightbox-link {
+        width: 33.333333%;
+    }
+    .galeria-lightbox-link:hover {
+        opacity: .6;
+        -webkit-transition: opacity 300ms ease-out;
+        -moz-transition: opacity 300ms ease-out;
+
+        -o-transition: opacity 300ms ease-out;
+        transition: opacity 300ms ease-out;
+    }
+	/*popup */
+    .popup > .holder.campus-popup .close-btn:hover span,
+    .popup > .holder.campus-popup .close-btn:focus span,
+    .popup > .holder.campus-popup .close-btn:hover span:before,
+    .popup > .holder.campus-popup .close-btn:focus span:before {
+        background-color: #57a7dc;
+    }
+		/*plan de estudios  */
+		.plan .year__item {
+  	padding: auto;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+	 justify-content: center }
+	.plan .year__item.item-ingles {
+flex-direction: column;
+	 align-items:flex-start }	
+    .plan .year__title{
+        cursor: initial;
+    }
+    .plan .year__title.is-open:before{
+        display: none;
+    }
+		.texto_complementario_cursos {display: none }
+	.cab_electivos, .cab_core{    display: flex;
+    align-items: center;
+    justify-content: center }
+    .plan .annual-content--obligatorios .year__content{
+        margin: 0;
+    }
+	.plan .annual-content--core .year__content-list {
+    width: 33.333333% !important;
+}
+	.plan .year__content-item:last-child{
+    margin-bottom: 20px;
+}
+    .plan .annual-content--core .year__content{
+        margin: 0;
+	}
+    .plan .annual-content--obligatorios .year__content-list{
+        display: inline-block;
+/*        width: 25%;
+*/		vertical-align: top;
+    }
+    .plan .annual-content--core .year__content-list{
+        display: inline-block;
+        width: 33.333333%;
+        vertical-align: top;
+    }
+    .plan .year__content-item{
+        display: block;
+        margin-top: 10px;
+    }
+    .plan .year__content-item:first-child{
+        margin-top: 0;
+    }
+   	    .plan .year__content-title {
+        display: inline-block;
+        margin-right: 5px;
+    }
+	.plan .year__content-title:last-child {
+              margin-right: 0
+    }
+    .plan .year__content-text {
+        display: inline-block;
+    }
+    .plan .electives__list{
+        margin: 0 -3px;
+    }
+    .plan .electives__item {
+        display: inline-block;
+        margin-left: 0  
+    }
+ .plan .annual-content .annual-content--electivos {
+    width: calc(100% - 4px) }
+	.plan .annual-content--core .year__content-list{
+        margin-top: 0;
+    }
+.plan-cta {
+    padding: 24px 30px 26px;
+		padding-left: 10.88%
+}
+.plan-cta .icon-holder .icon {
+    display: inline-block;
+    max-width: 45%;
+    left: 50% }
+.plan-cta .icon-holder {
+    width: 17.88% }
+    .plan .plan__title{
+        position: absolute;
+        font-size: 1.8em;
+        line-height: 1.1;
+    }
+    .plan .plan__title strong{
+        display: block;
+    }
+	 .plan[data-years='1'] .year__content-list{
+        width: 100%;
+    }
+	 .plan[data-years='2'] .year__content-list{
+        width: calc(50% - 4px);
+    }
+	  .plan[data-years='3'] .year__content-list{
+        width: calc(33.333333% - 4px);
+    }
+   	  .plan[data-years='4'] .year__content-list{
+        width: calc(25% - 4px);
+    }
+ .plan[data-years='5'] .year__content-list{
+        width: calc(20% - 4px);
+    }
+  .plan[data-years='6'] .year__content-list{
+        width: calc(16.666666% - 4px)
+    }
+    .plan .year__title{
+        cursor: initial;
+        padding: 15px 0;
+        font-size: 1.5em;
+    }
+    .plan .year__title.is-open:before{
+        display: none;
+    }
+    .plan .year__content-text {
+        font-size: 0.9em;
+    }
+
+	/* cursos */
+    .plan .annual-content--obligatorios{
+        position: relative;
+    }
+    .plan .annual-content--core .year__content-list{
+        display: inline-block;
+        width: 33.333333%;
+        vertical-align: top;
+    }
+    .plan .year__content-item{
+        display: block;
+        margin-bottom: 0;
+        margin-top: 10px;
+    }
+    .plan .year__content-item:first-child{
+        margin-top: 0;
+    }
+    .plan .year__content-scrollable{
+        white-space: nowrap;
+       /* margin-left: -4px;
+        margin-right: -4px;*/ overflow: hidden; min-height: 1px
+    }
+    .plan .intercambio{
+        display: inline-block;
+        white-space: normal;
+        margin-top: 0;
+        padding: 4px 4px 0 4px;
+        box-sizing: border-box;
+		margin-bottom: -23px
+    }
+    .plan[data-years='1'] .intercambio{
+        width: 100%;
+    }
+    .plan[data-years='2'] .intercambio{
+        width: 50%;
+    }
+    .plan[data-years='3'] .intercambio{
+        width: 33.3333%;
+    }
+    .plan[data-years='4'] .intercambio{
+        width: 25%;
+    }
+.plan[data-years='5'] .intercambio{
+        width: 20%;
+    }
+	.plan[data-years='6'] .intercambio{
+        width: 16.666666%;
+    }
+    .plan .year__content-item--hide{
+        background-color: transparent;
+    }
+    .plan .year__content-list ul{
+        padding: 0 4px ;
+    }
+    .plan .annual-content--obligatorios .year__content-list{
+        display: inline-block !important;
+    }
+    .plan .year__content-title {
+        display: inline-block;
+        /*margin-right: 5px;*/
+    }
+    .plan .year__content-text {
+        display: inline-block;
+    }
+    .plan .electives__list{
+        margin: 0 -3px;
+    }
+    .plan .electives__item {
+        display: inline-block;
+        margin-left: 3px;  
+    }
+    .plan .annual-content--core .year__content-list{
+        margin-top: 0;
+    }
+		.plan .annual-content--obligatorios
+{
+    width: calc(100% + 4px)}
+			
+	 .plan[data-years='1'] .year,
+    .plan[data-years='2'] .year,
+    .plan[data-years='3'] .year,
+    .plan[data-years='4'] .year, 
+	.plan[data-years='5'] .year
+{ margin-right: 0}
+
+	.plan[data-years='1'] .year__content-list,
+	 .plan[data-years='2'] .year__content-list,
+	 .plan[data-years='3'] .year__content-list,
+	 .plan[data-years='4'] .year__content-list,
+	 .plan[data-years='5'] .year__content-list,
+	 .plan[data-years='6'] .year__content-list {
+			margin-right: 0;
+    }
+
+	/*concurso de becas*/
+	#postulaciones1 .plan-cta { width: 455px; margin: 20px auto 0 auto; display: inline-flex; align-items: center}
+	#postulaciones1 .h3 { font-size: 3em; line-height: .95em}
+	#tipos_becas .col-sm-3, #inscripcion_becas .col-sm-3 { padding: 0 0 0 0 }
+#becas_textos .row, #becas_pie .row { display: flex; align-items: center}
+		  #becas_pie .col-sm-12 { display: block !important; }
+	#tipos_becas .col-sm-3 { margin-right: 10px;
+    margin-left: 10px; width: 22.666666%;  }
+#tipos_becas .row {
+    margin-left: -10px;
+    margin-right: -40px;
+}
+#tipos_becas .col-sm-3 { min-height: 225px }
+#tipos_becas p.h5 { height:97px}
+	#actividades_intro.intro .titular {
+    width: 660px}
+/*descuentos*/
+	#descuentos .titulo_descuento{ font-size: 1.8em }
+	/*minors*/
+		#minors_videos .minors_videos { display: flex; align-items: center }
+	#despliegue_minor .tit_referentes { display: inline-flex;  min-height: 302px; overflow: hidden; color: var(--color-blanco); background-color: var(--color-ucucaf); padding-top: 0; justify-content: space-around }
+	#despliegue_minor .tit_referentes .h5 { color: var(--color-blanco) }
+	#minors_razones .section-ch { padding-top: 85px; padding-bottom: 85px }
+	.intro.introminors .h1 { font-size: 6em }
+	#minors_textos .num_minors {margin-top: 0}
+	/*minors */
+	
+	#despliegue_minor .bg-minor {
+    background-color: rgba(14, 175, 177, 0.7);
+}
+	/* buscador be carreras */
+	.buscador_carrerashome{
+display: flex;
+    align-items: center}
+		.testimonios_carreras .content-out:before {
+    width: 85px;
+    height: 76px;
+top: -10px }
+
+
+.testimonios_carreras .content-out:after {
+
+ width: 85px;
+    height: 76px; right:40px}
+	
+	
+	
+#testimonios.news-relation-titular {
+    margin: 0 20px 0 60px;
+}
+
+#testimonios.news-relation-titular {
+    align-items: center;
+    display: flex;
+    position: relative;
+}
+
+}
+
+@media (min-width: 768px){
+		.intro-video .video-holder video{  margin-top: 45px}
+
+		#accesos .features-list .feature { margin: 0 0 0 }
+		.fondointro_carreras {  padding: 40px 55px}
+	.fondointro_careras .h1 { font-size: 5em }
+.testimonios_carreras .h5 {font-size: 1.9em }
+.intro.intro-xxl.align-middle:before, .intro.intro-xxl .slide.align-middle:before {
+    min-height: 415px }
+	.noticias.owl-carousel .owl-item img {  min-height: 0 !important }
+	 #noticias .slider.activateSlider.notInit > .slide,
+#docentes .slider.activateSlider.notInit > .slide {
+max-width:280px;
+margin-left: 0;
+background-color: var(--color-postgrados2)}
+	#noticias .slider.activateSlider.notInit > .slide figure a img,
+	#docentes .slider.activateSlider.notInit > .slide figure a img {
+    height: calc(100% - 1px);
+    margin-top: 1px;
+}
+		#noticias .slider.activateSlider.notInit > .slide,
+	#trabajos_estudiantes .slider.activateSlider.notInit > .slide {
+		max-width:265px }
+		#trabajos_estudiantes .ucu-carousel .holder { margin-top: 0;   margin-bottom: 0 }
+#trabajos_estudiantes .ucu-carousel .holder .icono { right: 0; width:85px;bottom: 30px; }
+	#perfil_graduado .holder ul {font-size: 1.8em }
+
+	/* FORM AL PIE*/
+		#formalpie .fill-btn.entrevista {  padding: 10px 12px  }
+#formalpie .fill-btn.infoeconomica { padding: 10px 12px  }
+	#formalpie .botones {
+    margin-left: -14px;
+    display: inline-flex; width: 109%; padding: 0; margin-bottom: 0 }
+	#formalpie .botones_borde:before { width: 250px; position: absolute; right: 120px }
+	#formalpie .styled-form .col-sm-6 { width: 49.7% }
+	#formalpie .h2 { font-size: 4em }	
+	#formalpie .titular:after { margin: 18px  0 0 0; width: 100px; height: 6px }	
+	#formalpie .fill-btn.entrevista, #formalpie .fill-btn.infoeconomica { width: 100% }
+	
+	.features-list .styled-form .input-holder {
+    margin-top: -2px;
+}
+	  /* ************** centros hoe  ************** */
+    #centros figure{
+        flex: 1 1 50%;
+        min-height: 400px;
+    }
+    #centros.wrapper .owl-carousel .owl-item img{
+        min-height: 0 !important;
+    }
+    #centros .news-relation-titular{
+        flex: 1 1 50%;
+        margin: 0;
+    }
+
+    /* ************** CONTENIDO ************** */
+    .shares{
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .titular-subtitulo.text.text-primary.hidden-xs{
+        margin-top: 20px;
+    }
+
+    #sidebar-news{
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    #sidebar-news #tns1-iw { padding: 10px }
+
+	#sidebar-news .news-relation-titular .h6 
+	{ font-size: 1.8em }
+	
+    img.jssocials-share-logo {
+        width: auto;
+        height: 2.2em;
+    }
+
+    /* ************** CAROUSELS ************** */
+
+    .wrapper .ucu-carousel {
+        margin-right: -50px;
+        margin-left: -50px;
+    }
+
+    .wrapper .ucu-carousel .owl-nav .owl-next {
+        right: 25px;
+    }
+
+    .wrapper .ucu-carousel .owl-nav .owl-prev {
+        left: 25px;
+    }
+	/*galeria lightbox */
+	.galeria-lightbox-link {
+        width: 25%;
+    }
+	/* campus popup*/
+    .campus-popup{
+        padding: 70px 20px 80px !important;
+        width: 70%;
+        max-width: 800px;
+    }
+
+
+    .campus-popup-item{
+        display: inline-block;
+        margin-left: 20px;
+        margin-top: 0;
+		margin-bottom: 20px
+    }
+
+    .campus-popup-link{
+        font-weight: 400;
+    }
+
+    .campus-popup-link:hover,
+    .campus-popup-link:focus{
+        background-color: #e07219;
+        border: 2px solid #e07219;
+        webkit-transition: all 200ms ease-out;
+        -moz-transition: all 200ms ease-out;
+        -o-transition: all 200ms ease-out;
+        transition: all 200ms ease-out;
+    }
+
+    .campus-popup-department{
+        font-weight: 700;
+    }
+
+
+    .campus-popup-title-strong:after{
+        bottom: -6px;
+        height: 6px;
+    }
+	/*plan de estudios */
+.item-ingles {
+    border-right: 4px solid #fff; margin: 7px 0;
+}
+
+	.semana_ucu{  margin-bottom: 15px }
+
+	
+	.plan .year__title{  font-size: 1rem }
+	
+
+    .plan .year__item, .plan .year__content-text {
+        font-size: 1em    }
+	/* plan  de estudios */
+.plan-cta .h5 {
+		font-size: 1.8em }
+		#suma_innovacion .margen_izq { margin-left:145px}
+
+	#inscripcion_becas .col-sm-3:nth-of-type(4n+1) { width: 19%; padding-top: 8px }
+	#inscripcion_becas .col-sm-3:nth-of-type(4n+2), #inscripcion_becas .col-sm-3:nth-of-type(4n+3), #inscripcion_becas .col-sm-3:nth-of-type(4n+4) { width: 26.666666% }
+
+	#admisiones_concursobecas .section{ padding-top: 55px;  padding-bottom: 55px }	
+	#admisiones_concursobecas .h4 { margin: 23px 0 10px }
+	#admisiones_concursobecas .postulaciones { width: 50%; margin: 47px auto 0 auto  }
+	#admisiones_concursobecas .postulaciones_icono { margin: -45px auto; width: 60px; left: calc(50% - 30px) }
+	#admisiones_concursobecas .postulaciones_icono img { width: 60px }
+	#admisiones_concursobecas .col-sm-12 { margin-top: 20px }
+	#admisiones_concursobecas .botconcurso { max-width: 73%; margin-top: 10px}
+	
+	#descuentos .col-sm-2 {   width: 20%;padding-right: 10px;
+    padding-left: 10px }
+	
+	#descuentos .col-sm-2 .accordion-content p { font-size: 1.6em }
+	#descuentos .backdescuento { height: 110px }
+		
+	/*minors*/
+	#minors_razones .razones { min-height: 190px }
+
+	/*botones pie de pagina mas info y agenda tu entredvista*/
+		.btn-piepagina {
+display: none
+}
+	.btn-expandible1 {
+top: 150px !important
+}
+		
+		.btn-expandible1,
+.btn-expandible2 {
+  transition: width 0.8s ease, margin-right 0.8s ease;
+}
+.btn-expandible1 img,.btn-expandible2 img {
+  display: block;  height: 70px; /* altura del SVG */
+  width: 350px; /* ancho real del SVG */
+	 transition: margin-right 0.8s ease;
+ }
+.btn-expandible1:hover, .btn-expandible2:hover {
+  width: 350px; /* expande al ancho completo del SVG */
+}
+.btn-expandible1:hover img , .btn-expandible2:hover img {
+  margin-right: -325px; /* 160 - 50 = 110, desplazamos para que quede visualmente desplegado */
+}
+.btn-expandible2 {
+	top: 223px !important
+}
+ .btn-expandible1,
+.btn-expandible2 {
+  all: unset;
+  position: fixed;
+  right: 0;
+  height: 70px;
+  width: 80px;
+  overflow: hidden;
+  z-index: 9999;
+  transition: width 0.5s ease;
+  display: block;
+  cursor: pointer;
+}
+.btn-expandible1 img,
+.btn-expandible2 img {
+  display: block;
+  height: 70px;
+  width: 350px;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.btn-expandible1:hover,
+.btn-expandible2:hover {
+  width: 350px;
+}
+.btn-expandible1:hover img,
+.btn-expandible2:hover img {
+  margin-right: -280px;
+}
+	.btn-expandible1.auto-expandido,
+.btn-expandible2.auto-expandido {
+  width: 350px;
+}
+
+.btn-expandible1.auto-expandido img,
+.btn-expandible2.auto-expandido img {
+  margin-right: -230px;
+}	
+	
+}
+
+@media (min-width: 768px) and (max-width: 980px) {
+ #carrera_videos .padding4030 { padding: 20px 50px }
+	
+#testimonios .testimonios_carreras .content-out {
+    margin: 30px 20px 30px 20px;
+}
+	#carrera_videos .padding4030 {  padding: 20px 30px }
+	
+	#carrera_videos .testimonio_texto {   padding: 0 25px }
+	#carrera_videos .h5 {   line-height: 1.3em}
+	#carrera_videos .col-sm-5 { width: 51.666667% }	
+  
+.ocultar_titularformcarrera { display:none }	
+	
+#formalpie .h2 {
+    font-size: 3em 
+}
+}
+
+@media (min-width: 1200px) {
+.wrapper .video_slide .ucu-carousel .owl-nav .owl-prev {
+		left: 0  !important }
+	.intro.introcarreras .h1 { font-size: 8em }
+		.buscador_carreras .col-busqueda { padding: 0 50px 0 120px }
+	.ficha_agenda_homecarreras {
+		margin-right: -573px;
+			top: 46%
+	}
+	#ficha_carrera .intro.intro-xxl.scaled{   min-height: 520px; padding-top: 130px }
+	  /* ************** CONTENIDO ************** */
+    #sidebar-news .news-relation-titular{
+        flex: 1 1 39%;
+    }
+
+	/*formulario al pie*/
+	#formalpie .col-md-3 {   width: 18% }
+	#formalpie .h2 { font-size: 4.5em }
+	#formalpie .img_carreras { 
+			padding-bottom: 26.6%  }
+	
+    .galeria-lightbox-link {
+        width: 16.666666%;
+    }
+		/*campus popup*/
+ .campus-popup-title{
+        font-size: 3em;
+    }
+	 /*plan de estudios */
+	.plan .year__content-text {
+        font-size: 1em;
+    }
+#actividades_intro.intro.introcarreras .h1 {
+    font-size: 6em }
+		/*minors*/
+	#page-content.todos_los_cursos li { width: 22%; vertical-align: top;   min-height: 70px;display: inline-grid;
+    align-items: center }
+	#page-content.todos_los_cursos li:nth-child(4n) { margin: 0 0 15px 0 }
+	#page-content.todos_los_cursos li:nth-child(8n) { margin: 0 0 15px 0 }
+	#page-content.todos_los_cursos li:nth-child(12n) { margin: 0 0 15px 0 }
+	#page-content.todos_los_cursos li:nth-child(16n) { margin: 0 0 15px 0 }
+	
+#minors_razones .razones { min-height: 270px;margin-bottom: 0}
+	#footer .col-lg-offset-right2 {
+    margin-right: 16.66666667% }
+	
+	
+}	
+
+@media (min-width: 1440px){
+	.wrapper .video_slide .ucu-carousel .owl-nav .owl-prev {
+		left: 0  !important }
+	  /* ************** CAROUSELS ************** */
+  #agenda .ucu-carousel .owl-nav .owl-prev {
+        left: -20px;
+    }	
+	.wrapper .ucu-carousel .owl-nav .owl-next {
+        right: -20px;
+    }
+    .wrapper .ucu-carousel .owl-nav .owl-prev {
+        left: -20px;
+    }
+
+}
+
+
+@media (max-width: 768px){
+	.img-list .img-item:first-child {
+    margin-top: 5px !important
+}
+#porque_carrera .padding4030 { padding: 20px 50px }
+#carrera_videos .ucu-carousel .owl-nav div {  top: 38% }
+
+.features-list .feature {
+	margin: 25px auto 0; padding: 0 40px}
+	
+	.features-list .h6{ margin-top: 15px }
+	.features-list .img_ppal { height: 45px; margin-top: 20px}
+			
+		#docentes .owl-carousel .owl-stage-outer, #trabajos_estudiantes .owl-carousel .owl-stage-outer {
+    margin-left: 30px;
+    margin-right: 30px}
+		
+		#noticias .centros .owl-carousel .owl-item:nth-child(1n) {
+    background-color: var(--color-postgrados2);
+}
+ 		#noticias .slider.activateSlider.notInit > .slide,
+		#docentes .slider.activateSlider.notInit > .slide {
+    margin-left: 30px;
+    margin-right: 30px;
+    background-color: var(--color-postgrados2)
+}
+		
+		#noticias .notInit .news-relation-container figure,
+		#docentes .notInit .news-relation-container figure { flex: 1 1 33% }
+	
+		#noticias .centros .notInit .news-relation-titular,
+		#despliegue_minor #docentes .notInit .news-relation-titular {   margin: 0 0px 0 0 }	
+	#iconos_carreras .h5 { font-size: 1.6em}
+	.corte_movil  { display: block}
+	#noticias .news-relation-texto {
+				padding-right: 30px }
+		.txtcampus {font-size: 1.4em }
+	.filtroscarreras{ padding-left: 10px}
+
+.campus .fill-btn {
+    padding: 6px 10px;
+    margin-left: 4px; margin-bottom: 15px }
+	
+	#carrera-25.img-item {
+    margin-top: 5px !important }
+#testimonios .ucu-carousel .contenedor {
+	margin: 0; padding-bottom: 20px }
+.video_slide {	overflow: hidden; 
+padding-bottom: 30px}
+	.video_slide .col-sm-7 {margin: 0 -30px }
+	.video_slide .h1  {padding-top: 30px }
+	#perfil_graduado .holder {margin: 0 30px; min-height: 100px}
+	
+	#popup-area .campus-popup-link {
+    padding: 10px 13px }
+#popup-area .campus-popup-list {
+    margin-top: 20px }
+#popup-area .campus-popup-item {
+    margin-top: 18px }
+	#formalpie .botones .fill-btn  { margin: 10px }
+	#formalpie .styled-form { padding: 5px 40px 30px 30px }
+	#formalpie .botones_borde  {
+   text-align: center }
+	#formalpie .titular_movil { padding-left: 25px}
+	#formalpie .botones {
+    padding: 0 20px 25px;
+    margin: 0 auto;
+    text-align: center }
+		#formalpie .botones_borde:before {
+        width: 250px;
+right: 100px }
+	.tns-controls button {
+		width: 30px;
+		height: 30px }
+
+	.tns-controls button:before {
+    width: 10px;
+    height: 10px } 
+	
+	
+	.tns-controls button:before {
+    left: 8px;
+}
+	.tns-controls button[data-controls="prev"]:before {
+        left: 13px;
+}
+		/* CONCURSO DE BECAS INI */
+.img_concursobecas { width: 250px }
+	#postulaciones2 .tit_postulaciones2 { margin-top: 30px}
+	
+	#postulaciones1 { padding-bottom: 10px }
+	
+	#postulaciones1 .plan-cta {
+		padding: 5px 5px 4px 20px }
+		
+		#postulaciones1 .plan-cta .icon-holder {
+		width: 11.88%;
+		display: inline;
+		position: absolute }
+
+	#postulaciones1 .plan-cta .h6 { margin: 6px 0 }
+	/*concurso de becas*/
+
+#tipos_becas .col-sm-3  {
+    margin-bottom: 20px;
+}
+	
+#tipos_becas .h6 {
+    margin-bottom: 15px;
+}
+#ejercicios_orientadores .col-sm-6:nth-child(4n+1){ padding-bottom:40px}
+	#becas_pie .obteneunabeca { margin: 0 0 30px; width: 120px }
+	/*concurso de becas*/	
+	#inscripcion_becas .col-sm-3 {
+    margin: 0 17px }
+	#inscripcion_becas .col-sm-3 .accordion-content { margin: 0 -17px }
+	
+#inscripcion_becas .col-sm-3:nth-of-type(4n+1) {margin: 0 }
+
+		#descuentos .col-xs-6 {
+    width: 44%;
+    padding: 0 10px;
+}
+	#descuentos .col-xs-6 .backdescuento { padding: 20px 15px; font-size: 1.3em;flex-direction: column; min-height: 175px }
+	#descuentos .col-xs-6 p.text:first-of-type {   padding-right: 0;    width: 100%;
+    line-height: 1.1em; margin-bottom: 10px }	
+#descuentos .col-xs-6 p.text_descuento { font-size: 1.4em }
+	#descuentos .titulo_descuento {text-align: center; margin-top: 6px }
+		
+	#suma_innovacion img { margin-bottom: 30px;   max-width: 90% }
+	#suma_innovacion {text-align: center}
+	/* ************** FOOTER ************** */
+
+#footer {   padding: 20px 0 70px 0 }
+	#footer .top .logo { display: none }
+
+}
+
+@media (max-width: 480px){
+#iconos_carreras .h5 { font-size: 1.6em }
+		.corte_movil { display: block}
+#iconos_carreras img { height: 35px }
+	#testimonios.wrapper {
+    padding-right: 0;
+    padding-left: 0;
+    overflow: hidden;
+}
+	
+}
+
+@media (max-width: 780px){
+	.testimonios_carreras.ucu-carousel .contenedor {
+    margin: 0 !important}	
+.testimonios_carreras .h6{
+   padding-top: 20px}
+#testimonios .intronotas .bx-controls-direction .bx-prev { left: 20px }
+#testimonios .intronotas .bx-controls-direction .bx-next { right: 20px }
+	
+	.testimonios_carreras .wrapper { 
+		padding-right: 0; padding-left: 0 }
+
+	.testimonios_carreras .news-relation-container {
+    	display: block }
+
+	.testimonios_carreras .intronotas .news-relation-titular {
+		margin: 0;
+		flex: none  }
+
+}
+
+@media (max-width: 979px){
+	#accesos .features-list .styled-form .input-holder .select {
+	max-width: 160px }
+	
+	#iconos_carreras_abajo .row {margin-right: 0; margin-left: 0 }
+	
+	#iconos_carreras_abajo .item { display: inline-flex; align-items:center; justify-content: center; padding: 15px 0 }
+#iconos_carreras_abajo img { margin-right: 12px; width: 88px }
+	#iconos_carreras .h5 { font-size: 1.9em}
+
+	.ficha_agenda_homecarreras{
+	  margin-top:30px 
+		}
+	.ficha_agenda_homecarreras .ucu-carousel {padding: 10px -1px 30px 20px }
+.ficha_agenda_homecarreras .owl-controls{
+        bottom: -30px;
+    }
+	
+	.fondointro_carreras { padding: 20px 20px 30px 45px }
+	.fondointro_carreras .h1:after { margin-left: -15px }
+	.ficha_agenda_homecarreras .ucu-carousel .holder { padding: 30px }
+
+#carrera_videos .testimonio_video{  position:relative;z-index: 2 }
+#carrera_videos .testimonio_video:before {
+ 	top: 15px 
+}
+ /*plan de estudios */
+.plan .h5 {
+    font-size: 1.1em;
+}
+	
+	.btn-viewport {
+    bottom: 16px;
+    right: 15px;
+    width: 17px;
+	height: 17px }
+		
+	.btn-viewport.active {
+    bottom: 9px }
+
+		
+	 .plan .intercambio{ margin-top: 20px }
+
+	
+#noticias .news-relation-texto p.margin-t-30 {
+    margin-top: 20px }
+
+/* plan de estudios */
+	.plan .annual-content--obligatorios .year__content-list {
+    margin-top: 4px;
+}
+	
+	.aviso_cursos {
+		max-width: 80%;
+		margin: auto;
+		text-align: center;
+		background: var(--color-blanco);
+		padding-bottom: 0;    
+		margin-bottom: 10px
+	}
+	.hraviso_cursos2 {
+    top: 25px;
+}
+	.plan .year__content-item {
+    margin-bottom: 20px;
+}
+		/*minors */
+.intro.introminors .intro-video .video-holder video {
+    width: 123% }
+	
+.intro.introminors .holder {
+    margin-top: 60px }
+	.agrupacion_cursos .styled-form .input-holder .select:before {
+ right: 14px }
+	.intro.introcarreras .intro-video .video-holder video {
+    width: 123% }
+	
+.intro.introcarreras .holder {
+    margin-top: 60px }
+}
+
+
+
+
+@media (min-width: 1200px) and (min-height: 800px) {
+	/* features list carrera */
+	#accesos .features-list .feature {  margin-top: 0 }
+}
+     
+
+@media (min-width: 980px) and (max-width:1400px){
+			#formalpie .titular {  padding-left: 0 }
+			#formalpie .h2 {   font-size: 4em }
+	}
+
+@media (min-width: 1920px) {
+#formalpie .botones_borde:before {
+    right: 280px }
+}
+
+@media (min-width: 1180px) and (max-width:1600px){
+	#formalpie .img_carreras {
+		padding-bottom: 38.6% !important}
+	#formalpie .botones .fill-btn {
+    font-size: 1.3em }
+	
+	#formalpie .botones_borde:before {
+    right: 42px }
+}
+
+@media (min-width: 2380px) {
+	.ficha_agenda_homecarreras { top: 45% }
+}
+
+@media (min-width: 981px) and (max-width:1199px){
+#formalpie .img_carreras {
+        padding-bottom: 46.6%;
+    }
+
+#formalpie .col-md-3 {      width: 21%  }
+}
+ 
+@media (max-width: 400px){
+.plan .h5 {
+    font-size: .9em }
+	
+	.btn-viewport {
+    width: 14px;
+    height: 14px;
+}
+	
+	
+}
+
+@media (min-width: 768px) and (max-width:985px) {
+#notas_testimonios .col-sm-6 {   width: 100% }
+}
+ 
+@media (min-width: 769px) and (max-width:980px){
+	/* CONCURSO DE BECAS */
+#tipos_becas .row {
+    margin-left: -10px;
+    margin-right: -50px;
+}
+	
+	#tipos_becas .col-sm-3 {    margin-right: 10px;
+    margin-left: 10px;
+    width: 21.666666%} 
+#tipos_becas p.h5 {
+    height: 125px;
+    font-size: 1.8em;
+}#tipos_becas .h6 {
+    font-size: 1.8em;
+
+
+}}
+
+@media only screen and (min-width: 979px) and (max-width:1200px) {
+	#page-content.todos_los_cursos li { width: 29% ; vertical-align: top;   min-height: 70px;display: inline-grid; 
+    align-items: center }
+	#page-content.todos_los_cursos li:nth-child(3n) { margin: 0 0 15px 0 }
+	#page-content.todos_los_cursos li:nth-child(9n) { margin: 0 0 15px 0 }
+	#page-content.todos_los_cursos li:nth-child(12n) { margin: 0 0 15px 0 }
+	#page-content.todos_los_cursos li:nth-child(15n) { margin: 0 0 15px 0 }
+		}
+
+@media (max-width: 767px){
+	.saltomovil { display: block }
+	/* header */
+#header .btn-position > .btnmail {
+        display: none }
+	/* INTRO */
+.intro .picturegde:not([class*="img-"]) {
+    background: no-repeat center/cover }
+		/* TESTIMONIO */
+	.testimonios_carreras .ucu-carousel .contenedor {
+    margin: 0 0 }
+		
+#testimonios .ucu-carousel .owl-nav .owl-next {
+   right: 9px}
+#testimonios .ucu-carousel .owl-nav  .owl-prev {
+    left: 9px }
+#testimonios .ucu-carousel .owl-nav div {
+	background-color: var(--color-ucucaf); top: 24% }
+	.testimonios_carreras {
+    background-position: 0 135px;
+}
+	.testimonios_carreras .ucu-carousel .owl-nav div {
+top: 28% !important
+}
+	#testimonios .intronotas  .bx-controls-direction a {
+    top: 26%  }
+	#testimonios .intronotas .news-relation-titular {
+    margin: 0 }
+	.testimonios_carreras .h5 { 
+    font-size: 1.8em }
+	#testimonios .wrapper {
+    padding-right: 0;
+    padding-left: 0;
+    overflow: hidden }
+	
+	
+	.testimonios_carreras .contenedor {
+    margin: 0 25px !important
+}
+
+.testimonios_carreras .ucu-carousel .owl-nav .owl-next {
+    right: 15px;
+}
+
+.testimonios_carreras .ucu-carousel .owl-nav .owl-prev {
+    left: 26px;
+}
+	
+	
+	#testimonios .news-relation-container figure {
+    margin: 0
+}
+	
+	
+	
+	
+}	
+
+
+/* boton mas info old */
+.masinfo {
+    position: fixed;
+    bottom: 30px;
+    right: -110px;
+    overflow: hidden;
+    height: 40px;
+    z-index: 999;
+}
+@media (min-width: 1200px) {
+    .masinfo {
+        height: 50px;
+        right: -100px;
+    }
+}

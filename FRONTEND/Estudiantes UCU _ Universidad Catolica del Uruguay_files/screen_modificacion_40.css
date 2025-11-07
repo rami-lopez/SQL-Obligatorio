@@ -1,0 +1,109 @@
+
+/* ===== LOGO 40 AÑOS - Ajuste de espacios menú ===== */
+
+/* ===== Estilos para pantallas >= 980px ===== */
+@media (min-width: 980px) {
+    #nav {
+        float: right;
+        width: calc(100% - 270px);
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #nav .menu > .item + .item {
+        margin-left: 12px;
+    }
+
+    #nav .menu > .item > a {
+        padding: 7px 1px 11px;
+        font-size: 1.77em;
+    }
+
+    #header #logo {
+        max-width: 235px !important;
+        margin-right: 20px;
+        margin-top: 3px;
+    }
+
+    #header.ghost:not(.has-background) #logo {
+        max-width: 235px !important;
+        margin-right: 0;
+    }
+}
+
+/* ===== Estilos para pantallas >= 1226px ===== */
+@media (min-width: 1226px) {
+    #header .btn-position.right-xs-2 {
+        margin-right: -567px;
+    }
+
+    #nav .menu > .item > a {
+        padding: 7px 8px 11px;
+        font-size: 2.2em;
+    }
+}
+
+/* ===== LOGO Scroll y logo estático ===== */
+#header.ghost:not(.has-background) .fixed .logomasmenu #logo a img.logo_simg {
+    display: block;
+}
+#header.ghost:not(.has-background) .fixed .logomasmenu #logo a img.logo_scroll {
+    display: none;
+}
+
+#header .fixed .logomasmenu #logo a img.logo_simg {
+    display: none;
+}
+#header .fixed .logomasmenu #logo a img.logo_scroll {
+    display: block;
+}
+
+/* ===== Cabecera fija (scroll) ===== */
+#header .fixed {
+    background-color: #FDFBF5;
+}
+#header .fixed #nav .menu > .item > a {
+    color: #163262;
+}
+#header.ghost:not(.has-background) .fixed #nav .menu > .item > a {
+    color: #ffffff;
+}
+
+/* ===== Estilos para pantallas <= 980px ===== */
+@media (max-width: 980px) {
+    #header #logo a img {
+        padding-top: 15px;
+    }
+
+    /* Ghost (sin fondo) con cabecera fija */
+    #header.ghost:not(.has-background) .fixed #search-btn .icon {
+        background-image: url(../images/icons/search-btn.svg);
+    }
+
+    #header.ghost:not(.has-background) .fixed .btn-position > .btn,
+    #header .btn-position > .btn > .btn {
+        border: 1px solid #ffffff;
+    }
+
+    #header.ghost:not(.has-background) .fixed #menu-btn span:before,
+    #header.ghost:not(.has-background) .fixed #menu-btn span:after,
+    #header.ghost:not(.has-background) .fixed #menu-btn span {
+        background-color: #ffffff;
+    }
+
+    /* Cabecera fija general */
+    #header .fixed #search-btn .icon {
+        background-image: url(../images/icons/search-btn-bk.svg);
+    }
+
+    #header .fixed .btn-position > .btn,
+    #header .btn-position > .btn > .btn {
+        border: 1px solid #1d295f;
+    }
+
+    #header #menu-btn span:before,
+    #header #menu-btn span:after,
+    #header.ghost .fixed #menu-btn span {
+        background-color: #1c285e;
+    }
+}
