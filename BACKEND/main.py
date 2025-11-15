@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,APIRouter
 from fastapi.middleware.cors import CORSMiddleware
 from api import (
     auth, 
@@ -28,16 +28,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth.router)
-app.include_router(participante.router)
-app.include_router(sala.router)
-app.include_router(edificio.router)
-app.include_router(programa.router)
-app.include_router(reserva.router)
-app.include_router(sancion.router)
-app.include_router(facultad.router)
-app.include_router(turno.router)
-app.include_router(consultas.router)
+api_router = APIRouter(prefix="/api")
+
+api_router.include_router(auth.router)
+api_router.include_router(participante.router)
+api_router.include_router(sala.router)
+api_router.include_router(edificio.router)
+api_router.include_router(programa.router)
+api_router.include_router(reserva.router)
+api_router.include_router(sancion.router)
+api_router.include_router(facultad.router)
+api_router.include_router(turno.router)
+api_router.include_router(consultas.router)
+
+app.include_router(api_router)
 
 @app.get("/")
 def root():
