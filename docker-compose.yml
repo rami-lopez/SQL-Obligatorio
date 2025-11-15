@@ -15,6 +15,7 @@ services:
     volumes:
       # Persistir los datos de la base de datos
       - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   # Servicio del Backend (FastAPI)
   backend:
@@ -27,6 +28,7 @@ services:
       - db
     ports:
       - "8000:8000"
+    command: /bin/sh -c "python wait-for-db.py && python seed_data.py && uvicorn main:app --host 0.0.0.0 --port 8000"
     environment:
       - DB_HOST=db
       - DB_USER=${DB_USER:-root}

@@ -14,6 +14,7 @@ RUN pip install --no-cache-dir -r requerimientos.txt
 
 # Copy backend source code
 COPY ./BACKEND /app/
+COPY ./BACKEND/wait-for-db.py /app/
 
 # Expose port
 EXPOSE 8000
