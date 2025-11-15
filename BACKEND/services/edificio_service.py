@@ -13,32 +13,65 @@ class EdificioUpdate(BaseModel):
     direccion: Optional[str] = None
     departamento: Optional[str] = None
 
-def crear_edificio(e: EdificioCreate):
+def crear_edificio(e):
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
+
+    query = """
+        INSERT INTO edificio (nombre, direccion, departamento)
+        VALUES (%s, %s, %s)
     """
-    Crea un nuevo edificio.
-    """
-    return {}
+    cursor.execute(query, (e.nombre, e.direccion, e.departamento))
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+    return {"message": "Edificio creado"}
 
 def listar_edificios():
-    """
-    Lista todos los edificios.
-    """
-    return []
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
 
-def obtener_edificio(id_edificio: int):
-    """
-    Obtiene un edificio por su ID.
-    """
-    return {}
+    cursor.execute("SELECT * FROM edificio")
+    data = cursor.fetchall()
 
-def actualizar_edificio(id_edificio: int, e: EdificioUpdate):
-    """
-    Actualiza un edificio.
-    """
-    return {}
+    cursor.close()
+    cnx.close()
+    return data
 
-def eliminar_edificio(id_edificio: int):
+def obtener_edificio(id_edificio):
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM edificio WHERE id = %s", (id_edificio,))
+    data = cursor.fetchone()
+
+    cursor.close()
+    cnx.close()
+    return data
+
+def actualizar_edificio(id_edificio, e):
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
+
+    query = """
+        UPDATE edificio SET nombre=%s, direccion=%s, departamento=%s
+        WHERE id=%s
     """
-    Elimina un edificio.
-    """
+    cursor.execute(query, (e.nombre, e.direccion, e.departamento, id_edificio))
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+    return {"message": "Edificio actualizado"}
+
+def eliminar_edificio(id_edificio):
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
+
+    cursor.execute("DELETE FROM edificio WHERE id=%s", (id_edificio,))
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
     return {"message": "Edificio eliminado"}

@@ -1,3 +1,4 @@
+
 from db import execute_query, fetch_all
 from pydantic import BaseModel
 from typing import Optional
@@ -9,32 +10,57 @@ class FacultadCreate(BaseModel):
 class FacultadUpdate(BaseModel):
     nombre: Optional[str] = None
 
-def crear_facultad(f: FacultadCreate):
-    """
-    Crea una nueva facultad.
-    """
-    return {}
+def crear_facultad(f):
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
+
+    cursor.execute("INSERT INTO facultad (nombre) VALUES (%s)", (f.nombre,))
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+    return {"message": "Facultad creada"}
 
 def listar_facultades():
-    """
-    Lista todas las facultades.
-    """
-    return []
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
 
-def obtener_facultad(id_facultad: int):
-    """
-    Obtiene una facultad por su ID.
-    """
-    return {}
+    cursor.execute("SELECT * FROM facultad")
+    data = cursor.fetchall()
 
-def actualizar_facultad(id_facultad: int, f: FacultadUpdate):
-    """
-    Actualiza una facultad.
-    """
-    return {}
+    cursor.close()
+    cnx.close()
+    return data
 
-def eliminar_facultad(id_facultad: int):
-    """
-    Elimina una facultad.
-    """
+def obtener_facultad(id_facultad):
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM facultad WHERE id=%s", (id_facultad,))
+    data = cursor.fetchone()
+
+    cursor.close()
+    cnx.close()
+    return data
+
+def actualizar_facultad(id_facultad, f):
+    cnx = connection()
+    cursor = cnx.cursor(dictionary=True)
+
+    cursor.execute("UPDATE facultad SET nombre=%s WHERE id=%s", (f.nombre, id_facultad))
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
+    return {"message": "Facultad actualizada"}
+
+def eliminar_facultad(id_facultad):
+    cnx = connection()
+    cursor = cnx.cursor()
+
+    cursor.execute("DELETE FROM facultad WHERE id=%s", (id_facultad,))
+    cnx.commit()
+
+    cursor.close()
+    cnx.close()
     return {"message": "Facultad eliminada"}
