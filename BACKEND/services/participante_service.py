@@ -2,8 +2,6 @@ from fastapi import HTTPException
 from db import execute_query, fetch_all
 from models.participante_model import ParticipanteCreate
 
-
-
 def validar_email_unico(email: str):
     result = fetch_all("SELECT email FROM participante WHERE email = %s", (email,))
     if result:

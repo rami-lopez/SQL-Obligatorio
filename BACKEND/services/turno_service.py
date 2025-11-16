@@ -2,7 +2,7 @@ from db import execute_query, fetch_all
 
 def listar_turnos():
     """
-    Lista todos los turnos.
+    Lista todos los turnos disponibles.
     """
     return []
 

@@ -11,9 +11,6 @@ class ReservaCreate(BaseModel):
 	estado: Literal['activa','confirmada','cancelada','finalizada','no_asistencia'] = 'activa'
 	creado_por: Optional[int] = None
 
-	
-
-
 class ReservaUpdate(BaseModel):
 	id_sala: Optional[int] = None
 	fecha: Optional[date] = None
@@ -21,9 +18,6 @@ class ReservaUpdate(BaseModel):
 	end_turn_id: Optional[int] = None
 	estado: Optional[Literal['activa','confirmada','cancelada','finalizada','no_asistencia']] = None
 	creado_por: Optional[int] = None
-
-	
-
 
 class ReservaResponse(BaseModel):
 	id_reserva: int

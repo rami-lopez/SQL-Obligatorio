@@ -1,8 +1,7 @@
-from db import execute_query, fetch_all
+from db import connection
 from pydantic import BaseModel
 from typing import Optional
 
-# Dummy Pydantic models to avoid dependency on the API layer
 class EdificioCreate(BaseModel):
     nombre: str
     direccion: Optional[str] = None

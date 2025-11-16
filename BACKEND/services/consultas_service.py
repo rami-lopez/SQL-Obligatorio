@@ -1,5 +1,4 @@
-from db import fetch_all
-
+from db import connection
 
 def salas_mas_reservadas(limit=int):
     cnx = connection()
