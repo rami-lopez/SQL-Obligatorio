@@ -83,7 +83,6 @@ def actualizar_programa(id_programa: int, p: ProgramaUpdate):
 
     execute_query(query, tuple(valores))
 
-    # 5. Retornar la sala actualizada
     programa_actualizado = fetch_all(
         "SELECT * FROM programa_academico WHERE id_programa = %s",
         (id_programa,)
