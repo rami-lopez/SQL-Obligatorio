@@ -1,4 +1,5 @@
-from db import connection
+from http.client import HTTPException
+from db import fetch_all, execute_query
 from pydantic import BaseModel
 from typing import Optional
 
@@ -8,57 +9,76 @@ class FacultadCreate(BaseModel):
 class FacultadUpdate(BaseModel):
     nombre: Optional[str] = None
 
-def crear_facultad(f):
-    cnx = connection()
-    cursor = cnx.cursor(dictionary=True)
+def crear_facultad(f: FacultadCreate):
+    facultad = fetch_all(
+        "SELECT * FROM facultad WHERE nombre = %s",
+        (f.nombre)
+    )
 
-    cursor.execute("INSERT INTO facultad (nombre) VALUES (%s)", (f.nombre,))
-    cnx.commit()
-
-    cursor.close()
-    cnx.close()
+    if facultad:
+        raise HTTPException(
+            status_code=409,
+            detail="Ya existe una facultad con ese nombre"
+        )
+    execute_query(
+        "INSERT INTO facultad (nombre) VALUES (%s)",
+        (f.nombre,)
+    )
     return {"message": "Facultad creada"}
 
+
+
 def listar_facultades():
-    cnx = connection()
-    cursor = cnx.cursor(dictionary=True)
+    return fetch_all("SELECT * FROM facultad")
 
-    cursor.execute("SELECT * FROM facultad")
-    data = cursor.fetchall()
+def obtener_facultad(id_facultad: int):
+    result = fetch_all(
+        "SELECT * FROM facultad WHERE id = %s",
+        (id_facultad,)
+    )
 
-    cursor.close()
-    cnx.close()
-    return data
+    if not result:
+        raise HTTPException(status_code=404, detail="Facultad no encontrada")
 
-def obtener_facultad(id_facultad):
-    cnx = connection()
-    cursor = cnx.cursor(dictionary=True)
+    return result[0]
 
-    cursor.execute("SELECT * FROM facultad WHERE id=%s", (id_facultad,))
-    data = cursor.fetchone()
+def actualizar_facultad(id_facultad: int, f: FacultadUpdate):
 
-    cursor.close()
-    cnx.close()
-    return data
+    # validar existencia
+    facultad = fetch_all(
+        "SELECT * FROM facultad WHERE id = %s",
+        (id_facultad,)
+    )
+    if not facultad:
+        raise HTTPException(status_code=404, detail="Facultad no encontrada")
 
-def actualizar_facultad(id_facultad, f):
-    cnx = connection()
-    cursor = cnx.cursor(dictionary=True)
+    campos = []
+    valores = []
 
-    cursor.execute("UPDATE facultad SET nombre=%s WHERE id=%s", (f.nombre, id_facultad))
-    cnx.commit()
+    if f.nombre is not None:
+        campos.append("nombre = %s")
+        valores.append(f.nombre)
 
-    cursor.close()
-    cnx.close()
+    if not campos:
+        raise HTTPException(status_code=400, detail="No hay campos para actualizar")
+
+    query = f"UPDATE facultad SET {', '.join(campos)} WHERE id = %s"
+    valores.append(id_facultad)
+
+    execute_query(query, tuple(valores))
+
     return {"message": "Facultad actualizada"}
 
-def eliminar_facultad(id_facultad):
-    cnx = connection()
-    cursor = cnx.cursor()
 
-    cursor.execute("DELETE FROM facultad WHERE id=%s", (id_facultad,))
-    cnx.commit()
+def eliminar_facultad(id_facultad: int):
+    # verificar si existe
+    facultad = fetch_all(
+        "SELECT * FROM facultad WHERE id = %s",
+        (id_facultad,)
+    )
+    if not facultad:
+        raise HTTPException(status_code=404, detail="Facultad no encontrada")
 
-    cursor.close()
-    cnx.close()
+    execute_query("DELETE FROM facultad WHERE id = %s", (id_facultad,))
     return {"message": "Facultad eliminada"}
+

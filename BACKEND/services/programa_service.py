@@ -8,7 +8,7 @@ def crear_programa(p: ProgramaCreate):
     """
     # verifico si ya existe sala
     programa = fetch_all(
-        "SELECT * FROM programas WHERE id_facultad = %s AND nombre = %s",
+        "SELECT * FROM programa_academico WHERE id_facultad = %s AND nombre = %s",
         (p.id_facultad, p.nombre)
     )
     if programa:
@@ -18,7 +18,7 @@ def crear_programa(p: ProgramaCreate):
         )
     # no existe, insertoo
     execute_query(
-        "INSERT INTO programas (id_facultad, nombre, tipo) VALUES (%s, %s, %s)",
+        "INSERT INTO programa_academico (id_facultad, nombre, tipo) VALUES (%s, %s, %s)",
         (p.id_facultad, p.nombre, p.tipo)
     )
 
@@ -28,7 +28,7 @@ def listar_programas():
     """
     Lista todos los programas académicos.
     """
-    programasListados = fetch_all("SELECT * FROM programas")
+    programasListados = fetch_all("SELECT * FROM programa_academico")
     return programasListados
 
 def obtener_programa(id_programa: int):
@@ -36,7 +36,7 @@ def obtener_programa(id_programa: int):
     Obtiene un programa académico por su ID.
     """
     programa = fetch_all(
-        "SELECT * FROM programas WHERE id_programa = %s",
+        "SELECT * FROM programa_academico WHERE id_programa = %s",
         (id_programa,)
     )
     if not programa:
@@ -52,7 +52,7 @@ def actualizar_programa(id_programa: int, p: ProgramaUpdate):
     Actualiza un programa académico.
     """
     programa = fetch_all(
-        "SELECT * FROM programas WHERE id_programa = %s",
+        "SELECT * FROM programa_academico WHERE id_programa = %s",
         (id_programa,)
     )
     if not programa:
@@ -78,14 +78,14 @@ def actualizar_programa(id_programa: int, p: ProgramaUpdate):
     if not campos:
         raise HTTPException(status_code=400, detail="No se enviaron campos para actualizar")
     
-    query = f"UPDATE programas SET {', '.join(campos)} WHERE id_sala = %s"
+    query = f"UPDATE programa_academico SET {', '.join(campos)} WHERE id_sala = %s"
     valores.append(id_programa)
 
     execute_query(query, tuple(valores))
 
     # 5. Retornar la sala actualizada
     programa_actualizado = fetch_all(
-        "SELECT * FROM programas WHERE id_programa = %s",
+        "SELECT * FROM programa_academico WHERE id_programa = %s",
         (id_programa,)
     )[0]
 
@@ -96,7 +96,7 @@ def eliminar_programa(id_programa: int):
     Elimina un programa académico.
     """
     programa = fetch_all(
-        "SELECT * FROM programas WHERE id_programa = %s",
+        "SELECT * FROM programa_academico WHERE id_programa = %s",
         (id_programa,)
     )
     if not programa:
@@ -106,7 +106,7 @@ def eliminar_programa(id_programa: int):
         )
     
     execute_query(
-        "DELETE FROM programas WHERE id_programa = %s",
+        "DELETE FROM programa_academico WHERE id_programa = %s",
         (id_programa,)
     )
     return {"message": "Programa eliminado"}
@@ -125,7 +125,7 @@ def asignar_participante_programa(id_participante: int, id_programa: int):
     
     # verifico si existe el programa
     programa = fetch_all(
-        "SELECT * FROM programas WHERE id_programa = %s",
+        "SELECT * FROM programa_academico WHERE id_programa = %s",
         (id_programa,)
     )
     if not programa:
@@ -165,7 +165,7 @@ def remover_participante_programa(id_participante: int, id_programa: int):
     
     # verifico si existe el programa
     programa = fetch_all(
-        "SELECT * FROM programas WHERE id_programa = %s",
+        "SELECT * FROM programa_academico WHERE id_programa = %s",
         (id_programa,)
     )
     if not programa:
