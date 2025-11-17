@@ -62,7 +62,7 @@ Esta capa se encarga de:
 * Manejar errores
 * Implementar reglas de negocio
 
-## **7. Base de datos**
+## **Base de datos**
 
 La base existente **no se modifica**.
 Se usan las tablas ya provistas:
@@ -73,7 +73,7 @@ Se usan las tablas ya provistas:
 
 El back se adapta a la estructura tal como está.
 
-## **8. Flujo de uso**
+## **Flujo de uso**
 
 1. El usuario inicia sesión.
 2. Según su rol, se redirige a:
@@ -90,12 +90,6 @@ El back se adapta a la estructura tal como está.
 * **MySQL** 
 
 ## **Cómo correr el proyecto?**
-
-### **Backend**
-
-```
-
-```
 
 ### **Frontend**
 
