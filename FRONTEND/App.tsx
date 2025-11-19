@@ -3,7 +3,7 @@ import { UcuNavbar } from './components/layout/UcuNavbar';
 import { UserView } from './components/user/UserView';
 import { AdminView } from './components/admin/AdminView';
 import { User, Role, Reservation, Room, Building, Program, Faculty, TimeSlot } from './types';
-import { getBuildings, getFaculties, getPrograms, getRooms, getTimeSlots, getUsers, getAuthMe } from './services/api';
+import { getBuildings, getFaculties, getPrograms, getRooms, getTimeSlots, getUsers, getAuthMe, loadAuthTokenFromStorage, clearAuthToken } from './services/api';
 import { Loader } from './components/common/Loader';
 import { BUILDING_MAP_POSITIONS } from './constants';
 import Login from './components/common/Login';
@@ -42,7 +42,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch application data (buildings, rooms, users, programs, faculties, timeSlots)
+  
   const fetchAllData = async (authUserFromMe?: User | null) => {
     try {
       setIsLoading(true);
@@ -73,12 +73,9 @@ const App: React.FC = () => {
       setPrograms(programsData);
       setFaculties(facultiesData);
       setTimeSlots(timeSlotsData);
-
-      // Prefer authenticated user info from /auth/me when available
       if (authUserFromMe) {
         setCurrentUser(authUserFromMe);
       } else if (!currentUser && usersData.length > 0) {
-        // fallback: use the first user in the list (useful for local dev without auth)
         setCurrentUser(usersData[0]);
       }
     } catch (err: any) {
@@ -89,9 +86,38 @@ const App: React.FC = () => {
     }
   };
 
-  // Note: do not auto-check localStorage for auth token on mount.
-  // The app requires the user to login on every page reload, so
-  // data loading is triggered only after a successful login.
+  useEffect(() => {
+    const init = async () => {
+      setIsLoading(true);
+      const token = loadAuthTokenFromStorage();
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const authUser = await getAuthMe().catch(err => {
+          console.warn('Token in storage invalid', err);
+          return null;
+        });
+
+        if (!authUser) {
+          clearAuthToken();
+          setIsLoading(false);
+          return;
+        }
+
+        await fetchAllData(authUser);
+      } catch (e) {
+        clearAuthToken();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    init();
+   
+  }, []);
 
   const contextValue = useMemo(() => {
     if (!currentUser) {

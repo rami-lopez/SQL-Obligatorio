@@ -17,7 +17,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
         setLoading(true);
         try {
             const token = await login(email, password);
-            // set token in api module (login already did it), keep local state in-memory only
+            
             try { setAuthToken(token); } catch (e) { /* ignore */ }
             const user = await getAuthMe();
             onLogin(user);
