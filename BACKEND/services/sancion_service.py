@@ -1,4 +1,5 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
+from api.auth import get_current_user
 from db import execute_query, fetch_all
 from models.sancion_model import SancionCreate, SancionUpdate
 from datetime import date
@@ -132,16 +133,16 @@ def eliminar_sancion(id_sancion: int):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al eliminar sanción: {str(e)}")
     
-def tiene_sancion_vigente(id_participante: int) -> bool:
-    # eerifica si un participante tiene una sanción vigente en la fecha actual
+def tiene_sancion_vigente(id_participante: int,  current_user = Depends(get_current_user)):
+    # verifica si un participante tiene una sanción vigente en la fecha actual
     try:
         query = """
-            SELECT COUNT(*) AS total
-            FROM sancion
+            SELECT *
+            FROM sanciones_vigentes
             WHERE id_participante = %s
-              AND CURDATE() BETWEEN fecha_inicio AND fecha_fin
         """
         resultado = fetch_all(query, (id_participante,))
-        return resultado[0]["total"] > 0
+        
+        return resultado
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al verificar sanciones: {str(e)}")

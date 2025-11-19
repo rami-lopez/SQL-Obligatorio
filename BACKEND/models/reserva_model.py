@@ -17,7 +17,8 @@ class ReservaUpdate(BaseModel):
 	start_turn_id: Optional[int] = None
 	end_turn_id: Optional[int] = None
 	estado: Optional[Literal['activa','confirmada','cancelada','finalizada','no_asistencia']] = None
-	creado_por: Optional[int] = None
+	creado_por: Optional[int] = None,
+	participantes: Optional[list[int]] = None
 
 class ReservaResponse(BaseModel):
 	id_reserva: int

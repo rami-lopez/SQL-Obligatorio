@@ -36,19 +36,19 @@ def crear_reserva(r: ReservaCreateConParticipantes, creado_por: int):
         if len(r.participantes) > capacidad:
             raise HTTPException(status_code=400, detail="Excede capacidad de sala")
 
-        creador = fetch_all("SELECT tipo_usuario FROM usuario WHERE id_usuario = %s", (creado_por,))
+        creador = fetch_all("SELECT rol FROM participante WHERE id_participante = %s", (creado_por,))
         if not creador:
             raise HTTPException(status_code=404, detail="Usuario creador no encontrado")
 
-        tipo_creador = creador[0]["tipo_usuario"]
-
-        if tipo_sala == "exclusiva_posgrado" and tipo_creador not in ("posgrado", "docente"):
+        tipo_creador = creador[0]["rol"]
+        if tipo_sala == "posgrado" and tipo_creador != "alumno_posgrado" and tipo_creador != "docente":
             raise HTTPException(status_code=403, detail="Solo docentes o estudiantes de posgrado pueden reservar esta sala")
 
-        if tipo_sala == "exclusiva_docente" and tipo_creador != "docente":
+        if tipo_sala == "docente" and tipo_creador != "docente":
+            print("Tipo sala docente y creador no es docente")
             raise HTTPException(status_code=403, detail="Solo docentes pueden reservar esta sala")
 
-        if tipo_sala == "uso_libre" and tipo_creador not in ("grado", "posgrado", "docente"):
+        if tipo_sala == "libre" and tipo_creador not in ("alumno_grado", "alumno_posgrado", "docente"):
             raise HTTPException(status_code=403, detail="Solo docentes o estudiantes pueden reservar esta sala")
 
         query = """
@@ -56,9 +56,14 @@ def crear_reserva(r: ReservaCreateConParticipantes, creado_por: int):
             VALUES (%s, %s, %s, %s, %s)
         """
         execute_query(query, (r.id_sala, r.fecha, r.start_turn_id, r.end_turn_id, creado_por))
-    
-        id_reserva = fetch_all("SELECT LAST_INSERT_ID() as id")[0]['id']
-        
+        # obtener id de la reserva creada
+        row = fetch_all(
+            "SELECT id_reserva FROM reserva WHERE id_sala = %s AND fecha = %s AND start_turn_id = %s AND end_turn_id = %s AND creado_por = %s ORDER BY id_reserva DESC LIMIT 1",
+            (r.id_sala, r.fecha, r.start_turn_id, r.end_turn_id, creado_por)
+        )
+        if not row:
+            raise HTTPException(status_code=500, detail="No se pudo obtener el id de la reserva creada")
+        id_reserva = row[0]["id_reserva"]
         for id_part in r.participantes:
             estado = 'confirmada' if id_part == creado_por else 'pendiente'
             query = """
@@ -97,10 +102,39 @@ def obtener_reserva(id_reserva: int):
 
     return ReservaResponse(**reserva) # el ** desempaqueta
 
-def actualizar_reserva(id_reserva: int, r: ReservaUpdate, id_participante: int):
+def eliminar_reserva(id_reserva: int, id_participante: int):
+    """
+    Elimina una reserva por su ID.
+    Primero elimina las entradas en reserva_participante que referencian la reserva.
+    """
+    reserva = fetch_all(
+        "SELECT * FROM reserva WHERE id_reserva = %s",
+        (id_reserva,)
+    )
+    if not reserva:
+        raise HTTPException(status_code=404, detail="Reserva no encontrada")
+    reserva_db = reserva[0]['creado_por'] == id_participante
+    if not reserva_db:
+        raise HTTPException(status_code=403, detail="Solo el creador puede eliminar esta reserva")
+    
+    # eliminar participantes relacionados primero
+    execute_query(
+        "DELETE FROM reserva_participante WHERE id_reserva = %s",
+        (id_reserva,)
+    )
+
+    # luego eliminar la reserva
+    execute_query(
+        "DELETE FROM reserva WHERE id_reserva = %s",
+        (id_reserva,)
+    )
+    return {"message": "Reserva eliminada"}
+
+def actualizar_reserva(id_reserva: int, r: ReservaUpdate, id_participante: int, is_admin: bool):
     """
     Actualiza una reserva.
     """
+    
     reserva = fetch_all(
         "SELECT * FROM reserva WHERE id_reserva = %s",
         (id_reserva,)
@@ -113,7 +147,7 @@ def actualizar_reserva(id_reserva: int, r: ReservaUpdate, id_participante: int):
 
     # verificar permisos (solo el creador puede actualizar)
     # que sea distinto ya alcanza, la verificacion de si es el creador se hace desde el endpoint
-    if reserva_db["creado_por"] != id_participante:
+    if reserva_db["creado_por"] != id_participante and not is_admin:
         raise HTTPException(
             status_code=403,
             detail="Solo el creador puede modificar esta reserva"
@@ -146,6 +180,8 @@ def actualizar_reserva(id_reserva: int, r: ReservaUpdate, id_participante: int):
     if r.creado_por is not None:
         campos.append("creado_por = %s")
         valores.append(r.creado_por)
+   
+        
 
     if not campos:
         raise HTTPException(status_code=400, detail="No se enviaron campos para actualizar")
@@ -154,7 +190,21 @@ def actualizar_reserva(id_reserva: int, r: ReservaUpdate, id_participante: int):
     valores.append(id_reserva)
 
     execute_query(query, tuple(valores))
-
+    
+    if r.participantes is not None:
+        # eliminar participantes actuales
+        execute_query(
+            "DELETE FROM reserva_participante WHERE id_reserva = %s",
+            (id_reserva,)
+        )
+        # agregar nuevos participantes
+        for id_part in r.participantes:
+            estado = 'confirmada' 
+            query = """
+                INSERT INTO reserva_participante (id_reserva, id_participante, estado_participacion)
+                VALUES (%s, %s, %s)
+            """
+            execute_query(query, (id_reserva, id_part, estado)) 
     reservaAct = fetch_all(
         "SELECT * FROM reserva WHERE id_reserva = %s",
         (id_reserva,)
@@ -163,9 +213,9 @@ def actualizar_reserva(id_reserva: int, r: ReservaUpdate, id_participante: int):
     return reservaAct
 
 
-def cancelar_reserva(id_reserva: int, id_participante: int):
+def rechazar_participacion(id_reserva: int, id_participante: int):
     """
-    Cancela una reserva.
+    Rechaza una reserva.
     """
     reserva = fetch_all(
         "SELECT * FROM reserva WHERE id_reserva = %s",
@@ -175,18 +225,20 @@ def cancelar_reserva(id_reserva: int, id_participante: int):
         raise HTTPException(status_code=404, detail="Reserva no encontrada")
     reserva_db = reserva[0]
 
-    # verificar permisos (solo el creador puede)
-    # que sea distinto ya alcanza, la verificacion de si es el creador se hace desde el endpoint
-    if reserva_db["creado_por"] != id_participante:
-        raise HTTPException(
-            status_code=403,
-            detail="Solo el creador puede modificar esta reserva"
-        )
-    execute_query(
-        "DELETE FROM reserva WHERE id_reserva = %s",
-        (id_reserva,)
+    asignada = fetch_all(
+        """
+        SELECT * FROM reserva_participante
+        WHERE id_reserva = %s AND id_participante = %s
+        """,
+        (id_reserva, id_participante)
     )
-    return {"message": "Reserva cancelada"}
+    if not asignada:
+        raise HTTPException(status_code=403, detail="El participante no está asignado a esta reserva")
+    execute_query(
+        "UPDATE reserva_participante SET estado_participacion = 'rechazada' WHERE id_reserva = %s AND id_participante = %s",
+        (id_reserva,id_participante)
+    )
+    return {"message": "Reserva rechazada"}
 
 def confirmar_participacion(id_reserva: int, id_participante: int):
     """
@@ -202,7 +254,7 @@ def confirmar_participacion(id_reserva: int, id_participante: int):
     
     # verifico si existe la reserva
     reserva = fetch_all(
-        "SELECT * FROM programas WHERE id_programa = %s",
+        "SELECT * FROM reserva WHERE id_reserva = %s",
         (id_reserva,)
     )
     if not reserva:
@@ -210,26 +262,81 @@ def confirmar_participacion(id_reserva: int, id_participante: int):
     
     # ver si ya estan relacionados
     existe = fetch_all(
-        #como verifico si una reserva incluye al participante si no es el creador??????????
         """
-        SELECT * FROM reserva
-        WHERE creado_por = %s AND id_reserva = %s
+        SELECT * FROM reserva_participante
+        WHERE id_participante = %s AND id_reserva = %s
         """,
         (id_participante, id_reserva)
     )
     if not existe:
         raise HTTPException(status_code=409, detail="El participante no está asignado a esta reserva")
     
+    execute_query(
+        """
+        UPDATE reserva_participante
+        SET estado_participacion = 'confirmada'
+        WHERE id_participante = %s AND id_reserva = %s
+        """,
+        (id_participante, id_reserva)
+    )
+    
     return {"message": "Participación confirmada"}
 
-def registrar_asistencia(id_reserva: int, id_participante: int, presente: bool, current_user_id: int):
+def     registrar_asistencia(id_reserva: int, id_participante: int, estado:bool):
     """
     Registra la asistencia a una reserva.
     """
+   
+    existe = fetch_all(
+        """
+        SELECT * FROM reserva_participante
+        WHERE id_participante = %s AND id_reserva = %s
+        """,
+        (id_participante, id_reserva)
+    )
+    if not existe:
+        raise HTTPException(status_code=409, detail="El participante no está asignado a esta reserva")
+    no_resgistrado = existe[0]["asistencia"] == 'no_registrado'
+    if not no_resgistrado:
+        raise HTTPException(status_code=409, detail="La asistencia ya fue registrada")
+    if estado == True:
+        execute_query(
+            """
+            UPDATE reserva_participante
+            SET asistencia = 'presente'
+            WHERE id_participante = %s AND id_reserva = %s
+            """,
+            (id_participante, id_reserva)
+        )
+    else:
+        execute_query(
+            """
+            UPDATE reserva_participante
+            SET asistencia = 'ausente'
+            WHERE id_participante = %s AND id_reserva = %s
+            """,
+            (id_participante, id_reserva)
+        )
+    
     return {"message": "Asistencia registrada"}
 
 def listar_mis_reservas(id_participante: int):
     """
     Lista las reservas de un participante.
     """
-    return []
+    reservas = fetch_all("SELECT * FROM reserva_participante JOIN reserva ON reserva_participante.id_reserva = reserva.id_reserva WHERE id_participante = %s", (id_participante,))
+    return reservas
+
+def obtener_participantes_reserva(id_reserva: int):
+    """
+    Obtiene los participantes de una reserva específica.
+    """
+    participantes = fetch_all(
+        """
+        SELECT p.id_participante FROM participante p
+        JOIN reserva_participante rp ON p.id_participante = rp.id_participante
+        WHERE rp.id_reserva = %s
+        """,
+        (id_reserva,)
+    )
+    return participantes

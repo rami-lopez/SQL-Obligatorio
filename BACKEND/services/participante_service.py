@@ -10,7 +10,9 @@ def validar_email_unico(email: str):
 def validar_email_registrado(email: str):
     result = fetch_all("SELECT email FROM login WHERE email = %s", (email,))
     if not result:
-        raise HTTPException(status_code=409, detail="Email sin registrar")
+        query = """
+            INSERT INTO login (email, password_hash) VALUES (%s, %s)"""
+        execute_query(query, (email, "Password123"))  # Contraseña por defecto, se recomienda cambiarla luego
 
 def crear_participante(p: ParticipanteCreate):
     try:
@@ -73,5 +75,23 @@ def eliminar_participante(id: int):
         execute_query(query, (id,))
         
         return {"message": "Participante desactivado exitosamente"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+    
+def obtener_reservas_por_participante(id_participante: int):
+    try:
+        result = fetch_all("SELECT * FROM participante WHERE id_participante = %s", (id_participante,))
+        if not result:
+            raise HTTPException(status_code=404, detail="Participante no encontrado")
+        
+        query = """
+            SELECT r.*,rp.asistencia
+            FROM reserva r
+            JOIN reserva_participante rp ON r.id_reserva = rp.id_reserva
+            WHERE rp.id_participante = %s
+        """
+        reservas = fetch_all(query, (id_participante,))
+        
+        return reservas
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")

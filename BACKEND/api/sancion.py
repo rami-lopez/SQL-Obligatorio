@@ -5,9 +5,10 @@ from services.sancion_service import (
     listar_sanciones,
     obtener_sancion,
     actualizar_sancion,
-    eliminar_sancion
+    eliminar_sancion,
+    tiene_sancion_vigente
 )
-from api.auth import get_current_active_admin
+from api.auth import get_current_active_admin, get_current_user
 
 router = APIRouter(prefix="/sanciones", tags=["sancion"])
 
@@ -39,4 +40,9 @@ def update(id_sancion: int, s: SancionUpdate, current_user = Depends(get_current
 def delete(id_sancion: int, current_user = Depends(get_current_active_admin)):
     """Eliminar sanción"""
     return eliminar_sancion(id_sancion)
+
+@router.get("/participantes/{id_participante}")
+def verificar_sancion_vigente(id_participante: int, current_user = Depends(get_current_user)):
+    """Verificar si un participante tiene sanciones vigentes"""
+    return tiene_sancion_vigente(id_participante)
 

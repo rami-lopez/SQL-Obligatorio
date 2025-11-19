@@ -5,9 +5,10 @@ from services.participante_service import (
     listar_participantes,
     obtener_participante,
     actualizar_participante,
-    eliminar_participante
+    eliminar_participante,
+    obtener_reservas_por_participante
 )
-from api.auth import get_current_active_admin
+from api.auth import get_current_active_admin, get_current_user
 
 router = APIRouter(prefix="/participantes", tags=["participante"])
 
@@ -17,7 +18,7 @@ def create(p: ParticipanteCreate, current_user = Depends(get_current_active_admi
     return crear_participante(p)
 
 @router.get("/")
-def list_all(current_user = Depends(get_current_active_admin)):
+def list_all(current_user = Depends(get_current_user)):
     """Solo admin puede listar todos los participantes"""
     return listar_participantes()
 
@@ -35,3 +36,8 @@ def update(id_participante: int, p: ParticipanteUpdate, current_user = Depends(g
 def delete(id_participante: int, current_user = Depends(get_current_active_admin)):
     """Eliminar (desactivar) participante"""
     return eliminar_participante(id_participante)
+
+@router.get("/{id_participante}/reservas")
+def get_reservas_participante(id_participante: int, current_user = Depends(get_current_active_admin)):
+    """Obtener las reservas asociadas a un participante"""
+    return obtener_reservas_por_participante(id_participante)

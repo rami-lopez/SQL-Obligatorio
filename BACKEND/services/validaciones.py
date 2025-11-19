@@ -2,14 +2,14 @@ from datetime import date, timedelta
 from fastapi import HTTPException
 from db import fetch_all
 
-def validar_participante_sin_sancion(ci_participante: int):
+def validar_participante_sin_sancion(id_participante: int):
     query = """
         SELECT COUNT(*) AS total
         FROM sancion_participante
-        WHERE ci_participante = %s
+        WHERE id_participante = %s
           AND CURDATE() BETWEEN fecha_inicio AND fecha_fin
     """
-    resultado = fetch_all(query, (ci_participante,))
+    resultado = fetch_all(query, (id_participante,))
     if resultado[0]["total"] > 0:
         raise HTTPException(status_code=400, detail="El participante tiene una sanción vigente")
 
@@ -110,9 +110,9 @@ def validar_tipo_sala_y_participante(id_sala: int, ci_participante: int):
 
     query_prog = """
         SELECT pa.tipo
-        FROM participante_programa_academico ppa
+        FROM participante_programa ppa
         JOIN programa_academico pa ON ppa.id_programa = pa.id_programa
-        WHERE ppa.ci_participante = %s
+        WHERE ppa.id_participante = %s
         LIMIT 1
     """
     prog = fetch_all(query_prog, (ci_participante,))
@@ -126,8 +126,8 @@ def validar_tipo_sala_y_participante(id_sala: int, ci_participante: int):
 
         query_doc = """
             SELECT COUNT(*) as total
-            FROM participante_programa_academico
-            WHERE ci_participante = %s AND rol = 'docente'
+            FROM participante_programa
+            WHERE id_participante = %s AND rol = 'docente'
         """
         doc = fetch_all(query_doc, (ci_participante,))
         if doc[0]["total"] == 0:
