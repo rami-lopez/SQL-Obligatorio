@@ -39,7 +39,7 @@ const App: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [faculties, setFaculties] = useState<Faculty[]>([]);
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch application data (buildings, rooms, users, programs, faculties, timeSlots)
@@ -89,28 +89,9 @@ const App: React.FC = () => {
     }
   };
 
-  // On mount: if there is a token, try to fetch /auth/me and then load data.
-  useEffect(() => {
-    const init = async () => {
-      setIsLoading(true);
-      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('authToken') : null;
-      if (token) {
-        try {
-          const authUser = await getAuthMe().catch(err => {
-            console.warn('Failed to fetch auth/me during init', err);
-            return null;
-          });
-          await fetchAllData(authUser ?? null);
-        } catch (e) {
-          setIsLoading(false);
-        }
-      } else {
-        setIsLoading(false);
-      }
-    };
-    init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // Note: do not auto-check localStorage for auth token on mount.
+  // The app requires the user to login on every page reload, so
+  // data loading is triggered only after a successful login.
 
   const contextValue = useMemo(() => {
     if (!currentUser) {

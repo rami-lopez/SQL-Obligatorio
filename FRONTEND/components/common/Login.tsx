@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { login, getAuthMe } from '../../services/api';
+import { login, getAuthMe, setAuthToken } from '../../services/api';
 import { User } from '../../types';
 
 interface Props {
@@ -12,12 +12,13 @@ const Login: React.FC<Props> = ({ onLogin }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const doLogin = async () => {
         setError(null);
         setLoading(true);
         try {
-            await login(email, password);
+            const token = await login(email, password);
+            // set token in api module (login already did it), keep local state in-memory only
+            try { setAuthToken(token); } catch (e) { /* ignore */ }
             const user = await getAuthMe();
             onLogin(user);
         } catch (err: any) {
@@ -25,6 +26,18 @@ const Login: React.FC<Props> = ({ onLogin }) => {
             setError(msg);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await doLogin();
+    };
+
+    const handleKeyDown = async (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (!loading) await doLogin();
         }
     };
 
@@ -41,6 +54,8 @@ const Login: React.FC<Props> = ({ onLogin }) => {
                             className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-ucu-blue"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            disabled={loading}
                             required
                         />
                     </div>
@@ -51,16 +66,28 @@ const Login: React.FC<Props> = ({ onLogin }) => {
                             className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-ucu-blue"
                             value={password}
                             onChange={e => setPassword(e.target.value)}
+                            onKeyDown={handleKeyDown}
+                            disabled={loading}
                             required
                         />
                     </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-ucu-blue text-white py-2 rounded hover:opacity-95 disabled:opacity-60"
-                        disabled={loading}
-                    >
-                        {loading ? 'Ingresando...' : 'Ingresar'}
-                    </button>
+                    <div className="flex gap-2">
+                        <button
+                            type="submit"
+                            className="flex-1 bg-ucu-blue text-white py-2 rounded hover:opacity-95 disabled:opacity-60"
+                            disabled={loading}
+                        >
+                            {loading ? 'Ingresando...' : 'Ingresar'}
+                        </button>
+                        <button
+                            type="button"
+                            className="w-24 bg-gray-200 text-gray-800 py-2 rounded hover:opacity-95 disabled:opacity-60"
+                            onClick={() => { if (!loading) doLogin(); }}
+                            disabled={loading}
+                        >
+                            Enter
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

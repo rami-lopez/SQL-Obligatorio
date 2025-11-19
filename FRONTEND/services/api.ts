@@ -3,6 +3,12 @@ import { User, Reservation, Room, Building, Program, Faculty, TimeSlot, Role, Ro
 // In a real application, this would be in a .env file
 const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
+// Keep the auth token in-memory only so reloads require re-login
+let authToken: string | null = null;
+export function setAuthToken(token: string | null) {
+    authToken = token;
+}
+
 // Utility: convert camelCase keys to snake_case recursively
 const toSnake = (obj: any): any => {
     if (Array.isArray(obj)) return obj.map(toSnake);
@@ -35,7 +41,7 @@ const toCamel = (obj: any): any => {
 // A generic API request function to handle fetch, headers, error handling
 // and automatic conversion between snake_case (backend) and camelCase (frontend).
 async function apiRequest<T>(method: string, endpoint: string, body?: any): Promise<T> {
-    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('authToken') : null;
+    const token = authToken;
     const headers: Record<string, string> = {
         'Content-Type': 'application/json'
     };
@@ -103,12 +109,13 @@ export async function login(email: string, password: string): Promise<string> {
     const data = await resp.json();
     const token = data?.access_token ?? data?.token ?? null;
     if (!token) throw new Error('No token received from login');
-    try { localStorage.setItem('authToken', token); } catch (e) { /* ignore */ }
+    // store in-memory only
+    setAuthToken(token);
     return token;
 }
 
 export function logout() {
-    try { localStorage.removeItem('authToken'); } catch (e) { }
+    setAuthToken(null);
 }
 
 // Normalize common backend responses into the preferred camelCase shapes
