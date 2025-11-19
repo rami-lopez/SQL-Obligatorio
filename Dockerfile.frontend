@@ -1,19 +1,18 @@
-# Stage 1: Build the React application
+# Stage 1: Build the frontend application from the current `FRONTEND/` folder
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY FRONTEND/react/package.json ./
-COPY FRONTEND/react/package-lock.json ./
+# Copy package files (package.json and package-lock.json if present)
+COPY FRONTEND/package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies. If package-lock.json is missing, fall back to npm install
+RUN npm ci || npm install
 
 # Copy the rest of the frontend source code
-COPY FRONTEND/react/ ./
+COPY FRONTEND/ ./
 
-# Build the production application
+# Build the production application (Vite default outputs to /app/dist)
 RUN npm run build
 
 # Stage 2: Serve the application with Nginx
