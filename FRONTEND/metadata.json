@@ -1,0 +1,5 @@
+{
+  "name": "UCU Room Reservation System",
+  "description": "A responsive web application for managing room reservations at UCU, featuring separate views for users and administrators. It includes an interactive map for building selection, room availability, a booking system, and an admin dashboard with statistics and management tools.",
+  "requestFramePermissions": []
+}
