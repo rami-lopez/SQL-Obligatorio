@@ -1,46 +1,49 @@
 import { User, Reservation, Room, Building, Program, Faculty, TimeSlot, Role, RoomType, ReservationStatus, ParticipantStatus, ProgramType, AttendanceStatus } from '../types';
 
 // In a real application, this would be in a .env file
-const API_BASE_URL = 'http://127.0.0.1:8000/api'; 
+const API_BASE_URL = 'http://127.0.0.1:8000/api';
 
 // Utility: convert camelCase keys to snake_case recursively
 const toSnake = (obj: any): any => {
-  if (Array.isArray(obj)) return obj.map(toSnake);
-  if (obj === null || obj === undefined) return obj;
-  if (typeof obj !== 'object') return obj;
-  const res: any = {};
-  Object.keys(obj).forEach(key => {
-    const val = (obj as any)[key];
-    const snakeKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
-    res[snakeKey] = toSnake(val);
-  });
-  return res;
+    if (Array.isArray(obj)) return obj.map(toSnake);
+    if (obj === null || obj === undefined) return obj;
+    if (typeof obj !== 'object') return obj;
+    const res: any = {};
+    Object.keys(obj).forEach(key => {
+        const val = (obj as any)[key];
+        const snakeKey = key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+        res[snakeKey] = toSnake(val);
+    });
+    return res;
 };
 
 // Utility: convert snake_case keys to camelCase recursively
 const toCamel = (obj: any): any => {
-  if (Array.isArray(obj)) return obj.map(toCamel);
-  if (obj === null || obj === undefined) return obj;
-  if (typeof obj !== 'object') return obj;
-  const res: any = {};
-  Object.keys(obj).forEach(key => {
-    const val = (obj as any)[key];
-    const camelKey = key.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
-    res[camelKey] = toCamel(val);
-  });
-  return res;
+    if (Array.isArray(obj)) return obj.map(toCamel);
+    if (obj === null || obj === undefined) return obj;
+    if (typeof obj !== 'object') return obj;
+    const res: any = {};
+    Object.keys(obj).forEach(key => {
+        const val = (obj as any)[key];
+        const camelKey = key.replace(/_([a-z])/g, (_, c) => c.toUpperCase());
+        res[camelKey] = toCamel(val);
+    });
+    return res;
 };
 
 
 // A generic API request function to handle fetch, headers, error handling
 // and automatic conversion between snake_case (backend) and camelCase (frontend).
 async function apiRequest<T>(method: string, endpoint: string, body?: any): Promise<T> {
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('authToken') : null;
+    const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
+    };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+
     const options: RequestInit = {
         method,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtYXRlby5zaWx2YTM5QHVjdS5lZHUudXkiLCJleHAiOjE3NjM1NTk1NjF9.EawyHiMXrzdoZX5ilERTS5WoUEB4BcwakXxNC-sBbbU` // Example for auth
-        },
+        headers,
     };
 
     if (body) {
@@ -76,6 +79,36 @@ async function apiRequest<T>(method: string, endpoint: string, body?: any): Prom
         console.warn(`API request failed: ${method} ${endpoint}`, error);
         throw error;
     }
+}
+
+// Perform a login against the backend. Backend expects form-urlencoded OAuth2 fields.
+export async function login(email: string, password: string): Promise<string> {
+    const body = `username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+    const resp = await fetch(`${API_BASE_URL}/auth/login/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body
+    });
+
+    if (!resp.ok) {
+        const txt = await resp.text();
+        let parsed = null;
+        try { parsed = JSON.parse(txt); } catch { parsed = txt; }
+        const message = parsed && parsed.detail ? parsed.detail : resp.statusText;
+        const err: any = new Error(message);
+        err.status = resp.status;
+        throw err;
+    }
+
+    const data = await resp.json();
+    const token = data?.access_token ?? data?.token ?? null;
+    if (!token) throw new Error('No token received from login');
+    try { localStorage.setItem('authToken', token); } catch (e) { /* ignore */ }
+    return token;
+}
+
+export function logout() {
+    try { localStorage.removeItem('authToken'); } catch (e) { }
 }
 
 // Normalize common backend responses into the preferred camelCase shapes
@@ -184,8 +217,8 @@ function normalizeReservationParticipant(p: any) {
 function timeStringToSeconds(t: string): number {
     // Accept HH:MM:SS or HH:MM
     const parts = t.split(':').map(s => parseInt(s, 10));
-    if (parts.length === 3) return parts[0]*3600 + parts[1]*60 + parts[2];
-    if (parts.length === 2) return parts[0]*3600 + parts[1]*60;
+    if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    if (parts.length === 2) return parts[0] * 3600 + parts[1] * 60;
     // numeric string
     if (/^\d+$/.test(t)) return parseInt(t, 10);
     return 0;
@@ -193,9 +226,9 @@ function timeStringToSeconds(t: string): number {
 
 function secondsToTimeString(s: number): string {
     if (typeof s !== 'number' || isNaN(s)) return '00:00:00';
-    const hh = Math.floor(s/3600).toString().padStart(2,'0');
-    const mm = Math.floor((s%3600)/60).toString().padStart(2,'0');
-    const ss = (s%60).toString().padStart(2,'0');
+    const hh = Math.floor(s / 3600).toString().padStart(2, '0');
+    const mm = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
+    const ss = (s % 60).toString().padStart(2, '0');
     return `${hh}:${mm}:${ss}`;
 }
 
@@ -232,8 +265,8 @@ export const getParticipantReservations = (idParticipante: number) => apiRequest
 export const getReservations = () => getMyReservations();
 export const createReservation = (reservationData: Omit<Reservation, 'id'>) => apiRequest<Reservation>('POST', 'reservas', reservationData);
 export const updateReservation = (id: number, reservationData: Partial<Reservation>) => apiRequest<Reservation>('PUT', `reservas/${id}`, reservationData);
-export const updateReservationAttendance = (idReserva: number, attendance:boolean) => apiRequest<Reservation>('PUT', `reservas/${idReserva}/registrar-asistencia/${attendance}`, {id_reserva: idReserva, asistencia: attendance });
-export const updateReservationParticipation = (idReserva: number, participation:boolean) => apiRequest<Reservation>('PUT', `reservas/${idReserva}/participacion/${participation}`, {id_reserva: idReserva, participacion: participation });
+export const updateReservationAttendance = (idReserva: number, attendance: boolean) => apiRequest<Reservation>('PUT', `reservas/${idReserva}/registrar-asistencia/${attendance}`, { id_reserva: idReserva, asistencia: attendance });
+export const updateReservationParticipation = (idReserva: number, participation: boolean) => apiRequest<Reservation>('PUT', `reservas/${idReserva}/participacion/${participation}`, { id_reserva: idReserva, participacion: participation });
 export const deleteReservation = (id: number) => apiRequest<void>('DELETE', `reservas/${id}`);
 // Get participant IDs for a reservation (returns array of participant ids)
 export const getReservationParticipants = (reservationId: number) => apiRequest<number[]>('GET', `reservas/${reservationId}/participantes`);

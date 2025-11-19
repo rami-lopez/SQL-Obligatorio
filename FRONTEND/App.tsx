@@ -6,6 +6,7 @@ import { User, Role, Reservation, Room, Building, Program, Faculty, TimeSlot } f
 import { getBuildings, getFaculties, getPrograms, getRooms, getTimeSlots, getUsers, getAuthMe } from './services/api';
 import { Loader } from './components/common/Loader';
 import { BUILDING_MAP_POSITIONS } from './constants';
+import Login from './components/common/Login';
 
 
 interface AppContextType {
@@ -41,59 +42,74 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch application data (buildings, rooms, users, programs, faculties, timeSlots)
+  const fetchAllData = async (authUserFromMe?: User | null) => {
+    try {
+      setIsLoading(true);
+      const [
+        usersData,
+        roomsData,
+        buildingsDataFromApi,
+        programsData,
+        facultiesData,
+        timeSlotsData
+      ] = await Promise.all([
+        getUsers(),
+        getRooms(),
+        getBuildings(),
+        getPrograms(),
+        getFaculties(),
+        getTimeSlots()
+      ]);
+
+      const hydratedBuildings = buildingsDataFromApi.map(building => ({
+        ...building,
+        mapPosition: BUILDING_MAP_POSITIONS[building.id] || { top: '0', left: '0', width: '0', height: '0' }
+      }));
+
+      setUsers(usersData);
+      setRooms(roomsData);
+      setBuildings(hydratedBuildings);
+      setPrograms(programsData);
+      setFaculties(facultiesData);
+      setTimeSlots(timeSlotsData);
+
+      // Prefer authenticated user info from /auth/me when available
+      if (authUserFromMe) {
+        setCurrentUser(authUserFromMe);
+      } else if (!currentUser && usersData.length > 0) {
+        // fallback: use the first user in the list (useful for local dev without auth)
+        setCurrentUser(usersData[0]);
+      }
+    } catch (err: any) {
+      setError(`Failed to load data: ${err.message}`);
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // On mount: if there is a token, try to fetch /auth/me and then load data.
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        // First, obtain the currently authenticated user (email, rol, id_participante)
-        const authUser = await getAuthMe().catch(err => {
-          console.warn('Failed to fetch auth/me, falling back to users list', err);
-          return null;
-        });
-
-        const [
-          usersData,
-          roomsData,
-          buildingsDataFromApi,
-          programsData,
-          facultiesData,
-          timeSlotsData
-        ] = await Promise.all([
-          getUsers(),
-          getRooms(),
-          getBuildings(),
-          getPrograms(),
-          getFaculties(),
-          getTimeSlots()
-        ]);
-        const hydratedBuildings = buildingsDataFromApi.map(building => ({
-            ...building,
-            mapPosition: BUILDING_MAP_POSITIONS[building.id] || { top: '0', left: '0', width: '0', height: '0' }
-        }));
-
-        setUsers(usersData);
-        setRooms(roomsData);
-        setBuildings(hydratedBuildings);
-        setPrograms(programsData);
-        setFaculties(facultiesData);
-        setTimeSlots(timeSlotsData);
-        // Prefer authenticated user info from /auth/me when available
-        if (authUser) {
-          setCurrentUser(authUser);
-        } else if (usersData.length > 0) {
-          // fallback: use the first user in the list (useful for local dev without auth)
-          setCurrentUser(usersData[0]);
+    const init = async () => {
+      setIsLoading(true);
+      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('authToken') : null;
+      if (token) {
+        try {
+          const authUser = await getAuthMe().catch(err => {
+            console.warn('Failed to fetch auth/me during init', err);
+            return null;
+          });
+          await fetchAllData(authUser ?? null);
+        } catch (e) {
+          setIsLoading(false);
         }
-
-      } catch (err: any) {
-        setError(`Failed to load data: ${err.message}`);
-        console.error(err);
-      } finally {
+      } else {
         setIsLoading(false);
       }
     };
-
-    fetchData();
+    init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const contextValue = useMemo(() => {
@@ -119,7 +135,7 @@ const App: React.FC = () => {
       setTimeSlots: setTimeSlots,
     };
   }, [currentUser, reservations, rooms, buildings, programs, users, faculties, timeSlots]);
-  
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -137,10 +153,8 @@ const App: React.FC = () => {
   }
 
   if (!contextValue || !currentUser) {
-     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-500 bg-gray-100 p-4 rounded-lg shadow-md border border-gray-200">No user data available to start the application.</div>
-      </div>
+    return (
+      <Login onLogin={(user: User) => { fetchAllData(user); }} />
     );
   }
 
