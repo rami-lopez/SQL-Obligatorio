@@ -3,12 +3,11 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from models.auth_model import LoginRequest, TokenResponse, UserInToken, RegisterRequest
 from services.auth_services import (
-    authenticate_user, 
-    create_access_token, 
     hash_password,
     SECRET_KEY,
     ALGORITHM
 )
+from services.login_service import login_and_get_token
 from db import execute_query, fetch_all
 
 router = APIRouter(prefix="/auth", tags=["autenticacion"])
@@ -104,18 +103,7 @@ def register(user: RegisterRequest):
 @router.post("/login", response_model=TokenResponse)
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
     """Login y generación de token JWT"""
-    user = authenticate_user(form_data.username, form_data.password)
-    
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Email o contraseña incorrectos",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    # Crear token con el email como subject
-    access_token = create_access_token(data={"sub": user['email']})
-    
+    access_token = login_and_get_token(form_data.username, form_data.password)
     return TokenResponse(access_token=access_token)
 
 @router.get("/me", response_model=UserInToken)

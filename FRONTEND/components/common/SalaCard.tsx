@@ -20,7 +20,7 @@ const getRoomTypeColor = (type: RoomType) => {
 };
 
 export const SalaCard: React.FC<SalaCardProps> = ({ room, onReserve }) => {
-  // Mock availability
+
   const isAvailableNow = Math.random() > 0.5;
 
   return (
