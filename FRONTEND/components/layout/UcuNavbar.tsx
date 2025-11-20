@@ -64,13 +64,24 @@ const NotificationDropdown: React.FC<{
           const resId = res.idReserva;
           const room = rooms.find((r) => r.idSala === res.idSala);
           const organizer = users.find(
-            (u) => u.id === res.organizerId 
+            (u) => u.idParticipante === res.creadoPor 
           );
-          const date = new Date(res.fecha).toLocaleDateString("es-ES", {
-            weekday: "long",
-            day: "numeric",
-            month: "short",
-          });
+          const dateObj = parseDateOnly(res.fecha);
+          const date = dateObj
+            ? dateObj.toLocaleDateString("es-ES", {
+                year: "numeric",
+                weekday: "long",
+                day: "numeric",
+                month: "short",
+              })
+            : res.fecha
+            ? new Date(res.fecha).toLocaleDateString("es-ES", {
+                year: "numeric",
+                weekday: "long",
+                day: "numeric",
+                month: "short",
+              })
+            : "";
           return (
             <li key={resId} className="p-3 text-gray-700 text-sm">
               <p>
@@ -190,9 +201,9 @@ export const UcuNavbar: React.FC = () => {
   const pendingInvitations = reservations.filter(
     (r) =>
       r.estadoParticipacion === ParticipantStatus.PENDIENTE &&
-      r.estado !== ReservationStatus.CANCELADA
+      r.estado !== ReservationStatus.CANCELADA &&
+      r.fecha >= new Date().toISOString().split("T")[0]
   );
-  console.log(reservations);
 
   const handleAccept = async (
     reservationId: number,
