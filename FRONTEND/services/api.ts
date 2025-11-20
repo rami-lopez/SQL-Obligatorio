@@ -257,6 +257,7 @@ export const updateBuilding = (id: number, buildingData: Partial<Building>) => a
 export const deleteBuilding = (id: number) => apiRequest<void>('DELETE', `edificios/${id}`);
 
 export const getRooms = () => apiRequest<Room[]>('GET', 'salas');
+export const getIsRoomOcuppied = (id_sala, fecha) => apiRequest<boolean>('GET', `salas/${id_sala}/${fecha}`);
 export const createRoom = (roomData: Omit<Room, 'id'>) => apiRequest<Room>('POST', 'salas', roomData);
 export const updateRoom = (id: number, roomData: Partial<Room>) => apiRequest<Room>('PUT', `salas/${id}`, roomData);
 export const deleteRoom = (id: number) => apiRequest<void>('DELETE', `salas/${id}`);
