@@ -33,7 +33,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
     }, []);
 
     const totalReservations = reservations.length;
-    const activeReservations = reservations.filter(r => r.estado === ReservationStatus.ACTIVA).length;
+    const activeReservations = reservations.filter(r => r.estado === ReservationStatus.ACTIVA && r.fecha === new Date().toISOString().split('T')[0]).length;
     const noShowRate = totalReservations > 0 ? ((reservations.filter(r => r.estado === ReservationStatus.NO_ASISTENCIA).length / totalReservations) * 100).toFixed(1) : "0.0";
 
     const roomUsageData = rooms.map(room => ({
