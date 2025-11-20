@@ -6,7 +6,8 @@ from services.sala_service import (
     obtener_sala,
     actualizar_sala,
     eliminar_sala,
-    listar_salas_disponibles
+    listar_salas_disponibles,
+    sala_ocupada,
 )
 from api.auth import get_current_active_admin, get_current_user
 from datetime import date
@@ -37,6 +38,13 @@ def list_disponibles(
 def get_one(id_sala: int, current_user = Depends(get_current_user)):
     """Obtener una sala por ID"""
     return obtener_sala(id_sala)
+
+@router.get("/{id_sala}/{fecha}")
+def esta_ocupada(id_sala: int, fecha: date):
+    """
+    Verificar si una sala esta ocupada o va a estarlo en el correr de la fecha seleccionada
+    """
+    return sala_ocupada(id_sala, fecha)
 
 @router.put("/{id_sala}")
 def update(id_sala: int, s: SalaUpdate, current_user = Depends(get_current_active_admin)):

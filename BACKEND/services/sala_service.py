@@ -138,3 +138,17 @@ def listar_salas_disponibles(fecha: date, start_turn_id: int, end_turn_id: int):
     salas_libres = fetch_all(query, params)
 
     return salas_libres
+
+def sala_ocupada(fecha: date, id_sala: int):
+    """
+    Verificar si una sala esta ocupada o va a estarlo en el correr de la fecha seleccionada
+    """
+
+    cons = """
+    SELECT *
+    FROM sala s
+    JOIN reserva r on r.id_sala = s.id_sala
+    WHERE s.id_sala = %s AND r.fecha = %s AND r.estado IN ('activa', 'confirmada')
+    """
+    resultado = fetch_all(cons, (id_sala, fecha))
+    return resultado != []
