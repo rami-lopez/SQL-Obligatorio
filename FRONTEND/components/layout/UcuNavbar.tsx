@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import { AppContext } from "../../App";
-import { UCU_LOGO_URL } from "../../constants";
+import ucuLogo from "../../assets/logo_ucu_40.svg";
 import { NotificationIcon, ChatIcon, ChevronDownIcon } from "../icons";
 import {
   Role,
@@ -16,6 +16,7 @@ import {
   updateReservation,
   updateReservationParticipation,
   getParticipantSanctions,
+  clearAuthToken,
 } from "../../services/api";
 
 function parseDateOnly(dateStr?: string | null) {
@@ -146,10 +147,10 @@ export const UcuNavbar: React.FC = () => {
     timeSlots,
   } = appContext;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await clearAuthToken();
     setUser(null);
     setShowUserDropdown(false);
-    // Optionally redirect to login page or home
     window.location.href = "/"; 
   };
 
@@ -217,7 +218,7 @@ export const UcuNavbar: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-8">
-            <img src={UCU_LOGO_URL} alt="UCU Logo" className="h-8" />
+            <img src={ucuLogo} alt="UCU Logo" className="h-8" />
             <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
               <a
                 href="#"

@@ -19,6 +19,7 @@ import {
   secondsToTimeString,
   buildDateTimeIso,
 } from "../../utils";
+import { Loader } from "../common/Loader";
 
 interface AdminReservasTableProps {
   reservations: Reservation[];
@@ -46,13 +47,17 @@ export const AdminReservasTable: React.FC<AdminReservasTableProps> = () => {
   const appContext = useContext(AppContext);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const { users, rooms, timeSlots } = appContext || {};
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchReservations = async () => {
       try {
+        setIsLoading(true);
         const data = await getAllReservations();
         setReservations(data);
       } catch (error) {
         console.error("Error fetching reservations:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchReservations();
@@ -188,8 +193,6 @@ export const AdminReservasTable: React.FC<AdminReservasTableProps> = () => {
         creado_por: updatedReservation.creadoPor,
         participantes: participantesFormatted,
       };
-      console.log(formated);
-      
       const savedReservation = await updateReservation(resId, formated);
 
       setReservations(prev => prev.map(res => uid(res) === uid(savedReservation as any) ? savedReservation : res));
@@ -198,6 +201,9 @@ export const AdminReservasTable: React.FC<AdminReservasTableProps> = () => {
       alert(`Error al guardar la reserva: ${error.message}`);
     }
   };
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">

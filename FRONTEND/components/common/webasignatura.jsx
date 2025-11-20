@@ -1,4 +1,7 @@
 import React from "react";
+import logoUcu from "../../assets/logo_ucu_40_color.svg";
+import backgroundImage from "../../assets/background.jpg";
+import Login from "./Login";
 
 export default function UCUPage() {
   return (
@@ -15,12 +18,7 @@ export default function UCUPage() {
       {/* HEADER */}
       <header className="w-full bg-white shadow">
         <div className="max-w-7xl mx-auto flex items-center justify-between p-4">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/5/53/UCU_logo.png"
-            alt="UCU Logo"
-            className="h-12"
-          />
-
+          <img src={logoUcu} alt="UCU Logo" className="h-12"  />
           <nav className="hidden md:flex gap-6 text-gray-700 font-semibold">
             <a href="#" className="hover:text-[#003876]">Nosotros</a>
             <a href="#" className="hover:text-[#003876]">Experiencia UCU</a>
@@ -41,7 +39,7 @@ export default function UCUPage() {
       {/* HERO */}
       <section
         className="relative w-full h-[420px] bg-cover bg-center flex items-center justify-center"
-        style={{ backgroundImage: "url('https://ucu.edu.uy/sites/default/files/styles/galleria_full/public/2022-08/DSC_7136%20%281%29.jpg')" }}
+        style={{ backgroundImage: `url(${backgroundImage})` }}
       >
         <div className="absolute inset-0 bg-black/40"></div>
         <div className="relative text-center text-white">
@@ -54,7 +52,8 @@ export default function UCUPage() {
       <section className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-3 gap-6 py-16 px-6">
         <Card title="Autogestión Estudiantil" />
         <Card title="WebAsignatura" />
-        <Card title="Reserva de salas" />
+        <Card title="Reserva de salas" onClick={() => {return <Login/>
+        }} />
         <Card title="Guía del Estudiante" />
         <Card title="Correo Estudiantil" />
         <Card title="Asistencia Remota" />
@@ -64,9 +63,9 @@ export default function UCUPage() {
   );
 }
 
-function Card({ title }) {
+function Card({ title, onClick }) {
   return (
-    <div className="bg-white shadow-md hover:shadow-xl transition rounded-xl p-10 cursor-pointer border-2 border-[#003876] text-center">
+    <div onClick={onClick} className="bg-white shadow-md hover:shadow-xl transition rounded-xl p-10 cursor-pointer border-2 border-[#003876] text-center">
       <h2 className="text-xl font-bold text-[#003876] mb-2 uppercase tracking-wide">{title}</h2>
       <span className="text-[#003876] text-4xl font-black">+</span>
     </div>

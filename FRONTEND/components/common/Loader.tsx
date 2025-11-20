@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { OWL_LOADER_URL } from '../../constants';
+import  OWL_LOADER_URL  from '../../assets/owl_loader.gif';
 
 export const Loader: React.FC = () => {
   return (

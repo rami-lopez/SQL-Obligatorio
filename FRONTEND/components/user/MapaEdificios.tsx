@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
-import { MAP_IMAGE_URL, UCU_LOGO_URL, BUILDING_MAP_POSITIONS } from '../../constants';
+import  { BUILDING_MAP_POSITIONS}  from '../../constants';
+import MAP_IMAGE_URL from '../../assets/mapa.png';
+import UCU_LOGO_URL from '../../assets/ucu_logo.png';
 import { Building } from '../../types';
 import { AppContext } from '../../App';
 import { getBuildingId } from '../../utils';

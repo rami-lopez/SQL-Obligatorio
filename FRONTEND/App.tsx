@@ -5,6 +5,7 @@ import { AdminView } from './components/admin/AdminView';
 import { User, Role, Reservation, Room, Building, Program, Faculty, TimeSlot } from './types';
 import { getBuildings, getFaculties, getPrograms, getRooms, getTimeSlots, getUsers, getAuthMe, loadAuthTokenFromStorage, clearAuthToken } from './services/api';
 import { Loader } from './components/common/Loader';
+import  UCUPage  from './components/common/webasignatura';
 import { BUILDING_MAP_POSITIONS } from './constants';
 import Login from './components/common/Login';
 
