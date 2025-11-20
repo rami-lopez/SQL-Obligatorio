@@ -106,6 +106,11 @@ def eliminar_sala(id_sala: int):
     )
     if not sala:
         raise HTTPException(404, detail="Sala no encontrada")
+    # Elimino las reservas asociadas primero
+    execute_query(
+        "DELETE FROM reserva WHERE id_sala = %s",
+        (id_sala,)
+    )
     
     execute_query(
         "DELETE FROM sala WHERE id_sala = %s",

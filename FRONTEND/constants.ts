@@ -1,6 +1,6 @@
-export const MAP_IMAGE_URL = 'mapa.png';
-export const OWL_LOADER_URL = 'owl_loader.gif';
-export const UCU_LOGO_URL = 'ucu_logo.png';
+export const MAP_IMAGE_URL = 'FRONTEND/assets/ucu_logo.png';
+export const OWL_LOADER_URL = 'FRONTEND/assets/owl_loader.gif';
+export const UCU_LOGO_URL = 'FRONTEND/assets/ucu_logo.png';
 
 export const BUILDING_MAP_POSITIONS: { [key: number]: { top: string; left: string; width: string; height: string; } } = {
   1: { top: '45%', left: '20%', width: '12%', height: '10%' },

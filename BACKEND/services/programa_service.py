@@ -78,7 +78,7 @@ def actualizar_programa(id_programa: int, p: ProgramaUpdate):
     if not campos:
         raise HTTPException(status_code=400, detail="No se enviaron campos para actualizar")
     
-    query = f"UPDATE programa_academico SET {', '.join(campos)} WHERE id_sala = %s"
+    query = f"UPDATE programa_academico SET {', '.join(campos)} WHERE id_programa = %s"
     valores.append(id_programa)
 
     execute_query(query, tuple(valores))

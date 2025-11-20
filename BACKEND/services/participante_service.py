@@ -61,7 +61,8 @@ def actualizar_participante(id: int, p: ParticipanteCreate):
         """
         execute_query(query, (p.nombre, p.apellido, p.email, p.rol, id))
         
-        return {"message": "Participante actualizado exitosamente"}
+        participante_actualizado = fetch_all("SELECT * FROM participante WHERE id_participante = %s", (id,))
+        return participante_actualizado[0]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
     

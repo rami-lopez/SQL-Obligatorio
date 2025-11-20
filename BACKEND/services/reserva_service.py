@@ -102,7 +102,7 @@ def obtener_reserva(id_reserva: int):
 
     return ReservaResponse(**reserva) # el ** desempaqueta
 
-def eliminar_reserva(id_reserva: int, id_participante: int):
+def eliminar_reserva(id_reserva: int, id_participante: int, rol: str):
     """
     Elimina una reserva por su ID.
     Primero elimina las entradas en reserva_participante que referencian la reserva.
@@ -114,7 +114,7 @@ def eliminar_reserva(id_reserva: int, id_participante: int):
     if not reserva:
         raise HTTPException(status_code=404, detail="Reserva no encontrada")
     reserva_db = reserva[0]['creado_por'] == id_participante
-    if not reserva_db:
+    if not reserva_db and rol != 'admin':
         raise HTTPException(status_code=403, detail="Solo el creador puede eliminar esta reserva")
     
     # eliminar participantes relacionados primero

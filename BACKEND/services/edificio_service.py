@@ -2,6 +2,7 @@ from http.client import HTTPException
 from db import fetch_all, execute_query
 from pydantic import BaseModel
 from typing import Optional
+from services.sala_service import eliminar_sala
 
 class EdificioCreate(BaseModel):
     nombre: str
@@ -31,14 +32,14 @@ def listar_edificios():
     return fetch_all("SELECT * FROM edificio")
 
 def obtener_edificio(id_edificio: int):
-    data = fetch_all("SELECT * FROM edificio WHERE id = %s", (id_edificio,))
+    data = fetch_all("SELECT * FROM edificio WHERE id_edificio = %s", (id_edificio,))
     if not data:
         raise HTTPException(status_code=404, detail="Edificio no encontrado")
 
     return data[0]
 
 def actualizar_edificio(id_edificio: int, e: EdificioUpdate):
-    edificio = fetch_all("SELECT * FROM edificio WHERE id = %s", (id_edificio,))
+    edificio = fetch_all("SELECT * FROM edificio WHERE id_edificio = %s", (id_edificio,))
     if not edificio:
         raise HTTPException(status_code=404, detail="Edificio no encontrado")
 
@@ -60,19 +61,23 @@ def actualizar_edificio(id_edificio: int, e: EdificioUpdate):
     if not campos:
         raise HTTPException(status_code=400, detail="No se enviaron datos para actualizar")
 
-    query = f"UPDATE edificio SET {', '.join(campos)} WHERE id = %s"
+    query = f"UPDATE edificio SET {', '.join(campos)} WHERE id_edificio = %s"
     valores.append(id_edificio)
 
     execute_query(query, tuple(valores))
 
-    return {"message": "Edificio actualizado"}
+    edificio_actualizado = fetch_all("SELECT * FROM edificio WHERE id_edificio = %s", (id_edificio,))[0]
+    return edificio_actualizado
 
 
 def eliminar_edificio(id_edificio: int):
-    edificio = fetch_all("SELECT * FROM edificio WHERE id = %s", (id_edificio,))
+    edificio = fetch_all("SELECT * FROM edificio WHERE id_edificio = %s", (id_edificio,))
     if not edificio:
         raise HTTPException(status_code=404, detail="Edificio no encontrado")
-
-    execute_query("DELETE FROM edificio WHERE id = %s", (id_edificio,))
+    # elimino las salas asociadas
+    salas = fetch_all("SELECT * FROM sala WHERE id_edificio = %s", (id_edificio,))
+    for sala in salas:
+        eliminar_sala(sala['id_sala'])
+    execute_query("DELETE FROM edificio WHERE id_edificio = %s", (id_edificio,))
     return {"message": "Edificio eliminado"}
 
