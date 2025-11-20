@@ -196,7 +196,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({ room, onClos
                                     ${isSelected ? 'bg-ucu-primary text-white border-ucu-primary shadow-md' : ''}
                                     ${!occupied && !isSelected ? 'bg-white hover:bg-ucu-light-gray' : ''}
                                 `}>
-                                {turn.descripcion ?? turn.description}
+                                {turn.descripcion}
                             </button>
                         )
                     })}

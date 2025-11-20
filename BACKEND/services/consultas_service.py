@@ -21,7 +21,7 @@ def salas_mas_reservadas(limit=int):
 
 def turnos_mas_demandados():
     turnos = fetch_all("""
-        SELECT t.id_turno, t.nombre, COUNT(r.id_reserva) AS cantidad
+        SELECT t.id_turno, t.descripcion, COUNT(r.id_reserva) AS cantidad
         FROM reserva r
         JOIN turno t ON t.id_turno = r.start_turn_id
         GROUP BY t.id_turno
@@ -36,10 +36,18 @@ def turnos_mas_demandados():
 
 def promedio_participantes_por_sala():
     promedio = fetch_all("""
-        SELECT s.id_sala, s.nombre, AVG(r.cant_participantes) AS promedio
-        FROM reserva r
-        JOIN sala s ON s.id_sala = r.id_sala
-        GROUP BY s.id_sala;
+        SELECT s.id_sala,
+               s.nombre,
+               ROUND(AVG(COALESCE(rp.participantes, 0)), 2) AS promedio
+        FROM sala s
+        LEFT JOIN reserva r ON r.id_sala = s.id_sala
+        LEFT JOIN (
+            SELECT id_reserva, COUNT(*) AS participantes
+            FROM reserva_participante
+            GROUP BY id_reserva
+        ) rp ON rp.id_reserva = r.id_reserva
+        GROUP BY s.id_sala, s.nombre
+        ORDER BY promedio DESC;
     """)
     if not promedio:
         raise HTTPException(
@@ -52,10 +60,10 @@ def reservas_por_carrera_facultad():
     reservasPorCarrera = fetch_all("""
         SELECT f.nombre AS facultad, c.nombre AS carrera, COUNT(r.id_reserva) AS reservas
         FROM reserva r
-        JOIN participante p ON p.id_participante = r.id_creador
-        JOIN carrera c ON c.id_carrera = p.id_carrera
+        JOIN participante_programa p ON p.id_participante = r.creado_por
+        JOIN programa_academico c ON c.id_programa = p.id_programa
         JOIN facultad f ON f.id_facultad = c.id_facultad
-        GROUP BY f.id_facultad, c.id_carrera;
+        GROUP BY f.id_facultad, c.id_programa;
     """)
     if not reservasPorCarrera:
         raise HTTPException(
@@ -83,10 +91,10 @@ def ocupacion_salas_por_edificio():
 def reservas_asistencias_por_rol():
     reservaAsistencia = fetch_all("""
         SELECT p.rol, 
-               COUNT(r.id_reserva) AS reservas,
-               SUM(CASE WHEN r.asistencia_confirmada = 1 THEN 1 ELSE 0 END) AS asistencias
-        FROM reserva r
-        JOIN participante p ON p.id_participante = r.id_creador
+               SUM(CASE WHEN r.estado_participacion = 'confirmada' THEN 1 ELSE 0 END) AS reservas_confirmadas,
+               SUM(CASE WHEN r.asistencia = 'presente' THEN 1 ELSE 0 END) AS asistencias
+        FROM reserva_participante r
+        JOIN participante p ON p.id_participante = r.id_participante
         GROUP BY p.rol;
     """)
     if not reservaAsistencia:
@@ -98,10 +106,12 @@ def reservas_asistencias_por_rol():
 
 def sanciones_por_rol():
     sancionesRol = fetch_all("""
-        SELECT p.rol, COUNT(s.id_sancion) AS sanciones
-        FROM sancion s
+        SELECT
+            SUM(CASE WHEN p.rol = 'docente' THEN 1 ELSE 0 END) AS docentes,
+            SUM(CASE WHEN p.rol IN ('alumno_grado','alumno_posgrado') THEN 1 ELSE 0 END) AS alumnos
+        FROM sancion_participante s
         JOIN participante p ON p.id_participante = s.id_participante
-        GROUP BY p.rol;
+        WHERE p.rol IN ('docente','alumno_grado','alumno_posgrado');
     """)
     if not sancionesRol:
         raise HTTPException(
@@ -112,8 +122,11 @@ def sanciones_por_rol():
 
 def porcentaje_reservas_utilizadas():
     porcentaje = fetch_all("""
-        SELECT 
-            SUM(CASE WHEN asistencia_confirmada = 1 THEN 1 END) / COUNT(*) * 100 AS porcentaje
+        SELECT
+            
+                100.0 * SUM(CASE WHEN estado NOT IN ('no_asistencia','cancelada') THEN 1 ELSE 0 END)
+                / COUNT(*) 
+             AS porcentaje
         FROM reserva;
     """)
     if not porcentaje:
@@ -156,7 +169,7 @@ def participantes_mas_activos(limit):
     participantesMasActivos = fetch_all("""
         SELECT p.id_participante, p.nombre, COUNT(r.id_reserva) AS reservas
         FROM participante p
-        JOIN reserva r ON r.id_creador = p.id_participante
+        JOIN reserva r ON r.creado_por = p.id_participante
         GROUP BY p.id_participante
         ORDER BY reservas DESC
         LIMIT %s;
