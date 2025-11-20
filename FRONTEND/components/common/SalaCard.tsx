@@ -59,7 +59,7 @@ export const SalaCard: React.FC<SalaCardProps> = ({ room, onReserve }) => {
       const verificacionOcupada = async () => {
         try {
           const salaOcupada = await getIsRoomOcuppied(room.idSala, tiempo)
-          setAvail(salaOcupada)
+          setAvail(!salaOcupada)
           console.log(salaOcupada, room.idSala, tiempo)
         } catch (error) {
           return error;
