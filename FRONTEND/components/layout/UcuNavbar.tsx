@@ -112,6 +112,8 @@ export const UcuNavbar: React.FC = () => {
   const appContext = useContext(AppContext);
   const [showNotifications, setShowNotifications] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -120,6 +122,12 @@ export const UcuNavbar: React.FC = () => {
         !notificationRef.current.contains(event.target as Node)
       ) {
         setShowNotifications(false);
+      }
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(event.target as Node)
+      ) {
+        setShowUserDropdown(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -137,6 +145,13 @@ export const UcuNavbar: React.FC = () => {
     rooms,
     timeSlots,
   } = appContext;
+
+  const handleLogout = () => {
+    setUser(null);
+    setShowUserDropdown(false);
+    // Optionally redirect to login page or home
+    window.location.href = "/"; 
+  };
 
   useEffect(() => {
     const fetchReservations = async () => {
@@ -257,44 +272,64 @@ export const UcuNavbar: React.FC = () => {
               <ChatIcon className="w-6 h-6" />
             </button>
             <div className="w-px h-6 bg-white/30"></div>
-            <div className="flex items-center space-x-2">
-              <div>
-                {user.rol != 'admin' && sanctions && sanctions.length > 0 ? (
-                  (() => {
-                    const s = sanctions[0];
-                    const start = parseDateOnly(
-                      s?.fechaInicio ?? s?.fecha_inicio
-                    );
-                    const end = parseDateOnly(s?.fechaFin ?? s?.fecha_fin);
-                    const startStr = start
-                      ? start.toLocaleDateString("es-ES", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : "";
-                    const endStr = end
-                      ? end.toLocaleDateString("es-ES", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : "";
-                    return (
-                      <div className="px-3 py-1 bg-red-600 text-white rounded-md text-xs font-semibold">
-                        Sanción: {startStr}
-                        {endStr ? ` → ${endStr}` : ""}
-                      </div>
-                    );
-                  })()
-                ) : (
-                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-ucu-primary font-bold text-lg" />
-                )}
-              </div>
-              <ChevronDownIcon className="w-4 h-4" />
+            <div className="relative" ref={userDropdownRef}>
+              <button
+                onClick={() => setShowUserDropdown((s) => !s)}
+                className="flex items-center space-x-2 focus:outline-none"
+              >
+                <div>
+                  {user.rol != "admin" && sanctions && sanctions.length > 0 ? (
+                    (() => {
+                      const s = sanctions[0];
+                      const start = parseDateOnly(
+                        s?.fechaInicio ?? s?.fecha_inicio
+                      );
+                      const end = parseDateOnly(s?.fechaFin ?? s?.fecha_fin);
+                      const startStr = start
+                        ? start.toLocaleDateString("es-ES", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : "";
+                      const endStr = end
+                        ? end.toLocaleDateString("es-ES", {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          })
+                        : "";
+                      return (
+                        <div className="px-3 py-1 bg-red-600 text-white rounded-md text-xs font-semibold">
+                          Sanción: {startStr}
+                          {endStr ? ` → ${endStr}` : ""}
+                        </div>
+                      );
+                    })()
+                  ) : (
+                    <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-ucu-primary font-bold text-lg">
+                      {user.email ? user.email[0].toUpperCase() : ""}
+                    </div>
+                  )}
+                </div>
+                <ChevronDownIcon className="w-4 h-4" />
+              </button>
+              {showUserDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20 overflow-hidden">
+                  <div className="p-2">
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Cerrar Sesión
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        </div>  
+        
       </div>
     </header>
   );

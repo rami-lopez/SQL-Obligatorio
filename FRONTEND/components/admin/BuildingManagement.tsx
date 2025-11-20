@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Building } from '../../types';
 import { EditBuildingModal } from './EditBuildingModal';
 import { AddBuildingModal } from './AddBuildingModal';
-import { createBuilding, updateBuilding, deleteBuilding } from '../../services/api';
+import { createBuilding, updateBuilding, deleteBuilding, getBuildings } from '../../services/api';
 
 interface BuildingManagementProps {
     buildings: Building[];
@@ -17,14 +17,15 @@ export const BuildingManagement: React.FC<BuildingManagementProps> = ({ building
 
   const handleAddBuilding = async (newBuildingData: Omit<Building, 'id' | 'mapPosition'>) => {
     try {
-        // FIX: Add a default mapPosition as it's required by the Building type but not provided by the AddBuildingModal.
         const buildingWithMapPosition = {
             ...newBuildingData,
             mapPosition: { top: '0', left: '0', width: '0', height: '0' }
         };
-        const newBuilding = await createBuilding(buildingWithMapPosition);
-        setBuildings(prev => [...prev, newBuilding]);
-        setIsAddModalOpen(false);
+    await createBuilding(buildingWithMapPosition);
+    // Re-fetch the buildings from the server so the UI reflects server-side state
+    const refreshed = await getBuildings();
+    setBuildings(refreshed);
+    setIsAddModalOpen(false);
     } catch(error: any) {
         alert(`Error al agregar edificio: ${error.message}`);
     }
@@ -32,15 +33,18 @@ export const BuildingManagement: React.FC<BuildingManagementProps> = ({ building
 
   const handleSaveChanges = async (updatedBuilding: Building) => {
     try {
-        const savedBuilding = await updateBuilding(updatedBuilding.id, updatedBuilding);
-        setBuildings(prev => prev.map(b => b.id === savedBuilding.id ? savedBuilding : b));
+        const savedBuilding = await updateBuilding(updatedBuilding.idEdificio, updatedBuilding);
+        
+        
+        setBuildings(prev => prev.map(b => b.idEdificio === savedBuilding.idEdificio ? savedBuilding : b));
         setEditingBuilding(null);
     } catch(error: any) {
         alert(`Error al guardar cambios: ${error.message}`);
     }
   };
   
-  const handleDelete = (buildingId: number) => {
+  const handleDelete = async (buildingId: number) => {
+   
     setBuildingToDeleteId(buildingId);
     setIsDeleteModalOpen(true);
   };
@@ -49,7 +53,8 @@ export const BuildingManagement: React.FC<BuildingManagementProps> = ({ building
     if (buildingToDeleteId !== null) {
         try {
             await deleteBuilding(buildingToDeleteId);
-            setBuildings(prev => prev.filter(b => b.id !== buildingToDeleteId));
+            const refreshed = await getBuildings();
+            setBuildings(refreshed);
         } catch(error: any) {
             alert(`Error al eliminar edificio: ${error.message}`);
         } finally {
@@ -108,7 +113,7 @@ export const BuildingManagement: React.FC<BuildingManagementProps> = ({ building
                         </div>
                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                             <h3 className="text-lg leading-6 font-medium text-gray-900">Confirmar Eliminación</h3>
-                            <p className="mt-2 text-sm text-gray-500">¿Estás seguro de que quieres eliminar este edificio? Esta acción es permanente.</p>
+                            <p className="mt-2 text-sm text-gray-500">¿Estás seguro de que quieres eliminar este edificio? <strong>Esto eliminara todas las salas asociadas.</strong> Esta acción es permanente.</p>
                         </div>
                     </div>
                 </div>

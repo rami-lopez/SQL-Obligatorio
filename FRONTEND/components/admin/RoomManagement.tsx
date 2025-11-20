@@ -3,7 +3,7 @@ import { Room, RoomType } from '../../types';
 import { EditRoomModal } from './EditRoomModal';
 import { AddRoomModal } from './AddRoomModal';
 import { AppContext } from '../../App';
-import { createRoom, updateRoom, deleteRoom } from '../../services/api';
+import { createRoom, updateRoom, deleteRoom, getRooms } from '../../services/api';
 
 interface RoomManagementProps {
     rooms: Room[];
@@ -50,8 +50,10 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({ rooms, setRooms 
   
   const handleAddRoom = async (newRoomData: Omit<Room, 'id'>) => {
     try {
-        const newRoom = await createRoom(newRoomData);
-        setRooms(prev => [...prev, newRoom]);
+        await createRoom(newRoomData);
+        // Re-fetch rooms from the server so UI reflects server-side state
+        const refreshed = await getRooms();
+        setRooms(refreshed);
         setIsAddModalOpen(false);
     } catch (error: any) {
         alert(`Error al agregar sala: ${error.message}`);
@@ -60,8 +62,9 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({ rooms, setRooms 
 
   const handleSaveChanges = async (updatedRoom: Room) => {
     try {
-        const savedRoom = await updateRoom(updatedRoom.id, updatedRoom);
-        setRooms(prev => prev.map(r => r.id === savedRoom.id ? savedRoom : r));
+
+        const savedRoom = await updateRoom(updatedRoom.idSala, updatedRoom);
+        setRooms(prev => prev.map(r => r.idSala === savedRoom.idSala ? savedRoom : r));
         setEditingRoom(null);
     } catch (error: any) {
         alert(`Error al guardar sala: ${error.message}`);
@@ -77,7 +80,7 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({ rooms, setRooms 
     if (roomToDeleteId !== null) {
         try {
             await deleteRoom(roomToDeleteId);
-            setRooms(prev => prev.filter(r => r.id !== roomToDeleteId));
+            setRooms(prev => prev.filter(r => r.idSala !== roomToDeleteId));
         } catch (error: any) {
             alert(`Error al eliminar sala: ${error.message}`);
         } finally {
@@ -207,7 +210,7 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({ rooms, setRooms 
                         </div>
                         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                             <h3 className="text-lg leading-6 font-medium text-gray-900">Confirmar Eliminación</h3>
-                            <p className="mt-2 text-sm text-gray-500">¿Estás seguro de que quieres eliminar esta sala? Esta acción es permanente.</p>
+                            <p className="mt-2 text-sm text-gray-500">¿Estás seguro de que quieres eliminar esta sala? <strong>Esto eliminara todas las reservas asociadas.</strong> Esta acción es permanente.</p>
                         </div>
                     </div>
                 </div>

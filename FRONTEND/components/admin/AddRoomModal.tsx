@@ -12,20 +12,20 @@ export const AddRoomModal: React.FC<AddRoomModalProps> = ({ onClose, onAdd }) =>
   const buildings = appContext?.buildings || [];
   
   const [newRoom, setNewRoom] = useState<Omit<Room, 'id'>>({
-    name: '',
-    buildingId: buildings[0]?.id || 0,
-    capacity: 10,
-    type: RoomType.FREE,
+    nombre: '',
+    id_edificio: buildings[0]?.idEdificio || 0,
+    capacidad: 10,
+    tipo: RoomType.LIBRE,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setNewRoom(prev => ({ ...prev, [name]: name === 'capacity' || name === 'buildingId' ? parseInt(value, 10) : value }));
+    setNewRoom(prev => ({ ...prev, [name]: name === 'capacidad' || name === 'id_edificio' ? parseInt(value, 10) : value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (newRoom.name.trim() === '' || newRoom.capacity <= 0 || !newRoom.buildingId) {
+    if (newRoom.nombre.trim() === '' || newRoom.capacidad <= 0 || !newRoom.id_edificio) {
         alert("Por favor, complete todos los campos correctamente.");
         return;
     }
@@ -43,33 +43,33 @@ export const AddRoomModal: React.FC<AddRoomModalProps> = ({ onClose, onAdd }) =>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre de la Sala</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={newRoom.name}
+              id="nombre"
+              name="nombre"
+              value={newRoom.nombre}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
               required
             />
           </div>
           <div>
-            <label htmlFor="buildingId" className="block text-sm font-medium text-gray-700">Edificio</label>
+            <label htmlFor="id_edificio" className="block text-sm font-medium text-gray-700">Edificio</label>
             <select
-              id="buildingId"
-              name="buildingId"
-              value={newRoom.buildingId}
+              id="id_edificio"
+              name="id_edificio"
+              value={newRoom.id_edificio}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
             >
-              {buildings.map((b: Building) => <option key={b.id} value={b.id}>{b.name}</option>)}
+              {buildings.map((b: Building) => <option key={b.idEdificio} value={b.idEdificio}>{b.nombre}</option>)}
             </select>
           </div>
           <div>
-            <label htmlFor="capacity" className="block text-sm font-medium text-gray-700">Capacidad</label>
+            <label htmlFor="capacidad" className="block text-sm font-medium text-gray-700">Capacidad</label>
             <input
               type="number"
-              id="capacity"
-              name="capacity"
-              value={newRoom.capacity}
+              id="capacidad"
+              name="capacidad"
+              value={newRoom.capacidad}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
               required
@@ -79,9 +79,9 @@ export const AddRoomModal: React.FC<AddRoomModalProps> = ({ onClose, onAdd }) =>
           <div>
             <label htmlFor="type" className="block text-sm font-medium text-gray-700">Tipo de Sala</label>
             <select
-              id="type"
-              name="type"
-              value={newRoom.type}
+              id="tipo"
+              name="tipo"
+              value={newRoom.tipo}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
             >

@@ -17,7 +17,7 @@ export const AddBuildingModal: React.FC<AddBuildingModalProps> = ({ onClose, onA
         alert("El nombre y la dirección no pueden estar vacíos.");
         return;
     }
-    onAdd({ name, address, department });
+    onAdd({ nombre: name, direccion: address, departamento:  department });
   };
 
   return (

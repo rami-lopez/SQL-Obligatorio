@@ -28,8 +28,9 @@ export const ProgramManagement: React.FC<ProgramManagementProps> = ({ programs, 
 
   const handleSaveChanges = async (updatedProgram: Program) => {
     try {
-        const savedProgram = await updateProgram(updatedProgram.id, updatedProgram);
-        setPrograms(prev => prev.map(p => p.id === savedProgram.id ? savedProgram : p));
+        const savedProgram = await updateProgram(updatedProgram.idPrograma, updatedProgram);
+       
+        setPrograms(prev => prev.map(p => p.idPrograma === savedProgram.idPrograma ? savedProgram : p));
         setEditingProgram(null);
     } catch (error: any) {
         alert(`Error al guardar programa: ${error.message}`);
@@ -45,7 +46,7 @@ export const ProgramManagement: React.FC<ProgramManagementProps> = ({ programs, 
     if (programToDeleteId !== null) {
         try {
             await deleteProgram(programToDeleteId);
-            setPrograms(prev => prev.filter(p => p.id !== programToDeleteId));
+            setPrograms(prev => prev.filter(p => p.idPrograma !== programToDeleteId));
         } catch(error: any) {
             alert(`Error al eliminar programa: ${error.message}`);
         } finally {
@@ -54,6 +55,8 @@ export const ProgramManagement: React.FC<ProgramManagementProps> = ({ programs, 
         }
     }
   };
+console.log(faculties);
+console.log(programs);
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
@@ -79,7 +82,7 @@ export const ProgramManagement: React.FC<ProgramManagementProps> = ({ programs, 
               <tr key={program.idPrograma} className="bg-white border-b hover:bg-gray-50">
                 <td className="px-6 py-4 font-medium text-gray-900">{program.idPrograma}</td>
                 <td className="px-6 py-4">{program.nombre}</td>
-                <td className="px-6 py-4">{faculties.find(f => f.id === program.facultadId)?.nombre || 'N/A'}</td>
+                <td className="px-6 py-4">{faculties.find(f => f.idFacultad === program.idFacultad)?.nombre || 'N/A'}</td>
                 <td className="px-6 py-4 capitalize">{program.tipo}</td>
                 <td className="px-6 py-4">
                   <div className="flex items-center space-x-4">

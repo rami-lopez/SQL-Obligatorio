@@ -176,8 +176,9 @@ export const AdminReservasTable: React.FC<AdminReservasTableProps> = () => {
       const participantesFormatted = [];
 
       updatedReservation.participantes.forEach(part => {
-        participantesFormatted.push(part.id_participante);
+        participantesFormatted.push(part.id_participante.idParticipante);
       });
+
       const formated = {
         id_sala: updatedReservation.idSala,
         fecha: updatedReservation.fecha,
@@ -191,8 +192,8 @@ export const AdminReservasTable: React.FC<AdminReservasTableProps> = () => {
       
       const savedReservation = await updateReservation(resId, formated);
 
-      // setReservations(prev => prev.map(res => uid(res) === uid(savedReservation as any) ? savedReservation : res));
-      //setEditingReservation(null);
+      setReservations(prev => prev.map(res => uid(res) === uid(savedReservation as any) ? savedReservation : res));
+      setEditingReservation(null);
     } catch (error: any) {
       alert(`Error al guardar la reserva: ${error.message}`);
     }
@@ -229,7 +230,7 @@ export const AdminReservasTable: React.FC<AdminReservasTableProps> = () => {
               <ul className="absolute z-10 w-full bg-white border border-gray-200 rounded-md mt-1 max-h-40 overflow-y-auto shadow-lg">
                 {suggestedRooms.map((room) => (
                   <li
-                    key={getRoomId(room)}
+                    key={room.idSala}
                     onMouseDown={() => {
                       setFilterRoomName(room.nombre);
                       setShowRoomSuggestions(false);

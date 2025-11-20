@@ -78,7 +78,7 @@ def registrar_asist(id_reserva: int, presente: bool, current_user: UserInToken =
 @router.delete("/{id_reserva}")
 def eliminar_reserva_endpoint(id_reserva: int, current_user = Depends(get_current_user)):
     """Elimina una reserva especifica"""
-    return eliminar_reserva_service(id_reserva, current_user.id_participante)
+    return eliminar_reserva_service(id_reserva, current_user.id_participante, current_user.rol)
 
 @router.get("/{id_reserva}/participantes")
 def listar_participantes_reserva(id_reserva: int, current_user = Depends(get_current_user)):

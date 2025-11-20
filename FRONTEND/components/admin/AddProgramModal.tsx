@@ -9,17 +9,19 @@ interface AddProgramModalProps {
 
 export const AddProgramModal: React.FC<AddProgramModalProps> = ({ faculties, onClose, onAdd }) => {
   const [name, setName] = useState('');
-  const [facultyId, setFacultyId] = useState<number>(faculties[0]?.id || 0);
+  const [facultyId, setFacultyId] = useState<number>(faculties[0]?.id || 1);
   const [type, setType] = useState<ProgramType>(ProgramType.GRADO);
 
+  console.log(faculties);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (name.trim() === '' || !facultyId) {
         alert("El nombre y la facultad son obligatorios.");
         return;
     }
-    onAdd({ name, facultyId, type });
+    onAdd({ nombre: name, id_facultad: facultyId, tipo: type });
   };
 
   return (
@@ -36,7 +38,7 @@ export const AddProgramModal: React.FC<AddProgramModalProps> = ({ faculties, onC
               id="name"
               name="name"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onInput={(e) => setName(e.currentTarget.value)}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
               required
             />
@@ -47,7 +49,7 @@ export const AddProgramModal: React.FC<AddProgramModalProps> = ({ faculties, onC
               id="facultyId"
               name="facultyId"
               value={facultyId}
-              onChange={(e) => setFacultyId(parseInt(e.target.value, 10))}
+              onChange={(e) => setFacultyId(parseInt(e.currentTarget.value, 10))}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
             >
                 {faculties.map(f => <option key={f.idFacultad} value={f.idFacultad}>{f.nombre}</option>)}

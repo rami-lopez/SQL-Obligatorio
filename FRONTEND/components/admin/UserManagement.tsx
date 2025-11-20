@@ -31,8 +31,8 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
 
   const handleSaveChanges = async (updatedUser: User) => {
     try {
-        const savedUser = await updateUser(updatedUser.id, updatedUser);
-        setUsers(prev => prev.map(u => u.id === savedUser.id ? savedUser : u));
+        const savedUser = await updateUser(updatedUser.idParticipante, updatedUser);
+        setUsers(prev => prev.map(u => u.idParticipante === savedUser.idParticipante ? savedUser : u));
         setEditingUser(null);
     } catch (error: any) {
         alert(`Error al guardar usuario: ${error.message}`);
@@ -57,6 +57,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
       }
     }
   };
+console.log(users);
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
@@ -74,7 +75,6 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
               <th scope="col" className="px-6 py-3">Nombre</th>
               <th scope="col" className="px-6 py-3">Email</th>
               <th scope="col" className="px-6 py-3">Rol</th>
-              <th scope="col" className="px-6 py-3">Programas</th>
               <th scope="col" className="px-6 py-3">Estado</th>
               <th scope="col" className="px-6 py-3">Acciones</th>
             </tr>
@@ -87,11 +87,8 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
                 <td className="px-6 py-4">{user.email}</td>
                 <td className="px-6 py-4">{user.rol}</td>
                 <td className="px-6 py-4">
-                  {user.programIds?.map(pId => programs.find(p => p.id === pId)?.name).filter(Boolean).join(', ') || 'N/A'}
-                </td>
-                <td className="px-6 py-4">
-                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${user.activo == 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                        {user.activo == 1 ? 'Activo' : 'Inactivo'}
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${user.activo ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                        {user.activo ? 'Activo' : 'Inactivo'}
                     </span>
                 </td>
                 <td className="px-6 py-4">

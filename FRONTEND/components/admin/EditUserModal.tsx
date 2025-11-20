@@ -30,7 +30,7 @@ export const EditUserModal: React.FC<EditUserModalProps> = ({ user, onClose, onS
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (editedUser.name.trim() === '' || editedUser.lastName.trim() === '') {
+    if (editedUser.nombre.trim() === '' || editedUser.apellido.trim() === '') {
         alert("El nombre y el apellido no pueden estar vacíos.");
         return;
     }

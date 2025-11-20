@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Room, RoomType, Building } from '../../types';
 import { AppContext } from '../../App';
+import { build } from 'vite';
 
 interface EditRoomModalProps {
   room: Room;
@@ -15,7 +16,7 @@ export const EditRoomModal: React.FC<EditRoomModalProps> = ({ room, onClose, onS
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setEditedRoom(prev => ({ ...prev, [name]: name === 'capacity' || name === 'buildingId' ? parseInt(value, 10) : value }));
+    setEditedRoom(prev => ({ ...prev, [name]: name === 'capacidad' || name === 'id_edificio' || name === 'id_sala' ? parseInt(value, 10) : value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,40 +28,40 @@ export const EditRoomModal: React.FC<EditRoomModalProps> = ({ room, onClose, onS
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-xl w-full max-w-lg transform transition-all max-h-[90vh] flex flex-col">
         <div className="p-6 border-b">
-          <h2 className="text-2xl font-bold text-ucu-primary">Editar Sala: {room.name}</h2>
+          <h2 className="text-2xl font-bold text-ucu-primary">Editar Sala: {room.nombre}</h2>
         </div>
         <div className="p-6 overflow-y-auto space-y-4">
           <div>
             <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre de la Sala</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={editedRoom.name}
+              id="nombre"
+              name="nombre"
+              value={editedRoom.nombre}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
               required
             />
           </div>
           <div>
-            <label htmlFor="buildingId" className="block text-sm font-medium text-gray-700">Edificio</label>
+            <label htmlFor="id_edificio" className="block text-sm font-medium text-gray-700">Edificio</label>
             <select
-              id="buildingId"
-              name="buildingId"
-              value={editedRoom.buildingId}
+              id="id_edificio"
+              name="id_edificio"
+              value={editedRoom.idEdificio}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
             >
-              {buildings.map((b: Building) => <option key={b.id} value={b.id}>{b.name}</option>)}
+              {buildings.map((b) => <option key={b.idEdificio} value={b.idEdificio}>{b.nombre}</option>)}
             </select>
           </div>
           <div>
             <label htmlFor="capacity" className="block text-sm font-medium text-gray-700">Capacidad</label>
             <input
               type="number"
-              id="capacity"
-              name="capacity"
-              value={editedRoom.capacity}
+              id="capacidad"
+              name="capacidad"
+              value={editedRoom.capacidad}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
               required
@@ -70,9 +71,9 @@ export const EditRoomModal: React.FC<EditRoomModalProps> = ({ room, onClose, onS
           <div>
             <label htmlFor="type" className="block text-sm font-medium text-gray-700">Tipo de Sala</label>
             <select
-              id="type"
-              name="type"
-              value={editedRoom.type}
+              id="tipo"
+              name="tipo"
+              value={editedRoom.tipo}
               onChange={handleChange}
               className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary"
             >
