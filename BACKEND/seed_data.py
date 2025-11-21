@@ -1,4 +1,3 @@
-
 import csv
 import os
 import sys
@@ -8,6 +7,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
 from db import execute_query, execute_many_queries, fetch_all
+from context import userRol
 from services.auth_services import hash_password
 
 # Colores para consola
@@ -385,11 +385,14 @@ def main():
     # Directorio donde están los CSVs
     csv_dir = Path(__file__).parent / "datos_maestros"      
     
+    token_ctx = userRol.set('admin')
+
     # --- VERIFICAR SI LA BASE DE DATOS YA ESTÁ POBLADA ---
     try:
         result = fetch_all("SELECT COUNT(*) as count FROM facultad")
         if result and result[0]['count'] > 0:
             print_info("La base de datos ya contiene datos. Omitiendo carga inicial.")
+            userRol.reset(token_ctx)
             return
     except Exception as e:
         print_warning(f"No se pudo verificar si la base de datos está poblada, se procederá con la carga. Error: {e}")
@@ -450,6 +453,11 @@ def main():
     print("\n" + "="*60)
     print("CARGA COMPLETADA")
     print("="*60 + "\n")
+
+    try:
+        userRol.reset(token_ctx)
+    except Exception:
+        pass
 
 
 if __name__ == "__main__":

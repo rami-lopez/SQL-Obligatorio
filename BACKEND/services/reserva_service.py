@@ -41,15 +41,18 @@ def crear_reserva(r: ReservaCreateConParticipantes, creado_por: int):
             raise HTTPException(status_code=404, detail="Usuario creador no encontrado")
 
         tipo_creador = creador[0]["rol"]
-        if tipo_sala == "posgrado" and tipo_creador != "alumno_posgrado" and tipo_creador != "docente":
-            raise HTTPException(status_code=403, detail="Solo docentes o estudiantes de posgrado pueden reservar esta sala")
+        if tipo_creador == "admin":
+            pass  # los admins pueden reservar cualquier sala
+        else:
+            if tipo_sala == "posgrado" and tipo_creador != "alumno_posgrado" and tipo_creador != "docente":
+                raise HTTPException(status_code=403, detail="Solo docentes o estudiantes de posgrado pueden reservar esta sala")
 
-        if tipo_sala == "docente" and tipo_creador != "docente":
-            print("Tipo sala docente y creador no es docente")
-            raise HTTPException(status_code=403, detail="Solo docentes pueden reservar esta sala")
+            if tipo_sala == "docente" and tipo_creador != "docente":
+                print("Tipo sala docente y creador no es docente")
+                raise HTTPException(status_code=403, detail="Solo docentes pueden reservar esta sala")
 
-        if tipo_sala == "libre" and tipo_creador not in ("alumno_grado", "alumno_posgrado", "docente"):
-            raise HTTPException(status_code=403, detail="Solo docentes o estudiantes pueden reservar esta sala")
+            if tipo_sala == "libre" and tipo_creador not in ("alumno_grado", "alumno_posgrado", "docente"):
+                raise HTTPException(status_code=403, detail="Solo docentes o estudiantes pueden reservar esta sala")
 
         query = """
             INSERT INTO reserva (id_sala, fecha, start_turn_id, end_turn_id, creado_por)

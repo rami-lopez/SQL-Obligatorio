@@ -1,5 +1,35 @@
+
 CREATE DATABASE IF NOT EXISTS reserva_salas DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE reserva_salas;
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY '1234';
+CREATE USER IF NOT EXISTS 'root'@'%' IDENTIFIED BY '1234';
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' WITH GRANT OPTION;
+
+CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin1234';
+CREATE USER IF NOT EXISTS 'login'@'%' IDENTIFIED BY 'login1234';
+CREATE USER IF NOT EXISTS 'user'@'%' IDENTIFIED BY 'user1234';
+
+-- forzar plugin mysql_native_password para root y para los usuarios de la app
+ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '1234';
+ALTER USER 'admin'@'%' IDENTIFIED WITH mysql_native_password BY 'admin1234';
+ALTER USER 'login'@'%' IDENTIFIED WITH mysql_native_password BY 'login1234';
+ALTER USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY 'user1234';
+
+FLUSH PRIVILEGES;
+
+
+-- Revocar privilegios previos (si los tuviera)
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'admin'@'%';
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'login'@'%';
+REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'user'@'%';
+
+-- Privilegios amplios que no dependen de tablas existentes
+GRANT ALL PRIVILEGES ON reserva_salas.* TO 'admin'@'%';
+GRANT SELECT ON reserva_salas.* TO 'login'@'%';
+GRANT USAGE ON *.* TO 'user'@'%';
+
+FLUSH PRIVILEGES;
 
 CREATE TABLE IF NOT EXISTS login (
     email VARCHAR(200) PRIMARY KEY,
@@ -32,7 +62,6 @@ CREATE TABLE IF NOT EXISTS participante (
   FOREIGN KEY (email) REFERENCES login(email)
 );
 
--- Relación participante-programa (un participante puede estar en varios programas)
 CREATE TABLE IF NOT EXISTS participante_programa (
   id INT AUTO_INCREMENT PRIMARY KEY,
   id_participante INT NOT NULL,
@@ -57,7 +86,6 @@ CREATE TABLE IF NOT EXISTS sala (
   FOREIGN KEY (id_edificio) REFERENCES edificio(id_edificio) ON DELETE RESTRICT
 );
 
--- Turnos horarios (bloques de 1 hora de 8:00 a 23:00)
 CREATE TABLE IF NOT EXISTS turno (
   id_turno INT AUTO_INCREMENT PRIMARY KEY,
   order_index INT NOT NULL,
@@ -66,7 +94,6 @@ CREATE TABLE IF NOT EXISTS turno (
   descripcion VARCHAR(100)
 );
 
--- Reservas: permite reservar múltiples turnos contiguos
 CREATE TABLE IF NOT EXISTS reserva (
   id_reserva INT AUTO_INCREMENT PRIMARY KEY,
   id_sala INT NOT NULL,
@@ -84,7 +111,6 @@ CREATE TABLE IF NOT EXISTS reserva (
   CHECK (start_turn_id <= end_turn_id)
 );
 
--- Participantes de cada reserva con confirmación y registro de asistencia
 CREATE TABLE IF NOT EXISTS reserva_participante (
   id INT AUTO_INCREMENT PRIMARY KEY,
   id_reserva INT NOT NULL,
@@ -107,7 +133,6 @@ CREATE TABLE IF NOT EXISTS sancion_participante (
   FOREIGN KEY (id_participante) REFERENCES participante(id_participante) ON DELETE CASCADE
 );
 
--- Vista para validar sanciones vigentes
 CREATE OR REPLACE VIEW sanciones_vigentes AS
 SELECT id_participante, fecha_inicio, fecha_fin
 FROM sancion_participante
@@ -115,19 +140,21 @@ WHERE CURDATE() BETWEEN fecha_inicio AND fecha_fin;
 
 -- Trigger para prevenir solapamiento de reservas
 DELIMITER $$
-
 CREATE TRIGGER trg_reserva_before_insert
 BEFORE INSERT ON reserva
 FOR EACH ROW
 BEGIN
   DECLARE v_conflictos INT DEFAULT 0;
 
-  -- Verificar que start <= end
   IF NEW.start_turn_id > NEW.end_turn_id THEN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Error: start_turn_id debe ser <= end_turn_id';
   END IF;
 
-  -- Contar solapamientos para la misma sala y fecha
+  IF NEW.fecha < CURDATE() AND (NEW.estado = 'confirmada' OR NEW.estado = 'activa') THEN
+    SIGNAL SQLSTATE '45000'
+      SET MESSAGE_TEXT = 'La fecha debe ser hoy o futura';
+  END IF;
+
   SELECT COUNT(*) INTO v_conflictos
   FROM reserva
   WHERE id_sala = NEW.id_sala
@@ -139,12 +166,10 @@ BEGIN
     SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Conflicto: ya existe reserva solapada';
   END IF;
 END$$
-
 DELIMITER ;
 
-
--- Turnos horarios
-INSERT INTO turno (order_index, hora_inicio, hora_fin, descripcion)
+-- Insertar turnos (idempotente)
+INSERT IGNORE INTO turno (order_index, hora_inicio, hora_fin, descripcion)
 VALUES
 (1,'08:00:00','09:00:00','08-09'),
 (2,'09:00:00','10:00:00','09-10'),
@@ -162,7 +187,21 @@ VALUES
 (14,'21:00:00','22:00:00','21-22'),
 (15,'22:00:00','23:00:00','22-23');
 
+GRANT SELECT ON reserva_salas.facultad TO 'user'@'%';
+GRANT SELECT ON reserva_salas.programa_academico TO 'user'@'%';
+GRANT SELECT ON reserva_salas.edificio TO 'user'@'%';
+GRANT SELECT ON reserva_salas.sala TO 'user'@'%';
+GRANT SELECT ON reserva_salas.turno TO 'user'@'%';
+GRANT SELECT ON reserva_salas.sanciones_vigentes TO 'user'@'%';
+
+GRANT SELECT, INSERT, UPDATE ON reserva_salas.participante TO 'user'@'%';
+GRANT SELECT, INSERT ON reserva_salas.participante_programa TO 'user'@'%';
+
+GRANT SELECT, INSERT, UPDATE ON reserva_salas.reserva TO 'user'@'%';
+GRANT SELECT, INSERT, UPDATE ON reserva_salas.reserva_participante TO 'user'@'%';
+
+GRANT SELECT ON reserva_salas.sancion_participante TO 'user'@'%';
 
 
 
-
+FLUSH PRIVILEGES;

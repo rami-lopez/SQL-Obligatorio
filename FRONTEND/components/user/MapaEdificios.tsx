@@ -26,7 +26,7 @@ export const MapaEdificios: React.FC<MapaEdificiosProps> = ({ onSelectBuilding, 
        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
         <div>
             <h1 className="text-2xl md:text-3xl font-bold text-cyan-600">¿DÓNDE QUEDA MI SALÓN?</h1>
-            <p className="text-ucu-dark-gray mt-2">Los salones de UCU están identificados por letra y números. Conocé dónde queda el tuyo.</p>
+            <p className="text-ucu-dark-gray mt-2">Haz click sobre el edificio en el mapa para reservar tu salón.</p>
         </div>
         <img src={UCU_LOGO_URL} alt="UCU Logo" className="h-10 mt-4 md:mt-0"/>
        </div>

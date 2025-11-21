@@ -1,6 +1,7 @@
-from datetime import datetime, date, timedelta
-from db import execute_query, fetch_all
-import logging
+from datetime import datetime, date, timedelta;
+from db import execute_query, fetch_all;
+import logging;
+from context import userRol
 
 # Configurar logging
 logging.basicConfig(
@@ -11,22 +12,19 @@ logger = logging.getLogger(__name__)
 
 
 def procesar_reservas_finalizadas():
-    """
-    Procesa reservas que han finalizado:
-    1. Marca como 'finalizada' si hubo al menos 1 asistencia
-    2. Marca como 'no_asistencia' si NADIE asistió
-    3. Aplica sanciones cuando corresponda
-    
-    Se ejecuta cada hora en punto.
-    """
+    logger.info("=== Iniciando procesamiento de reservas finalizadas ===")
+    prev_rol = None
     try:
-        logger.info("=== Iniciando procesamiento de reservas finalizadas ===")
-        
-        # Obtener fecha y hora actual
+        # --- FORZAR rol admin para todas las operaciones DB del job ---
+        try:
+            prev_rol = userRol.get()
+        except Exception:
+            prev_rol = None
+        userRol.set("admin")
+
         ahora = datetime.now()
         fecha_actual = ahora.date()
         hora_actual = ahora.hour
-        
         logger.info(f"Fecha: {fecha_actual}, Hora: {hora_actual}:00")
         
         # 1. Buscar reservas activas o confirmadas que ya finalizaron
@@ -152,9 +150,14 @@ def procesar_reservas_finalizadas():
         }
     
     except Exception as e:
-        logger.error(f"Error en procesamiento de reservas: {str(e)}")
-        return {
-            "success": False,
-            "error": str(e)
-        }
-        
+        logger.error(f"Error en procesamiento de reservas: {e}")
+        return {"success": False, "error": str(e)}
+    finally:
+        # Restaurar rol anterior para no afectar otros procesos
+        if prev_rol is None:
+            try:
+                userRol.set(None)
+            except Exception:
+                pass
+        else:
+            userRol.set(prev_rol)
