@@ -48,7 +48,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
     if (userToDeleteId !== null) {
       try {
         await deleteUser(userToDeleteId);
-        setUsers(prev => prev.filter(u => u.id !== userToDeleteId));
+        setUsers(prev => prev.filter(u => u.idParticipante !== userToDeleteId));
       } catch (error: any) {
         alert(`Error al eliminar usuario: ${error.message}`);
       } finally {
@@ -94,7 +94,7 @@ console.log(users);
                 <td className="px-6 py-4">
                   <div className="flex items-center space-x-4">
                     <button onClick={() => setEditingUser(user)} className="text-blue-600 hover:underline font-medium">Editar</button>
-                    <button onClick={() => handleDelete(user.id)} className="text-red-600 hover:underline font-medium">Eliminar</button>
+                    <button onClick={() => handleDelete(user.idParticipante)} className="text-red-600 hover:underline font-medium">Eliminar</button>
                     <button onClick={() => setViewingUser(user)} className="text-green-600 hover:underline font-medium">Ver Historial</button>
                   </div>
                 </td>

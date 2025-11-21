@@ -43,14 +43,10 @@ const Login: React.FC<Props> = ({ onLogin }) => {
     };
 
     return (
-        // 1. Contenedor principal: Ocupa toda la pantalla con fondo blanco (bg-white)
         <div className="flex items-center justify-center min-h-screen bg-white">
-            
-            {/* 2. El Contenedor Azul (El "Welcome" de tu ejemplo) */}
-            {/* Es grande, centrado y tiene sombra */}
             <div className="flex bg-ucu-blue text-white rounded-xl shadow-2xl overflow-hidden max-w-4xl w-full mx-4">
 
-                {/* Sección de Bienvenida (Rectángulo Izquierdo Azul) */}
+                {/* sección de bienvenida */}
                 <div className="flex-1 p-12 hidden md:block bg-blue-100 text-gray-800">
                     <img src={UcuLogo} alt="Logo UCU" className="mb-6 w-auto h-40" />
                     <h1 className="text-4xl font-bold mb-4">¡Bienvenido!</h1>
@@ -60,15 +56,12 @@ const Login: React.FC<Props> = ({ onLogin }) => {
                     </p>
                 </div>
 
-                {/* Sección del Formulario de Login (Rectángulo Derecho Blanco) */}
-                {/* Se ve bien en móviles (w-full) y ocupa la mitad del ancho en escritorio (md:w-1/2) */}
                 <div className="w-full md:w-1/2 bg-white p-8 md:p-12 rounded-xl md:rounded-l-none text-gray-800">
                     <h2 className="text-3xl font-bold mb-8 text-center text-ucu-blue">Iniciar sesión</h2>
                     
                     {error && <div className="text-red-600 bg-red-100 p-3 rounded mb-4 border border-red-300">{error}</div>}
                     
                     <form onSubmit={handleSubmit}>
-                        {/* Campo Email */}
                         <div className="mb-4">
                             <label className="block text-sm font-semibold mb-2">Email</label>
                             <input
@@ -83,7 +76,6 @@ const Login: React.FC<Props> = ({ onLogin }) => {
                             />
                         </div>
                         
-                        {/* Campo Contraseña */}
                         <div className="mb-6">
                             <label className="block text-sm font-semibold mb-2">Contraseña</label>
                             <input
@@ -98,7 +90,6 @@ const Login: React.FC<Props> = ({ onLogin }) => {
                             />
                         </div>
                         
-                        {/* Botones */}
                         <div className="flex gap-4">
                             <button
                                 type="button"
