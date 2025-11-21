@@ -1,7 +1,8 @@
 # SQL-Obligatorio
 Proyecto entregable del curso de Bases de Datos I. Realizado por Lucía Iriarte, Nicolás Lenzuen y Ramiro López.
 
-# **README – Sistema de Gestión de Reservas de Salas (FastAPI + React)**
+# **README
+**Sistema de Gestión de Reservas de Salas (FastAPI + React)**
 
 ## **Descripción general**
 
@@ -17,20 +18,20 @@ Los administradores cuentan con un panel especial para gestionar participantes, 
 
 ## **Funcionalidades principales**
 
-### **✔ Autenticación**
+### ** Autenticación**
 
 * Login con email + contraseña.
 * JWT tokens con expiración.
 * Distinción de roles (estudiante, docente, admin).
 
-### **✔ Gestión de reservas**
+### ** Gestión de reservas**
 
 * Visualizar salas disponibles.
 * Crear reservas (estudiantes y docentes).
 * Modificar o cancelar reservas existentes.
 * Ver historial personal de reservas.
 
-### **✔ Panel de administrador**
+### ** Panel de administrador**
 
 Los administradores pueden:
 
@@ -78,8 +79,9 @@ El back se adapta a la estructura tal como está.
 1. El usuario inicia sesión.
 2. Según su rol, se redirige a:
 
-   * Estudiante/Docente → **/home**
-   * Admin → **/admin**
+   * Estudiante/Docente
+   * Admin
+    
 3. El usuario puede crear reservas, modificarlas o cancelarlas.
 4. El admin puede gestionar todos los datos del sistema.
 
@@ -87,9 +89,14 @@ El back se adapta a la estructura tal como está.
 
 * **FastAPI** (backend)
 * **React** (frontend)
-* **MySQL** 
+* **MySQL**
 
 ## **Cómo correr el proyecto?**
+
+### **Backend**
+```
+docker-compose up --build
+```
 
 ### **Frontend**
 
