@@ -62,35 +62,49 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+from starlette.concurrency import run_in_threadpool
+from jose import JWTError, jwt
+from services.auth_services import SECRET_KEY, ALGORITHM
+from db import fetch_all
+from context import userRol
 
 @app.middleware("http")
 async def attach_user_role_middleware(request: Request, call_next):
-    """Middleware que extrae el token Bearer (si existe), lo decodifica y
-    guarda request.state.user y request.state.role para uso en handlers.
-
-    - No interfiere con rutas públicas: si no hay token o es inválido, simplemente
-      deja los valores en None.
-    - Si el token es válido, intentamos obtener el rol actual desde la tabla
-      participante (en caso de que el rol haya cambiado desde la emisión del token).
+    """Middleware que extrae token y carga request.state.user / request.state.role.
+       - Ejecuta el fetch en threadpool.
+       - Forza userRol('login') antes de la consulta para garantizar credenciales read-only.
+       - Luego mapea userRol según rol real del participante antes de ejecutar el request.
     """
     request.state.user = None
     request.state.role = None
 
-    auth_header = request.headers.get("authorization")
+    token_ctx_before = None
+    token_ctx_after = None
+
+    auth_header = request.headers.get("Authorization")
     if auth_header and auth_header.lower().startswith("bearer "):
         token = auth_header.split(None, 1)[1].strip()
+        print("Token recibido:", token)
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+            print("Payload decodificado:", payload)
             email = payload.get("sub")
-            # Si el token incluye el email en 'sub', obtener rol actual desde DB
+            print("Email extraído del token:", email)
+
             if email:
+                # 1) Seteamos userRol a 'login' temporalmente para que fetch_all
+                #    use el usuario read-only correcto en la consulta.
+                token_ctx_before = userRol.set("login")
                 try:
                     q = """
                         SELECT id_participante, email, rol, activo
                         FROM participante
                         WHERE email = %s
                     """
-                    res = fetch_all(q, (email,))
+                    # Ejecutar la consulta en threadpool (no bloquear event loop)
+                    res = await run_in_threadpool(fetch_all, q, (email,))
+                    print("Resultado de consulta participante:", res)
+
                     if res and res[0].get("activo"):
                         request.state.user = {
                             "id_participante": res[0]["id_participante"],
@@ -98,36 +112,47 @@ async def attach_user_role_middleware(request: Request, call_next):
                         }
                         request.state.role = res[0]["rol"]
                     else:
-                        # Si usuario no existe o está inactivo, no fijamos role
+                        # usuario inexistente o inactivo -> no autenticado
                         request.state.user = None
                         request.state.role = None
-                except Exception:
-                    # Si falla la consulta, como fallback usar rol (si existe) del token
+                except Exception as ex_fetch:
+                    # Si la consulta falla por cualquier motivo, fallback al rol en token
+                    print("Error en fetch_all:", ex_fetch)
                     request.state.role = payload.get("rol")
-        except JWTError:
-            # Token inválido/expirado: dejar valores en None
-            pass
+                finally:
+                    # revertimos el contexto temporal dejado por token_ctx_before
+                    if token_ctx_before is not None:
+                        try:
+                            userRol.reset(token_ctx_before)
+                        except Exception:
+                            pass
 
-    # Map application role to DB connection role
-    token_ctx = None
+        except JWTError:
+            # Token inválido/expirado -> dejamos user/role en None
+            print("JWTError: token inválido o expirado")
+
+    # Map application role to DB connection role para la ejecución del request
+    # Elegimos userRol según request.state.role (si no está, uso 'login' por defecto)
     try:
         if request.state.role == 'admin':
-            token_ctx = userRol.set('admin')
+            token_ctx_after = userRol.set('admin')
         elif request.state.role in ['alumno_grado', 'alumno_posgrado', 'docente']:
-            token_ctx = userRol.set('user')
+            token_ctx_after = userRol.set('user')
         else:
-            # No token / public access -> use 'login' DB user for read-only operations
-            token_ctx = userRol.set('login')
+            token_ctx_after = userRol.set('login')
 
+        # Continuar con el request (ahora con userRol correcto)
         response = await call_next(request)
         return response
+
     finally:
-        # Reset contextvar to previous value
-        if token_ctx is not None:
+        # Restaurar userRol previo (si se seteó)
+        if token_ctx_after is not None:
             try:
-                userRol.reset(token_ctx)
+                userRol.reset(token_ctx_after)
             except Exception:
                 pass
+
 
 # CORS 
 app.add_middleware(

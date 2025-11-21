@@ -10,7 +10,7 @@ def _get_env(name, required=True, default=None):
 
 def connection():
     rol = userRol.get()
-
+    print(f"Conectando a la base de datos con rol: {rol}")
     host = os.getenv("DB_HOST", "localhost")
     port = int(os.getenv("DB_PORT", 3306))
     db = os.getenv("DB_NAME", "reserva_salas")
@@ -39,10 +39,13 @@ def connection():
 
 def fetch_all(query, params=None):
     conn = connection()
+    print(f"Ejecutando consulta: {query} con params: {params}")
     try:
         cur = conn.cursor(dictionary=True)
         cur.execute(query, params or ())
-        return cur.fetchall()
+        results = cur.fetchall()
+        print(f"Resultado de consulta: {results}")
+        return results
     finally:
         cur.close()
         conn.close()
