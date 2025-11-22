@@ -29,6 +29,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
     const [sancionesPorRol, setSancionesPorRol] = useState<any | null>(null);
     const [promedioParticipantesPorSala, setPromedioParticipantesPorSala] = useState<any[]>([]);
     const [diaMasCreacion, setDiaMasCreacion] = useState<any | null>(null);
+    const [roomUsageData, setRoomUsageData] = useState<any[]>([]);
+    const [reservasDia, setReservasDia] = useState<any[]>([]);
     const appContext = useContext(AppContext);
     const rooms = appContext?.rooms || [];
 
@@ -148,10 +150,28 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
     const activeReservations = reservations.filter(r => r.estado === ReservationStatus.ACTIVA && r.fecha === new Date().toISOString().split('T')[0]).length;
     const noShowRate = totalReservations > 0 ? ((reservations.filter(r => r.estado === ReservationStatus.NO_ASISTENCIA).length / totalReservations) * 100).toFixed(1) : "0.0";
 
-    const roomUsageData = rooms.map(room => ({
-        name: room.nombre,
-        reservas: reservations.filter(r => r.idSala === room.idSala).length
-    })).sort((a, b) => b.reservas - a.reservas).slice(0, 5);
+    useEffect(() => {
+        let turnos=[];    
+        turnosDemandados.forEach((td) => {
+            turnos.push({
+                descrpicion: td.descripcion ?? td.name ?? 'N/A',
+                cantidad: td.cantidad ?? td.reservas ?? 0
+            });
+        });
+        let reservas=[];    
+        reservasPorDia.forEach((rd) => {
+            reservas.push({name: translateDayName(rd.dia),
+                reservas: rd.reservas
+            })
+        });
+        setReservasDia(reservas);
+
+        setRoomUsageData( turnos.map(turno => ({
+            name: turno.descrpicion,
+            reservas: turno.cantidad
+        })).sort((a, b) => b.reservas - a.reservas).slice(0, 5))
+        
+    }, [turnosDemandados, reservasPorDia]);
 
     const statusData = [
         { name: 'Activas', value: activeReservations },
@@ -163,18 +183,59 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
 
     return (
         <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 className="font-bold text-ucu-primary mb-4">Turnos mas demandados</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={roomUsageData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                            <XAxis dataKey="name" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
+                            <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
+                            <Tooltip wrapperClassName="!bg-white !border !border-gray-200 !rounded-md !shadow-lg" />
+                            <Legend wrapperStyle={{ fontSize: "14px" }} />
+                            <Bar dataKey="reservas" fill="#1e3264" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 className="font-bold text-ucu-primary mb-4">Reservas por Día</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={reservasDia} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                            <XAxis dataKey="name" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
+                            <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
+                            <Tooltip wrapperClassName="!bg-white !border !border-gray-200 !rounded-md !shadow-lg" />
+                            <Legend wrapperStyle={{ fontSize: "14px" }} />
+                            <Bar dataKey="reservas" fill="#1e3264" radius={[4, 4, 0, 0]} />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+                <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 className="font-bold text-ucu-primary mb-4">Distribución de Estados de Reserva</h3>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <PieChart>
+                            <Pie data={statusData} cx="50%" cy="50%" labelLine={false} outerRadius={100} fill="#8884d8" dataKey="value" nameKey="name" label={(entry) => `${entry.name} (${entry.value})`}>
+                                {statusData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                ))}
+                            </Pie>
+                            <Tooltip />
+                            <Legend />
+                        </PieChart>
+                    </ResponsiveContainer>
+                </div>
+            <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <StatCard title="Reservas Totales (Histórico)" value={totalReservations} description="Total de reservas en el sistema." />
                 <StatCard title="Reservas Activas Hoy" value={activeReservations} description="Próximas reservas para hoy." />
                 <StatCard title="Tasa de No Asistencia" value={`${noShowRate}%`} description="Porcentaje de inasistencias." />
                 <StatCard title="Porcentaje Reservas Utilizadas" value={porcentajeUtilizadas != null ? `${Number(porcentajeUtilizadas).toFixed(1)}%` : 'N/A'} description="Reservas efectivas vs canceladas/no-asistencia." />
+            </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
                 <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
                     <h3 className="text-sm font-medium text-gray-500">Día con más reservas creadas</h3>
                     <p className="text-2xl font-bold mt-2">{diaMasCreacion ? `${translateDayName(diaMasCreacion.dia ?? diaMasCreacion.name ?? 'N/A')} (${diaMasCreacion.reservas ?? diaMasCreacion.cantidad ?? 0})` : 'N/A'}</p>
-                    <p className="text-xs text-gray-400 mt-1">Día de la semana con mayor cantidad de creaciones.</p>
+                    <p className="text-xs text-gray-400 mt-1">Día de la semana con mayor cantidad de creaciones. (sesgado por datos de prueba)</p>
                 </div>
 
                 <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
@@ -182,6 +243,32 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     <ul className="mt-3 text-sm">
                         {salasMas.map((s, i) => (
                             <li key={i} className="py-1">{s.nombre ?? s.name} — {s.cantidad ?? s.reservas ?? s.reservas}</li>
+                        ))}
+                    </ul>
+                </div>
+
+                
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-60 overflow-y-auto">
+                    <h3 className="text-sm font-medium text-gray-500">Reservas por carrera</h3>
+                    <ul className="mt-3 text-sm">
+                        {reservasPorCarrera.map((s, i) => (
+                            <li key={i} className="py-1">({s.facultad}) — {s.carrera} — <strong>{s.reservas}</strong></li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
+                    <h3 className="text-sm font-medium text-gray-500">Reservas vs. asistencias por rol</h3>
+                    <ul className="mt-3 text-sm">
+                        {reservasAsistenciasPorRol.map((s, i) => (
+                            <li key={i} className="py-1">({s.rol}) — {s.reservasConfirmadas}/{s.asistencias} — <strong>{(s.asistencias/s.reservasConfirmadas *100).toFixed(1)}%</strong></li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-60 overflow-y-auto">
+                    <h3 className="text-sm font-medium text-gray-500">Promedio de participantes por sala</h3>
+                    <ul className="mt-3 text-sm">
+                        {promedioParticipantesPorSala.map((s, i) => (
+                            <li key={i} className="py-1"><u><strong>{s.nombre}</strong></u> — {s.promedio}</li>
                         ))}
                     </ul>
                 </div>
@@ -212,35 +299,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     </div>
                 </div>
             </div>
+           
 
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-                <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow-sm border">
-                    <h3 className="font-bold text-ucu-primary mb-4">Salas Más Utilizadas</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={roomUsageData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                            <XAxis dataKey="name" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
-                            <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
-                            <Tooltip wrapperClassName="!bg-white !border !border-gray-200 !rounded-md !shadow-lg" />
-                            <Legend wrapperStyle={{ fontSize: "14px" }} />
-                            <Bar dataKey="reservas" fill="#1e3264" radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </div>
-                <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border">
-                    <h3 className="font-bold text-ucu-primary mb-4">Distribución de Estados de Reserva</h3>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <PieChart>
-                            <Pie data={statusData} cx="50%" cy="50%" labelLine={false} outerRadius={100} fill="#8884d8" dataKey="value" nameKey="name" label={(entry) => `${entry.name} (${entry.value})`}>
-                                {statusData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Pie>
-                            <Tooltip />
-                            <Legend />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </div>
-            </div>
         </div>
     );
 };
