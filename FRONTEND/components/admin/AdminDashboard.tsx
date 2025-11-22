@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Reservation, ReservationStatus } from '../../types';
 import { AppContext } from '../../App';
-import { getAllReservations, getSalasMasReservadas, getTurnosMasDemandados, getPorcentajeReservasUtilizadas, getSalasMenosUtilizadas, getParticipantesMasActivos, getReservasPorDiaSemana, getReservasPorCarreraFacultad, getReservasAsistenciasPorRol, getSancionesPorRol, getPromedioParticipantesPorSala } from '@/services/api';
+import { getAllReservations, getSalasMasReservadas, getTurnosMasDemandados, getPorcentajeReservasUtilizadas, getSalasMenosUtilizadas, getParticipantesMasActivos, getReservasPorDiaSemana, getReservasPorCarreraFacultad, getReservasAsistenciasPorRol, getSancionesPorRol, getPromedioParticipantesPorSala, getDiaMasCreacionReservas } from '@/services/api';
 
 interface AdminDashboardProps {
     reservations: Reservation[];
@@ -28,6 +28,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
     const [reservasAsistenciasPorRol, setReservasAsistenciasPorRol] = useState<any[]>([]);
     const [sancionesPorRol, setSancionesPorRol] = useState<any | null>(null);
     const [promedioParticipantesPorSala, setPromedioParticipantesPorSala] = useState<any[]>([]);
+    const [diaMasCreacion, setDiaMasCreacion] = useState<any | null>(null);
     const appContext = useContext(AppContext);
     const rooms = appContext?.rooms || [];
     useEffect(() => {
@@ -43,7 +44,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
         // fetch reportes
         const fetchReports = async () => {
             try {
-                const [salas, menos, participantes, turnos, porcentaje, dias, porCarrera, asistencias, sanciones, promedios] = await Promise.all([
+                const [salas, menos, participantes, turnos, porcentaje, dias, porCarrera, asistencias, sanciones, promedios, diaMas] = await Promise.all([
                     getSalasMasReservadas(5),
                     getSalasMenosUtilizadas(5),
                     getParticipantesMasActivos(5),
@@ -54,6 +55,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     getReservasAsistenciasPorRol(),
                     getSancionesPorRol(),
                     getPromedioParticipantesPorSala(),
+                    getDiaMasCreacionReservas(),
                 ]);
 
                 setSalasMas(salas || []);
@@ -68,6 +70,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                 setReservasAsistenciasPorRol(asistencias || []);
                 setSancionesPorRol(sanciones || null);
                 setPromedioParticipantesPorSala(promedios || []);
+                setDiaMasCreacion(diaMas || null);
             } catch (e) {
                 console.warn('Error fetching reportes', e);
             }
@@ -99,6 +102,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                 <StatCard title="Reservas Activas Hoy" value={activeReservations} description="Próximas reservas para hoy." />
                 <StatCard title="Tasa de No Asistencia" value={`${noShowRate}%`} description="Porcentaje de inasistencias." />
                 <StatCard title="Porcentaje Reservas Utilizadas" value={porcentajeUtilizadas != null ? `${Number(porcentajeUtilizadas).toFixed(1)}%` : 'N/A'} description="Reservas efectivas vs canceladas/no-asistencia." />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 className="text-sm font-medium text-gray-500">Día con más reservas creadas</h3>
+                    <p className="text-2xl font-bold mt-2">{diaMasCreacion ? `${diaMasCreacion.dia ?? diaMasCreacion.name ?? 'N/A'} (${diaMasCreacion.reservas ?? diaMasCreacion.cantidad ?? 0})` : 'N/A'}</p>
+                    <p className="text-xs text-gray-400 mt-1">Día de la semana con mayor cantidad de creaciones.</p>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

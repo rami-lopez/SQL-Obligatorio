@@ -180,3 +180,20 @@ def participantes_mas_activos(limit):
             detail="Error verificando los participantes mas activos"
         )
     return participantesMasActivos
+
+
+def dia_con_mas_creaciones_reservas():
+    """Devuelve el día de la semana con más reservas creadas (nombre del día y cantidad)."""
+    resultado = fetch_all("""
+        SELECT DAYNAME(created_at) AS dia, COUNT(*) AS reservas
+        FROM reserva
+        GROUP BY dia
+        ORDER BY reservas DESC
+        LIMIT 1;
+    """)
+    if not resultado:
+        raise HTTPException(
+            status_code=409,
+            detail="Todavía no hay reservas o no se puede determinar el día"
+        )
+    return resultado[0]

@@ -86,7 +86,7 @@ async function apiRequest<T>(method: string, endpoint: string, body?: any): Prom
     }
 
     try {
-        
+
         const url = endpoint.includes('?') ? `${API_BASE_URL}/${endpoint}` : `${API_BASE_URL}/${endpoint}/`;
         const resp = await fetch(url, options);
 
@@ -307,6 +307,7 @@ export const getReservasAsistenciasPorRol = () => apiRequest<any[]>('GET', 'repo
 export const getSancionesPorRol = () => apiRequest<any[]>('GET', 'reportes/sanciones-por-rol');
 export const getPorcentajeReservasUtilizadas = () => apiRequest<any>('GET', 'reportes/porcentaje-reservas-utilizadas');
 export const getReservasPorDiaSemana = () => apiRequest<any[]>('GET', 'reportes/reservas-por-dia-semana');
+export const getDiaMasCreacionReservas = () => apiRequest<any>('GET', 'reportes/dia-mas-creacion');
 export const getSalasMenosUtilizadas = (limit: number = 10) => apiRequest<any[]>('GET', `reportes/salas-menos-utilizadas?limit=${limit}`);
 export const getParticipantesMasActivos = (limit: number = 10) => apiRequest<any[]>('GET', `reportes/participantes-mas-activos?limit=${limit}`);
 
