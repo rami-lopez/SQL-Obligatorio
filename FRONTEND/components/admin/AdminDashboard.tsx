@@ -170,16 +170,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                 <StatCard title="Porcentaje Reservas Utilizadas" value={porcentajeUtilizadas != null ? `${Number(porcentajeUtilizadas).toFixed(1)}%` : 'N/A'} description="Reservas efectivas vs canceladas/no-asistencia." />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
                     <h3 className="text-sm font-medium text-gray-500">Día con más reservas creadas</h3>
                     <p className="text-2xl font-bold mt-2">{diaMasCreacion ? `${translateDayName(diaMasCreacion.dia ?? diaMasCreacion.name ?? 'N/A')} (${diaMasCreacion.reservas ?? diaMasCreacion.cantidad ?? 0})` : 'N/A'}</p>
                     <p className="text-xs text-gray-400 mt-1">Día de la semana con mayor cantidad de creaciones.</p>
                 </div>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-lg shadow-sm border">
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
                     <h3 className="text-sm font-medium text-gray-500">Salas más Reservadas (Top 5)</h3>
                     <ul className="mt-3 text-sm">
                         {salasMas.map((s, i) => (
@@ -188,7 +186,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     </ul>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm border">
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
                     <h3 className="text-sm font-medium text-gray-500">Salas menos Utilizadas (Top 5)</h3>
                     <ul className="mt-3 text-sm">
                         {salasMenos.map((s, i) => (
@@ -197,7 +195,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     </ul>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm border">
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
                     <h3 className="text-sm font-medium text-gray-500">Participantes más Activos</h3>
                     <ul className="mt-3 text-sm">
                         {participantesActivos.map((p, i) => (
@@ -206,7 +204,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     </ul>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm border">
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
                     <h3 className="text-sm font-medium text-gray-500">Sanciones por Rol</h3>
                     <div className="mt-3 text-sm">
                         <div>Docentes: {sancionesPorRol?.docentes ?? sancionesPorRol?.docentes ?? 0}</div>
