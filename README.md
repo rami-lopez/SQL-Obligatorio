@@ -94,7 +94,12 @@ El back se adapta a la estructura tal como está.
 ## **Cómo correr el proyecto?**
 
 ### **Backend**
-```
+```bash
+# Clonar el repositorio
+git clone https://github.com/rami-lopez/SQL-Obligatorio
+# Moverse al directiorio
+cd SQL-Obligatorio
+# Correr docker
 docker-compose up --build
 ```
 * Front corre en http://localhost:3000
