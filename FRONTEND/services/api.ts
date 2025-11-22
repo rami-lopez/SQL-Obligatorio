@@ -10,7 +10,7 @@ export function setAuthToken(token: string | null, persist: boolean = true) {
             if (persist && token) localStorage.setItem('authToken', token);
             else localStorage.removeItem('authToken');
         } catch (e) {
-        
+
         }
     }
 }
@@ -77,7 +77,7 @@ async function apiRequest<T>(method: string, endpoint: string, body?: any): Prom
     };
 
     if (body) {
-    
+
         try {
             options.body = JSON.stringify(toSnake(body));
         } catch (e) {
@@ -86,7 +86,10 @@ async function apiRequest<T>(method: string, endpoint: string, body?: any): Prom
     }
 
     try {
-        const resp = await fetch(`${API_BASE_URL}/${endpoint}/`, options);
+
+        const url = endpoint.includes('?') ? `${API_BASE_URL}/${endpoint}` : `${API_BASE_URL}/${endpoint}/`;
+        try { console.debug('[apiRequest] ->', method, url); } catch (e) { }
+        const resp = await fetch(url, options);
 
         const text = await resp.text();
         let parsed: any = null;
@@ -101,11 +104,11 @@ async function apiRequest<T>(method: string, endpoint: string, body?: any): Prom
         }
 
         const camel = toCamel(parsed);
-       
+
         const normalized = normalizeResponse(camel);
         return normalized as T;
     } catch (error) {
-    
+
         console.warn(`API request failed: ${method} ${endpoint}`, error);
         throw error;
     }
@@ -151,7 +154,7 @@ function normalizeResponse(obj: any): any {
 
     if ('idEdificio' in res || 'id' in res) {
         res.idEdificio = res.idEdificio ?? res.id ?? res.id_edificio;
-    
+
         if (res.mapPosition == null && res.map_position != null) res.mapPosition = res.map_position;
     }
 
@@ -173,9 +176,9 @@ function normalizeResponse(obj: any): any {
     }
 
     if ('idTurno' in res || 'id' in res || 'orderIndex' in res) {
-       
+
         if (res.horaInicio == null && res.horaInicio !== 0) {
-         
+
             if (res.hora_inicio != null) res.horaInicio = res.hora_inicio;
             else if (res.startTime != null && typeof res.startTime === 'string') {
                 res.horaInicio = timeStringToSeconds(res.startTime);
@@ -294,4 +297,18 @@ export const deleteProgram = (id: number) => apiRequest<void>('DELETE', `program
 
 export const getFaculties = () => apiRequest<Faculty[]>('GET', 'facultades');
 export const getTimeSlots = () => apiRequest<TimeSlot[]>('GET', 'turnos');
+
+// Reportes / Analytics endpoints
+export const getSalasMasReservadas = (limit: number = 10) => apiRequest<any[]>('GET', `reportes/salas-mas-reservadas?limit=${limit}`);
+export const getTurnosMasDemandados = () => apiRequest<any[]>('GET', 'reportes/turnos-mas-demandados');
+export const getPromedioParticipantesPorSala = () => apiRequest<any[]>('GET', 'reportes/promedio-participantes-sala');
+export const getReservasPorCarreraFacultad = () => apiRequest<any[]>('GET', 'reportes/reservas-por-carrera-facultad');
+export const getOcupacionSalasPorEdificio = () => apiRequest<any[]>('GET', 'reportes/ocupacion-salas-edificio');
+export const getReservasAsistenciasPorRol = () => apiRequest<any[]>('GET', 'reportes/reservas-asistencias-por-rol');
+export const getSancionesPorRol = () => apiRequest<any[]>('GET', 'reportes/sanciones-por-rol');
+export const getPorcentajeReservasUtilizadas = () => apiRequest<any>('GET', 'reportes/porcentaje-reservas-utilizadas');
+export const getReservasPorDiaSemana = () => apiRequest<any[]>('GET', 'reportes/reservas-por-dia-semana');
+export const getDiaMasCreacionReservas = () => apiRequest<any>('GET', 'reportes/dia-mas-creacion');
+export const getSalasMenosUtilizadas = (limit: number = 10) => apiRequest<any[]>('GET', `reportes/salas-menos-utilizadas?limit=${limit}`);
+export const getParticipantesMasActivos = (limit: number = 10) => apiRequest<any[]>('GET', `reportes/participantes-mas-activos?limit=${limit}`);
 
