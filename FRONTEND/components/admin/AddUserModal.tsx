@@ -85,7 +85,7 @@ export const AddUserModal: React.FC<AddUserModalProps> = ({ onClose, onAdd, prog
                         onChange={() => handleProgramChange(program.idPrograma)}
                         className="h-4 w-4 text-ucu-secondary border-gray-300 rounded focus:ring-ucu-secondary"
                     />
-                    <label htmlFor={`program-${program.idPrograma}`} className="ml-2 text-sm text-gray-700">{program.name}</label>
+                    <label htmlFor={`program-${program.idPrograma}`} className="ml-2 text-sm text-gray-700">{program.nombre}</label>
                     </div>
                 ))}
                 </div>

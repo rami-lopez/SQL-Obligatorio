@@ -3,7 +3,7 @@ import { User, Role, Program, Reservation } from '../../types';
 import { AddUserModal } from './AddUserModal';
 import { EditUserModal } from './EditUserModal';
 import { UserHistoryModal } from './UserHistoryModal';
-import { createUser, updateUser, deleteUser } from '../../services/api';
+import { createUser, updateUser, deleteUser, getUsers } from '../../services/api';
 
 interface UserManagementProps {
     users: User[];
@@ -22,8 +22,10 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
   const handleAddUser = async (newUserData: Omit<User, 'id'>) => {
     try {
         const newUser = await createUser(newUserData);
-        setUsers(prev => [...prev, newUser]);
-        setIsAddModalOpen(false);
+        getUsers().then((data) => {
+            setUsers(data);
+            setIsAddModalOpen(false);
+        });
     } catch (error: any) {
         alert(`Error al agregar usuario: ${error.message}`);
     }
@@ -32,7 +34,9 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
   const handleSaveChanges = async (updatedUser: User) => {
     try {
         const savedUser = await updateUser(updatedUser.idParticipante, updatedUser);
-        setUsers(prev => prev.map(u => u.idParticipante === savedUser.idParticipante ? savedUser : u));
+        const refreshed = await getUsers();
+        setUsers(refreshed);
+       
         setEditingUser(null);
     } catch (error: any) {
         alert(`Error al guardar usuario: ${error.message}`);
@@ -48,7 +52,8 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
     if (userToDeleteId !== null) {
       try {
         await deleteUser(userToDeleteId);
-        setUsers(prev => prev.filter(u => u.idParticipante !== userToDeleteId));
+        const refreshed = await getUsers();
+        setUsers(refreshed);
       } catch (error: any) {
         alert(`Error al eliminar usuario: ${error.message}`);
       } finally {
@@ -57,7 +62,6 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
       }
     }
   };
-console.log(users);
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
