@@ -1,7 +1,7 @@
 # SQL-Obligatorio
 Proyecto entregable del curso de Bases de Datos I. Realizado por Lucía Iriarte, Nicolás Lenzuen y Ramiro López.
 
-# **README
+# **README**
 **Sistema de Gestión de Reservas de Salas (FastAPI + React)**
 
 ## **Descripción general**
@@ -18,20 +18,20 @@ Los administradores cuentan con un panel especial para gestionar participantes, 
 
 ## **Funcionalidades principales**
 
-### ** Autenticación**
+### **Autenticación**
 
 * Login con email + contraseña.
 * JWT tokens con expiración.
 * Distinción de roles (estudiante, docente, admin).
 
-### ** Gestión de reservas**
+### **Gestión de reservas**
 
 * Visualizar salas disponibles.
 * Crear reservas (estudiantes y docentes).
 * Modificar o cancelar reservas existentes.
 * Ver historial personal de reservas.
 
-### ** Panel de administrador**
+### **Panel de administrador**
 
 Los administradores pueden:
 
@@ -87,20 +87,22 @@ El back se adapta a la estructura tal como está.
 
 ## **Tecnologías utilizadas**
 
-* **FastAPI** (backend)
-* **React** (frontend)
+* **FastAPI** + **Pydantic** (backend)
+* **React** + **TailwindCSS** (frontend)
 * **MySQL**
 
 ## **Cómo correr el proyecto?**
 
 ### **Backend**
-```
+```bash
+# Clonar el repositorio
+git clone https://github.com/rami-lopez/SQL-Obligatorio
+# Moverse al directiorio
+cd SQL-Obligatorio
+# Correr docker
 docker-compose up --build
 ```
+* Front corre en http://localhost:3000
+* Back corre en http://localhost:8000
+* Documentación de la api http://localhost:3000/docs
 
-### **Frontend**
-
-```
-npm install
-npm run dev
-```
