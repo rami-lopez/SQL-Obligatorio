@@ -12,6 +12,8 @@ from services.consultas_service import (
     salas_menos_utilizadas,
     participantes_mas_activos
 )
+
+from services.consultas_service import dia_con_mas_creaciones_reservas
 from api.auth import get_current_active_admin
 from datetime import date
 from typing import Optional
@@ -82,4 +84,10 @@ def get_participantes_activos(
 ):
     """Participantes con más reservas"""
     return participantes_mas_activos(limit)
+
+
+@router.get("/dia-mas-creacion")
+def get_dia_mas_creacion(current_user = Depends(get_current_active_admin)):
+    """Día de la semana con más reservas creadas"""
+    return dia_con_mas_creaciones_reservas()
 
