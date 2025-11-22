@@ -88,6 +88,7 @@ async function apiRequest<T>(method: string, endpoint: string, body?: any): Prom
     try {
 
         const url = endpoint.includes('?') ? `${API_BASE_URL}/${endpoint}` : `${API_BASE_URL}/${endpoint}/`;
+        try { console.debug('[apiRequest] ->', method, url); } catch (e) { }
         const resp = await fetch(url, options);
 
         const text = await resp.text();

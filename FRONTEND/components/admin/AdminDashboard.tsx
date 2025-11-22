@@ -31,6 +31,30 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
     const [diaMasCreacion, setDiaMasCreacion] = useState<any | null>(null);
     const appContext = useContext(AppContext);
     const rooms = appContext?.rooms || [];
+
+    const translateDayName = (day: string | null | undefined) => {
+        if (!day) return day;
+        const d = String(day).toLowerCase();
+        const map: Record<string, string> = {
+            'monday': 'Lunes',
+            'tuesday': 'Martes',
+            'wednesday': 'Miércoles',
+            'thursday': 'Jueves',
+            'friday': 'Viernes',
+            'saturday': 'Sábado',
+            'sunday': 'Domingo',
+            'lunes': 'Lunes',
+            'martes': 'Martes',
+            'miércoles': 'Miércoles',
+            'miercoles': 'Miércoles',
+            'jueves': 'Jueves',
+            'viernes': 'Viernes',
+            'sábado': 'Sábado',
+            'sabado': 'Sábado',
+            'domingo': 'Domingo'
+        };
+        return map[d] ?? (day.charAt(0).toUpperCase() + day.slice(1));
+    };
     useEffect(() => {
         const fetchReservations = async () => {
             try {
@@ -41,10 +65,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
             }
         };
         fetchReservations();
-        // fetch reportes
+
         const fetchReports = async () => {
             try {
-                const [salas, menos, participantes, turnos, porcentaje, dias, porCarrera, asistencias, sanciones, promedios, diaMas] = await Promise.all([
+                const promises = [
                     getSalasMasReservadas(5),
                     getSalasMenosUtilizadas(5),
                     getParticipantesMasActivos(5),
@@ -56,13 +80,36 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     getSancionesPorRol(),
                     getPromedioParticipantesPorSala(),
                     getDiaMasCreacionReservas(),
-                ]);
+                ];
+
+                const settled = await Promise.allSettled(promises);
+
+
+                const val = (i: number) => {
+                    const r = settled[i];
+                    if (r.status === 'fulfilled') return r.value;
+                    console.error(`[reportes] request ${i} failed:`, r);
+                    return null;
+                };
+
+                const salas = val(0);
+                const menos = val(1);
+                const participantes = val(2);
+                const turnos = val(3);
+                const porcentaje = val(4);
+                const dias = val(5);
+                const porCarrera = val(6);
+                const asistencias = val(7);
+                const sanciones = val(8);
+                const promedios = val(9);
+                let diaMas = val(10);
+
+                if (Array.isArray(diaMas) && diaMas.length > 0) diaMas = diaMas[0];
 
                 setSalasMas(salas || []);
                 setSalasMenos(menos || []);
                 setParticipantesActivos(participantes || []);
                 setTurnosDemandados(turnos || []);
-                // porcentaje may come as [{porcentaje: value}] or {porcentaje: value}
                 const pct = Array.isArray(porcentaje) ? (porcentaje[0] && (porcentaje[0].porcentaje ?? porcentaje[0].porcentaje)) : (porcentaje && (porcentaje.porcentaje ?? porcentaje));
                 setPorcentajeUtilizadas(typeof pct === 'number' ? pct : (typeof pct === 'string' ? parseFloat(pct) : null));
                 setReservasPorDia(dias || []);
@@ -70,6 +117,25 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                 setReservasAsistenciasPorRol(asistencias || []);
                 setSancionesPorRol(sanciones || null);
                 setPromedioParticipantesPorSala(promedios || []);
+
+                if (!diaMas && Array.isArray(dias) && dias.length > 0) {
+                    try {
+                        let max = null;
+                        for (const d of dias) {
+                            const count = Number(d.reservas ?? d.cantidad ?? d.reserve ?? 0);
+                            if (isNaN(count)) continue;
+                            if (max == null || count > max.reservas) {
+                                max = { dia: d.dia ?? d.name ?? d.DIA ?? 'N/A', reservas: count };
+                            }
+                        }
+                        if (max) {
+                            diaMas = max;
+                        }
+                    } catch (e) {
+                        console.warn('Fallback compute diaMasCreacion failed', e);
+                    }
+                }
+
                 setDiaMasCreacion(diaMas || null);
             } catch (e) {
                 console.warn('Error fetching reportes', e);
@@ -107,7 +173,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <div className="bg-white p-6 rounded-lg shadow-sm border">
                     <h3 className="text-sm font-medium text-gray-500">Día con más reservas creadas</h3>
-                    <p className="text-2xl font-bold mt-2">{diaMasCreacion ? `${diaMasCreacion.dia ?? diaMasCreacion.name ?? 'N/A'} (${diaMasCreacion.reservas ?? diaMasCreacion.cantidad ?? 0})` : 'N/A'}</p>
+                    <p className="text-2xl font-bold mt-2">{diaMasCreacion ? `${translateDayName(diaMasCreacion.dia ?? diaMasCreacion.name ?? 'N/A')} (${diaMasCreacion.reservas ?? diaMasCreacion.cantidad ?? 0})` : 'N/A'}</p>
                     <p className="text-xs text-gray-400 mt-1">Día de la semana con mayor cantidad de creaciones.</p>
                 </div>
             </div>
