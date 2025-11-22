@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { User, Role, Program, Reservation } from '../../types';
 import { AddUserModal } from './AddUserModal';
 import { EditUserModal } from './EditUserModal';
 import { UserHistoryModal } from './UserHistoryModal';
-import { createUser, updateUser, deleteUser, getUsers } from '../../services/api';
+import { SanctionUserModal } from './SanctionUserModal';
+import { createUser, updateUser, deleteUser, getUsers, getActiveSanctions, createSanction, getParticipantSanctions, deleteSanction } from '../../services/api';
 
 interface UserManagementProps {
     users: User[];
@@ -18,7 +19,24 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToDeleteId, setUserToDeleteId] = useState<number | null>(null);
   const [viewingUser, setViewingUser] = useState<User | null>(null);
+  const [activeSanctionsId, setActiveSanctionsId] = useState<any[]>([]);
+  const [isSanctionModalOpen, setIsSanctionModalOpen] = useState(false);
+  const [toSanction, setToSanction] = useState<User | null>(null);
+  const [isSanctioned, setIsSanctioned] = useState<boolean | null>(null);
+  const [nameFilter, setNameFilter] = useState<string>('');
+  const [ciFilter, setCiFilter] = useState<string>('');
+  
+  const clearFilters = () => {
+    setNameFilter('');
+    setCiFilter('');
+  };
 
+  useEffect(() => {
+    getActiveSanctions().then((data) => {
+        setActiveSanctionsId(data.map(s => s.idParticipante));
+        
+    });
+  }, []);
   const handleAddUser = async (newUserData: Omit<User, 'id'>) => {
     try {
         const newUser = await createUser(newUserData);
@@ -47,6 +65,11 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
     setUserToDeleteId(userId);
     setIsDeleteModalOpen(true);
   };
+  const handleSanction = (user: User, isSanctioned: boolean) => {
+    setToSanction(user);
+      setIsSanctioned(isSanctioned);
+      setIsSanctionModalOpen(true);
+  };
 
   const confirmDelete = async () => {
     if (userToDeleteId !== null) {
@@ -62,6 +85,42 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
       }
     }
   };
+  type SanctionPayload = { fechaInicio?: string; fechaFin?: string; motivo?: string } | undefined;
+
+  const confirmSanction = async (payload?: SanctionPayload) => {
+    if (toSanction !== null && isSanctioned !== null) {
+      try {
+        if (!isSanctioned) {
+          // apply sanction - include participante id
+          // Ensure fechaInicio is datetime (append time if only date provided)
+          let fInicio = payload?.fechaInicio;
+          if (fInicio && fInicio.length === 10) fInicio = fInicio + 'T00:00:00';
+          await createSanction({ idParticipante: toSanction.idParticipante, fechaInicio: fInicio, fechaFin: payload?.fechaFin, motivo: payload?.motivo });
+        } else {
+          // revoke: fetch active sanctions for participant and delete them
+          const sanctions = await getParticipantSanctions(toSanction.idParticipante);
+          console.log(sanctions);
+          
+          for (const s of sanctions) {
+            const sanctionId = s.idSancion ?? s.id_sancion ?? s.id;
+            if (sanctionId) await deleteSanction(sanctionId);
+          }
+        }
+
+        const refreshed = await getActiveSanctions();
+        setActiveSanctionsId(refreshed.map(s => s.idParticipante));
+        // refresh users list too in case anything changed
+        const refreshedUsers = await getUsers();
+        setUsers(refreshedUsers);
+      } catch (error: any) {
+        alert(`Error al sancionar/habilitar usuario: ${error.message}`);
+      } finally {
+        setToSanction(null);
+        setIsSanctioned(null);
+        setIsSanctionModalOpen(false);
+      }
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">
@@ -71,11 +130,37 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
           Agregar Usuario
         </button>
       </div>
+      <div className="flex flex-wrap items-center gap-4 mb-4 p-4 bg-gray-50 rounded-lg">
+        <div className="flex-1 min-w-[150px]">
+          <label className="block text-sm font-medium text-gray-700">Nombre</label>
+          <input
+            type="text"
+            value={nameFilter}
+            onChange={(e) => setNameFilter(e.target.value)}
+            placeholder="Buscar por nombre o apellido..."
+            className="mt-1 block w-full pl-3 pr-4 py-2 text-base border-gray-300 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary sm:text-sm rounded-md"
+          />
+        </div>
+        <div className="flex-1 min-w-[150px]">
+          <label className="block text-sm font-medium text-gray-700">CI</label>
+          <input
+            type="text"
+            value={ciFilter}
+            onChange={(e) => setCiFilter(e.target.value)}
+            placeholder="Buscar por CI..."
+            className="mt-1 block w-full pl-3 pr-4 py-2 text-base border-gray-300 focus:outline-none focus:ring-ucu-secondary focus:border-ucu-secondary sm:text-sm rounded-md"
+          />
+        </div>
+        <div className="self-end">
+          <button onClick={clearFilters} className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 text-sm font-medium">Limpiar Filtros</button>
+        </div>
+      </div>
+
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50">
             <tr>
-              <th scope="col" className="px-6 py-3">ID</th>
+              <th scope="col" className="px-6 py-3">Cédula</th>
               <th scope="col" className="px-6 py-3">Nombre</th>
               <th scope="col" className="px-6 py-3">Email</th>
               <th scope="col" className="px-6 py-3">Rol</th>
@@ -84,9 +169,24 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
             </tr>
           </thead>
           <tbody>
-            {users.map(user => (
+            {users
+              .filter(u => {
+                // name filter: match nombre or apellido or full name
+                const qName = nameFilter.trim().toLowerCase();
+                if (qName) {
+                  const full = `${u.nombre || ''} ${u.apellido || ''}`.toLowerCase();
+                  if (!full.includes(qName)) return false;
+                }
+                // ci filter
+                const qCi = ciFilter.trim();
+                if (qCi) {
+                  if (!((u.ci ?? '').toString().includes(qCi))) return false;
+                }
+                return true;
+              })
+              .map(user => (
               <tr key={user.idParticipante} className="bg-white border-b hover:bg-gray-50">
-                <td className="px-6 py-4 font-medium text-gray-900">{user.idParticipante}</td>
+                <td className="px-6 py-4 font-medium text-gray-900">{user.ci}</td>
                 <td className="px-6 py-4">{user.nombre} {user.apellido}</td>
                 <td className="px-6 py-4">{user.email}</td>
                 <td className="px-6 py-4">{user.rol}</td>
@@ -100,6 +200,8 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
                     <button onClick={() => setEditingUser(user)} className="text-blue-600 hover:underline font-medium">Editar</button>
                     <button onClick={() => handleDelete(user.idParticipante)} className="text-red-600 hover:underline font-medium">Eliminar</button>
                     <button onClick={() => setViewingUser(user)} className="text-green-600 hover:underline font-medium">Ver Historial</button>
+                    {activeSanctionsId.includes(user.idParticipante) ? <button onClick={() => handleSanction(user, true)} className="text-blue-600 hover:underline font-medium">Habilitar</button>:
+                      <button onClick={() => handleSanction(user, false)} className="text-red-600 hover:underline font-medium">Sancionar</button>}
                   </div>
                 </td>
               </tr>
@@ -107,6 +209,7 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
           </tbody>
         </table>
       </div>
+      
 
       {isDeleteModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -152,6 +255,14 @@ export const UserManagement: React.FC<UserManagementProps> = ({ users, setUsers,
             reservations={reservations}
             onClose={() => setViewingUser(null)}
           />
+      )}
+      {isSanctionModalOpen && toSanction && (
+        <SanctionUserModal
+          toSanction={toSanction}
+          isSanctioned={!!isSanctioned}
+          onConfirm={confirmSanction}
+          onCancel={() => setIsSanctionModalOpen(false)}
+        />
       )}
     </div>
   );
