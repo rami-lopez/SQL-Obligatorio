@@ -101,13 +101,14 @@ def validar_limite_reservas_semanales(ci_participante: int, fecha_reserva: date)
         JOIN reserva_participante rp ON rp.id_reserva = r.id_reserva
         WHERE rp.id_participante = %s
           AND r.fecha BETWEEN %s AND %s
+          AND rp.estado_participacion = 'confirmada'
           AND r.estado IN ('activa', 'confirmada')
     """
     resultado = fetch_all(query, (ci_participante, inicio_semana, fin_semana))
-    reservas_activas = resultado[0]["total"]
+    participaciones_confirmadas = resultado[0]["total"]
 
-    if reservas_activas >= 3:
-        raise HTTPException(status_code=400, detail="Ya tiene 3 reservas activas en esta semana")
+    if participaciones_confirmadas >= 3:
+        raise HTTPException(status_code=400, detail="Ya tiene 3 participaciones confirmadas en esta semana")
 
 
 def validar_disponibilidad_sala(id_sala: int, fecha: date, start_turn_id: int, end_turn_id: int):

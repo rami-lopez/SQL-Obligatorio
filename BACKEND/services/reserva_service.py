@@ -77,6 +77,8 @@ def crear_reserva(r: ReservaCreateConParticipantes, creado_por: int):
             """
             execute_query(query, (id_reserva, id_part, estado))
         
+        # verificacion para reservas de un solo participante    
+        verificar_todos_confirmaron(id_reserva)
         return {"message": "Reserva creada", "id_reserva": id_reserva}
     
     except HTTPException:
@@ -221,10 +223,13 @@ def actualizar_reserva(id_reserva: int, r: ReservaUpdate, id_participante: int, 
                 VALUES (%s, %s, %s)
             """
             execute_query(query, (id_reserva, id_part, estado)) 
+            
+        verificar_todos_confirmaron(id_reserva)
     reservaAct = fetch_all(
         "SELECT * FROM reserva WHERE id_reserva = %s",
         (id_reserva,)
     )[0]
+    
 
     return reservaAct
 
@@ -287,6 +292,8 @@ def confirmar_participacion(id_reserva: int, id_participante: int):
     if not existe:
         raise HTTPException(status_code=409, detail="El participante no está asignado a esta reserva")
     
+    validar_limite_reservas_semanales(id_participante, reserva[0]['fecha'])
+    
     execute_query(
         """
         UPDATE reserva_participante
@@ -296,7 +303,13 @@ def confirmar_participacion(id_reserva: int, id_participante: int):
         (id_participante, id_reserva)
     )
     
+    verificar_todos_confirmaron(id_reserva)
+    
+    
+    
     return {"message": "Participación confirmada"}
+    
+    
 
 def     registrar_asistencia(id_reserva: int, id_participante: int, estado:bool):
     """
@@ -356,3 +369,26 @@ def obtener_participantes_reserva(id_reserva: int):
         (id_reserva,)
     )
     return participantes
+
+def verificar_todos_confirmaron(id_reserva: int):
+    """
+    Verifica si todos los participantes han confirmado su participación en una reserva.
+    Si todos han confirmado, actualiza el estado de la reserva a 'confirmada'.
+    """
+    no_confirmaron = fetch_all(
+        """
+        SELECT * FROM reserva_participante
+        WHERE id_reserva = %s AND estado_participacion != 'confirmada'
+        """,
+        (id_reserva,)
+    )
+    # si todos confirmaron, cambio estado de la reserva
+    if not no_confirmaron:
+        execute_query(
+            """
+            UPDATE reserva
+            SET estado = 'confirmada'
+            WHERE id_reserva = %s
+            """,
+            (id_reserva,)
+        )

@@ -247,6 +247,8 @@ const ReservationCard: React.FC<{
   } else {
     acceptedParticipants = 0;
   }
+  console.log(reservation);
+  
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">

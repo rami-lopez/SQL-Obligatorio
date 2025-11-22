@@ -236,10 +236,6 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
     }
   };
 
-  console.log(
-    getTimeFromTurn(15),
-    new Date().toLocaleTimeString(undefined, { hour12: false })
-  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
