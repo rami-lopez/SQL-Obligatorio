@@ -4,7 +4,8 @@ from models.reserva_model import ReservaUpdate, ReservaResponse
 from services.validaciones import (
     validar_participante_sin_sancion,
     validar_limite_horas_diarias,
-    validar_limite_reservas_semanales
+    validar_limite_reservas_semanales,
+    validar_unica_reserva_en_horario
 )
 from pydantic import BaseModel
 from typing import List
@@ -24,6 +25,7 @@ def crear_reserva(r: ReservaCreateConParticipantes, creado_por: int):
         horas = r.end_turn_id - r.start_turn_id + 1
         validar_limite_horas_diarias(creado_por, r.fecha, horas)
         validar_limite_reservas_semanales(creado_por, r.fecha)
+        validar_unica_reserva_en_horario(creado_por, r.fecha, r.start_turn_id, r.end_turn_id)
 
         sala = fetch_all("SELECT capacidad, tipo FROM sala WHERE id_sala = %s", (r.id_sala,))
         if not sala:
@@ -156,7 +158,18 @@ def actualizar_reserva(id_reserva: int, r: ReservaUpdate, id_participante: int, 
             detail="Solo el creador puede modificar esta reserva"
         )
     
+    nueva_fecha = r.fecha if r.fecha is not None else reserva_db["fecha"]
+    nuevo_start = r.start_turn_id if r.start_turn_id is not None else reserva_db["start_turn_id"]
+    nuevo_end = r.end_turn_id if r.end_turn_id is not None else reserva_db["end_turn_id"]
 
+    validar_unica_reserva_en_horario(
+        id_participante=id_participante,
+        fecha=nueva_fecha,
+        start_turn_id=nuevo_start,
+        end_turn_id=nuevo_end,
+        exclude_reserva_id=id_reserva               
+    )
+    
     campos = []
     valores = []
 

@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from fastapi import HTTPException
 from db import fetch_all
 
@@ -99,6 +99,29 @@ def validar_disponibilidad_sala(id_sala: int, fecha: date, start_turn_id: int, e
     resultado = fetch_all(query, (id_sala, fecha, start_turn_id, end_turn_id))
     if resultado[0]["total"] > 0:
         raise HTTPException(status_code=400, detail="La sala ya está reservada en ese horario")
+    
+
+def validar_sancion_aplicada_una_hora_despues(fecha_inicio: datetime, end_turn_id: int, fecha_turno: date):
+
+    hora_inicio_turno = 8 + (end_turn_id - 1)  # turno 1 = 08-09, turno 2 = 09-10, etc.
+    hora_fin_turno = hora_inicio_turno + 1     # fin del turno (entero, ej 9, 10, 11...)
+
+    fin_turno_dt = datetime(
+        year=fecha_turno.year,
+        month=fecha_turno.month,
+        day=fecha_turno.day,
+        hour=hora_fin_turno,
+        minute=0,
+        second=0
+    )
+
+    limite = fin_turno_dt + timedelta(hours=1)
+
+    if fecha_inicio < limite:
+        raise HTTPException(
+            status_code=400,
+            detail=f"La sanción debe iniciar al menos 1 hora después del fin del turno ({limite})."
+        )
 
 
 def validar_tipo_sala_y_participante(id_sala: int, ci_participante: int):
@@ -132,3 +155,33 @@ def validar_tipo_sala_y_participante(id_sala: int, ci_participante: int):
         doc = fetch_all(query_doc, (ci_participante,))
         if doc[0]["total"] == 0:
             raise HTTPException(status_code=400, detail="Solo docentes pueden reservar esta sala")
+
+
+def validar_unica_reserva_en_horario(id_participante: int, fecha: date, start_turn_id: int, end_turn_id: int, exclude_reserva_id: int = None):
+    """
+    Valida que un participante no tenga más de una reserva en la misma hora.
+    """
+    query = """
+        SELECT COUNT(*) AS total
+        FROM reserva
+        WHERE creado_por = %s
+        AND fecha = %s
+        AND estado IN ('activa', 'confirmada')
+        AND (
+            start_turn_id <= %s  
+            AND %s <= end_turn_id    
+            )
+        """
+    params = [id_participante, fecha, end_turn_id, start_turn_id]
+
+    if exclude_reserva_id:
+        query += " AND id_reserva != %s"
+        params.append(exclude_reserva_id)
+
+    resultado = fetch_all(query, tuple(params))
+
+    if resultado and resultado[0]["total"] > 0:
+        raise HTTPException(
+            status_code=400,
+            detail="El participante ya tiene una reserva que se superpone en turno y fecha."
+        )
