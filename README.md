@@ -97,7 +97,7 @@ El back se adapta a la estructura tal como está.
 ```
 docker-compose up --build
 ```
-Front corre en http://localhost:3000
-Back corre en http://localhost:8000
-Documentación de la api http://localhost:3000/docs
+* Front corre en http://localhost:3000
+* Back corre en http://localhost:8000
+* Documentación de la api http://localhost:3000/docs
 
