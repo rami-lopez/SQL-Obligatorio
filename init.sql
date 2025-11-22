@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS sancion_participante (
 );
 
 CREATE OR REPLACE VIEW sanciones_vigentes AS
-SELECT id_participante, fecha_inicio, fecha_fin
+SELECT id_sancion, id_participante, fecha_inicio, fecha_fin
 FROM sancion_participante
 WHERE CURDATE() BETWEEN fecha_inicio AND fecha_fin;
 

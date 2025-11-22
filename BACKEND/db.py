@@ -39,12 +39,10 @@ def connection():
 
 def fetch_all(query, params=None):
     conn = connection()
-    print(f"Ejecutando consulta: {query} con params: {params}")
     try:
         cur = conn.cursor(dictionary=True)
         cur.execute(query, params or ())
         results = cur.fetchall()
-        print(f"Resultado de consulta: {results}")
         return results
     finally:
         cur.close()

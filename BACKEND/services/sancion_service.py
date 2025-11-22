@@ -18,10 +18,10 @@ def crear_sancion(s: SancionCreate):
         validar_sancion_superpuesta(s.id_participante, s.fecha_inicio, s.fecha_fin)
 
         #falta obtener el end_turn_id y la fecha en la que se creo
-        validar_sancion_aplicada_una_hora_despues(s.fecha_inicio, )
+       # validar_sancion_aplicada_una_hora_despues(s.fecha_inicio, )
         
         query = """
-            INSERT INTO sancion (id_participante, fecha_inicio, fecha_fin, motivo) 
+            INSERT INTO sancion_participante (id_participante, fecha_inicio, fecha_fin, motivo) 
             VALUES (%s, %s, %s, %s)
         """
         id_sancion = execute_query(
@@ -41,7 +41,7 @@ def crear_sancion(s: SancionCreate):
     
 def listar_sanciones(id_participante: int = None, vigentes_solo: bool = False):
     try:
-        query = "SELECT * FROM sancion WHERE 1=1"
+        query = "SELECT * FROM sancion_participante WHERE 1=1"
         params = []
         
         if id_participante:
@@ -61,7 +61,7 @@ def listar_sanciones(id_participante: int = None, vigentes_solo: bool = False):
 def obtener_sancion(id_sancion: int):
     try:
         result = fetch_all(
-            "SELECT * FROM sancion WHERE id_sancion = %s", 
+            "SELECT * FROM sancion_participante WHERE id_sancion = %s", 
             (id_sancion,)
         )
         if not result:
@@ -127,7 +127,7 @@ def eliminar_sancion(id_sancion: int):
     try:
         obtener_sancion(id_sancion)
         
-        query = "DELETE FROM sancion WHERE id_sancion = %s"
+        query = "DELETE FROM sancion_participante WHERE id_sancion = %s"
         execute_query(query, (id_sancion,))
         
         return {"message": "Sanción eliminada exitosamente"}

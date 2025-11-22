@@ -13,10 +13,33 @@ def validar_participante_sin_sancion(id_participante: int):
     if resultado[0]["total"] > 0:
         raise HTTPException(status_code=400, detail="El participante tiene una sanción vigente")
 
-def validar_fechas_sancion(fecha_inicio: date, fecha_fin: date):
-    if fecha_fin < fecha_inicio:
+def validar_fechas_sancion(fecha_inicio, fecha_fin):
+    """
+    Acepta fecha_inicio y fecha_fin como date o datetime. Convierte a date antes
+    de comparar para evitar errores al comparar datetime con date.
+    """
+    def _to_date(v):
+        if v is None:
+            return None
+        if isinstance(v, datetime):
+            return v.date()
+        if isinstance(v, date):
+            return v
+        # try to handle strings (ISO) defensively
+        try:
+            return datetime.fromisoformat(str(v)).date()
+        except Exception:
+            return None
+
+    fi = _to_date(fecha_inicio)
+    ff = _to_date(fecha_fin)
+
+    if fi is None or ff is None:
+        raise HTTPException(status_code=400, detail="Fechas inválidas")
+
+    if ff < fi:
         raise HTTPException(
-            status_code=400, 
+            status_code=400,
             detail="La fecha de fin debe ser posterior a la fecha de inicio"
         )
     
@@ -31,7 +54,7 @@ def validar_participante_existe(id_participante: int):
 def validar_sancion_superpuesta(id_participante: int, fecha_inicio: date, fecha_fin: date, id_sancion: int = None):
     query = """
         SELECT id_sancion 
-        FROM sancion 
+        FROM sancion_participante 
         WHERE id_participante = %s
           AND NOT (fecha_fin < %s OR fecha_inicio > %s)
     """

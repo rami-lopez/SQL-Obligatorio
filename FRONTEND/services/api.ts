@@ -285,7 +285,10 @@ export const deleteReservation = (id: number) => apiRequest<void>('DELETE', `res
 export const getReservationParticipants = (reservationId: number) => apiRequest<number[]>('GET', `reservas/${reservationId}/participantes`);
 
 export const getSanctions = () => apiRequest<any[]>('GET', 'sanciones');
+export const getActiveSanctions = (vigentes = 'vigente_solo=true') => apiRequest<any[]>('GET', `sanciones/?${vigentes}`);
 export const getParticipantSanctions = (idParticipante: number) => apiRequest<any[]>('GET', `sanciones/participantes/${idParticipante}`);
+export const createSanction = (sanctionData: Omit<any, 'id'>) => apiRequest<any>('POST', 'sanciones', sanctionData);
+export const deleteSanction = (id: number) => apiRequest<void>('DELETE', `sanciones/${id}`);
 
 export const getPrograms = () => apiRequest<Program[]>('GET', 'programas');
 export const createProgram = (programData: Omit<Program, 'id'>) => apiRequest<Program>('POST', 'programas', programData);

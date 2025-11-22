@@ -84,12 +84,10 @@ async def attach_user_role_middleware(request: Request, call_next):
     auth_header = request.headers.get("Authorization")
     if auth_header and auth_header.lower().startswith("bearer "):
         token = auth_header.split(None, 1)[1].strip()
-        print("Token recibido:", token)
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-            print("Payload decodificado:", payload)
+            
             email = payload.get("sub")
-            print("Email extraído del token:", email)
 
             if email:
                 # 1) Seteamos userRol a 'login' temporalmente para que fetch_all
@@ -103,7 +101,6 @@ async def attach_user_role_middleware(request: Request, call_next):
                     """
                     # Ejecutar la consulta en threadpool (no bloquear event loop)
                     res = await run_in_threadpool(fetch_all, q, (email,))
-                    print("Resultado de consulta participante:", res)
 
                     if res and res[0].get("activo"):
                         request.state.user = {
@@ -117,7 +114,6 @@ async def attach_user_role_middleware(request: Request, call_next):
                         request.state.role = None
                 except Exception as ex_fetch:
                     # Si la consulta falla por cualquier motivo, fallback al rol en token
-                    print("Error en fetch_all:", ex_fetch)
                     request.state.role = payload.get("rol")
                 finally:
                     # revertimos el contexto temporal dejado por token_ctx_before

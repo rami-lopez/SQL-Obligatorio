@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from BACKEND.services.auth_services import hash_password
+from services.auth_services import hash_password
 from db import execute_query, fetch_all
 from models.participante_model import ParticipanteCreate
 
