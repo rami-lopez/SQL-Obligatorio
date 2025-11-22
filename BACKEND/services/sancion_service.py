@@ -8,6 +8,7 @@ from services.validaciones import (
     validar_participante_existe,
     validar_fechas_sancion,
     validar_sancion_superpuesta,
+    validar_sancion_aplicada_una_hora_despues,
 )
 
 def crear_sancion(s: SancionCreate):
@@ -15,6 +16,9 @@ def crear_sancion(s: SancionCreate):
         validar_participante_existe(s.id_participante)
         validar_fechas_sancion(s.fecha_inicio, s.fecha_fin)
         validar_sancion_superpuesta(s.id_participante, s.fecha_inicio, s.fecha_fin)
+
+        #falta obtener el end_turn_id y la fecha en la que se creo
+        validar_sancion_aplicada_una_hora_despues(s.fecha_inicio, )
         
         query = """
             INSERT INTO sancion (id_participante, fecha_inicio, fecha_fin, motivo) 
