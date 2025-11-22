@@ -25,7 +25,6 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
 }) => {
   const appContext = useContext(AppContext);
   const { timeSlots, rooms, users } = appContext || {};
-  console.log(appContext);
 
   const [edited, setEdited] = useState<Reservation>(reservation);
   const initialRoomId = ((reservation as any).idSala ??
@@ -60,8 +59,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
       try {
         const ids = await getReservationParticipants(resId as number);
         if (Array.isArray(ids)) {
-          setParticipantIds(ids);
-          // also set edited.participantes to helpful shape
+          setParticipantIds(ids.map((p) => p.idParticipante));
           setEdited((prev) => ({
             ...prev,
             participantes: ids.map((id) => ({
@@ -84,9 +82,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
   const capacity = (currentRoom?.capacity ?? currentRoom?.capacidad) || 0;
 
   const handleInputChange = (field: string, value: any) => {
-    
     setEdited((prev) => ({ ...prev, [field]: value }));
-    console.log(edited);
   };
 
   const addParticipant = (user: User) => {
@@ -110,7 +106,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
 
     if (!currentIds.includes(uid)) {
       const newIds = [...currentIds, uid];
-      console.log(newIds);
+
 
       setParticipantIds(newIds);
       setEdited((prev) => ({
@@ -126,10 +122,12 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
   };
 
   const removeParticipant = (userId: number) => {
+   
     const organizerId =
       (edited as any).creadoPor ?? (edited as any).organizerId;
     if (userId === organizerId) return; // Cannot remove organizer
     const newIds = participantIds.filter((id) => id !== userId);
+
     setParticipantIds(newIds);
     setEdited((prev) => ({
       ...prev,
@@ -161,15 +159,13 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
         asistencia: AttendanceStatus.NO_REGISTRADO,
       })),
     } as Reservation;
-    console.log(edited);
-
     onSave(finalEdited);
   };
-  console.log(participantIds);
-  
+
   const participantUsers = participantIds
-    .map((id) => users.find((u) => getUserId(u) === id.idParticipante))
+    .map((id) => users.find((u) => getUserId(u) === ( id.idParticipante ?? id) ))
     .filter(Boolean) as User[];
+
   const suggestedUsers = users
     .filter(
       (u) =>
@@ -335,7 +331,7 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
                         onClick={() => removeParticipant(user.idParticipante)}
                         className="font-bold hover:text-red-500 transition-colors"
                       >
-                        x 
+                        x
                       </button>
                     ) : null}
                   </span>

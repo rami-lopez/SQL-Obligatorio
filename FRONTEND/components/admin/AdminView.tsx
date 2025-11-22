@@ -61,7 +61,7 @@ export const AdminView: React.FC = () => {
             case 'programs':
                 return <ProgramManagement programs={programs} setPrograms={setPrograms} faculties={faculties} />;
             case 'users':
-                return <UserManagement users={users} setUsers={setUsers} programs={programs} reservations={reservations} />;
+                return <UserManagement currentUser={appContext?.user} users={users} setUsers={setUsers} programs={programs} reservations={reservations} />;
             default:
                 return <AdminDashboard reservations={reservations}/>;
         }

@@ -49,7 +49,6 @@ const NotificationDropdown: React.FC<{
     const turn = timeSlots.find((t) => t.idTurno === turnId);
     return turn ? turn.startTime.substring(0, 5) : "N/A";
   };
-  console.log(invitations);
   
 
   return (

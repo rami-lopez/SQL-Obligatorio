@@ -481,7 +481,6 @@ export const MyReservations: React.FC = () => {
   }
 
   const userReservations = reservations;
-  console.log(userReservations.length);
 
   const upcomingReservations = userReservations.filter((r) => {
     const s = r.estado;
@@ -498,7 +497,6 @@ export const MyReservations: React.FC = () => {
       r.estado === ReservationStatus.FINALIZADA
     );
   });
-  console.log(reservations);
 
   return (
     <div className="space-y-8">

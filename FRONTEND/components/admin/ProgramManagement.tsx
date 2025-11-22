@@ -55,8 +55,6 @@ export const ProgramManagement: React.FC<ProgramManagementProps> = ({ programs, 
         }
     }
   };
-console.log(faculties);
-console.log(programs);
 
   return (
     <div className="bg-white rounded-lg shadow-sm border p-4 md:p-6">

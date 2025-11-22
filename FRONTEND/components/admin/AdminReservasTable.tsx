@@ -177,11 +177,10 @@ export const AdminReservasTable: React.FC<AdminReservasTableProps> = () => {
     try {
       const resId = uid(updatedReservation as any);
       if (resId == null) throw new Error("Reservation id is missing");
-      console.log(updatedReservation);
       const participantesFormatted = [];
 
       updatedReservation.participantes.forEach(part => {
-        participantesFormatted.push(part.id_participante.idParticipante);
+        participantesFormatted.push(part.id_participante.idParticipante?? part.id_participante);
       });
 
       const formated = {

@@ -12,7 +12,6 @@ export const AddProgramModal: React.FC<AddProgramModalProps> = ({ faculties, onC
   const [facultyId, setFacultyId] = useState<number>(faculties[0]?.id || 1);
   const [type, setType] = useState<ProgramType>(ProgramType.GRADO);
 
-  console.log(faculties);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

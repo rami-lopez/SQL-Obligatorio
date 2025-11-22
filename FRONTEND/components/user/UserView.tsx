@@ -23,11 +23,6 @@ export const UserView: React.FC = () => {
       const building = appContext?.buildings.find(
         (b) => getBuildingId(b) === buildingId
       );
-      console.log("Selected building:", building);
-      console.log(buildingId);
-
-      console.log(appContext?.buildings);
-
       if (building) {
         setSelectedBuilding(building);
         setCurrentView("rooms");

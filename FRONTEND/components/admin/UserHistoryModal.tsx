@@ -41,7 +41,6 @@ export const UserHistoryModal: React.FC<UserHistoryModalProps> = ({ user, reserv
     getParticipantReservations(user.idParticipante).then(data => setUserReservations(data)).catch(err => console.error(err));
   }, [user.idParticipante]);
   
-  console.log(userReservations);
   
   const noShowCount = userReservations.filter(r => 
     r.asistencia === 'ausente'

@@ -60,7 +60,6 @@ export const SalaCard: React.FC<SalaCardProps> = ({ room, onReserve }) => {
         try {
           const salaOcupada = await getIsRoomOcuppied(room.idSala, tiempo)
           setAvail(!salaOcupada)
-          console.log(salaOcupada, room.idSala, tiempo)
         } catch (error) {
           return error;
         }
