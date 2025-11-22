@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from BACKEND.services.auth_services import hash_password
 from db import execute_query, fetch_all
 from models.participante_model import ParticipanteCreate
 
@@ -9,10 +10,11 @@ def validar_email_unico(email: str):
     
 def validar_email_registrado(email: str):
     result = fetch_all("SELECT email FROM login WHERE email = %s", (email,))
+    # Si no existe, creo un login con contraseña por defecto, solo el admin puede crear usuarios
     if not result:
         query = """
             INSERT INTO login (email, password_hash) VALUES (%s, %s)"""
-        execute_query(query, (email, "Password123"))  # Contraseña por defecto, se recomienda cambiarla luego
+        execute_query(query, (email, hash_password("Password123")))  
 
 def crear_participante(p: ParticipanteCreate):
     try:
