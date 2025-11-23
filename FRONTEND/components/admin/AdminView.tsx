@@ -24,7 +24,6 @@ export const AdminView: React.FC = () => {
             setIsLoading(true);
             setError(null);
             try {
-                // Fetch all reservations once for the entire admin panel (admin endpoint)
                 const reservationsData = await getAllReservations();
                 appContext.setReservations(reservationsData);
             } catch (err: any) {

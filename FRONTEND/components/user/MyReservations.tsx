@@ -77,7 +77,6 @@ const ReservationCard: React.FC<{
     reservation.id ??
     (reservation as any).id_reserva;
 
-  // Load participant ids if the reservation does not include participant objects
   React.useEffect(() => {
     let mounted = true;
     const rawPart =
@@ -85,7 +84,7 @@ const ReservationCard: React.FC<{
       (reservation as any).participants ??
       null;
     if (Array.isArray(rawPart)) {
-      // If array of objects, extract ids; if array of numbers, use as-is
+      
       if (rawPart.length > 0 && typeof rawPart[0] === "object") {
         const ids = rawPart
           .map(
@@ -101,7 +100,7 @@ const ReservationCard: React.FC<{
         return;
       }
     }
-    // Fallback: fetch from dedicated endpoint if reservationId is available
+    
     if (reservationId != null) {
       getReservationParticipants(reservationId)
         .then((ids) => {
@@ -117,7 +116,7 @@ const ReservationCard: React.FC<{
       mounted = false;
     };
   }, [reservation, reservationId]);
-  // Normalize ids and time using utils
+  
   const reservationRoomId =
     getReservationRoomId(reservation) ??
     (reservation as any).idSala ??
@@ -166,7 +165,7 @@ const ReservationCard: React.FC<{
     ) ?? new Date(0);
 
   const now = new Date();
-  // Confirmation window is 15 mins before start until the end time
+  
   const confirmationWindowStart = new Date(
     reservationStartTime.getTime() - 15 * 60 * 1000
   );
@@ -215,8 +214,7 @@ const ReservationCard: React.FC<{
     endRaw
   )}`;
 
-  // Participants follow the model: { id: number, idReserva, idParticipante, fechaSolicitudReserva, estadoParticipacion, asistencia, marcadoEn }
-  // Keep backwards-compatible fallbacks to snake_case or alternate keys.
+  
   const participantsList =
     reservation.participantes ?? reservation.participants ?? [];
   let acceptedParticipants = 0;
@@ -232,7 +230,6 @@ const ReservationCard: React.FC<{
           p.participationStatus) === ParticipantStatus.CONFIRMADA
     ).length;
   } else if (participantIds != null) {
-    // We only have ids — count them as participants (status unknown)
     acceptedParticipants = participantIds.length;
   } else if (
     (reservation as any).idParticipante != null ||

@@ -48,7 +48,6 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
 
   if (!appContext || !timeSlots || !rooms || !users) return null;
 
-  // Fetch participants ids for this reservation if not provided
   useEffect(() => {
     const fetchParticipants = async () => {
       const resId =
@@ -150,7 +149,6 @@ export const EditReservationModal: React.FC<EditReservationModalProps> = ({
       );
       return;
     }
-    // Ensure participantes is set to the minimal backend-friendly shape
     const finalEdited: Reservation = {
       ...edited,
       participantes: participantIds.map((id) => ({

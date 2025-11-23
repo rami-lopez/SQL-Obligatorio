@@ -21,7 +21,6 @@ import {
 
 function parseDateOnly(dateStr?: string | null) {
   if (!dateStr) return null;
-  // Expect YYYY-MM-DD, construct local date to avoid timezone shifts
   const m = /^([0-9]{4})-([0-9]{2})-([0-9]{2})/.exec(dateStr);
   if (!m) return new Date(dateStr);
   const y = parseInt(m[1], 10);

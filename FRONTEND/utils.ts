@@ -1,5 +1,4 @@
-// Small helpers to normalize IDs and time values across components.
-
+ 
 export const getReservationId = (r: any): number | undefined => r?.idReserva ?? r?.id_reserva ?? r?.id ?? r?.idReserva;
 export const getReservationDate = (r: any): string | undefined => r?.fecha ?? r?.date ?? r?.createdAt ?? r?.created_at ?? undefined;
 export const getReservationStartTurnId = (r: any): number | undefined => r?.startTurnId ?? r?.start_turn_id ?? r?.startTurnId ?? undefined;
@@ -37,7 +36,6 @@ export function buildDateTimeIso(dateStr: string | undefined, timeVal: string | 
   return `${dateStr}T${timeStr}`;
 }
 
-// Parse a YYYY-MM-DD date string as a local Date (avoid the UTC interpretation of `new Date('YYYY-MM-DD')`).
 export function parseDateAsLocal(dateStr: string | undefined): Date | null {
   if (!dateStr) return null;
   const parts = String(dateStr).split('-').map(p => parseInt(p, 10));
@@ -46,7 +44,6 @@ export function parseDateAsLocal(dateStr: string | undefined): Date | null {
   return new Date(y, m - 1, d);
 }
 
-// Build a Date object from a date string (YYYY-MM-DD) and a time value (seconds or 'HH:MM:SS')
 export function buildDateTimeFromDateAndTime(dateStr: string | undefined, timeVal: string | number | undefined): Date | null {
   if (!dateStr || timeVal == null) return null;
   const date = parseDateAsLocal(dateStr);

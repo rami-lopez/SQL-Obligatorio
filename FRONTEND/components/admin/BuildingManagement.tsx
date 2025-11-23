@@ -22,7 +22,6 @@ export const BuildingManagement: React.FC<BuildingManagementProps> = ({ building
             mapPosition: { top: '0', left: '0', width: '0', height: '0' }
         };
     await createBuilding(buildingWithMapPosition);
-    // Re-fetch the buildings from the server so the UI reflects server-side state
     const refreshed = await getBuildings();
     setBuildings(refreshed);
     setIsAddModalOpen(false);

@@ -1,12 +1,5 @@
-# wait-for-db.py
 """
-Robusto script de espera para MySQL usado en docker-compose.
-- Lee DB_HOST, DB_NAME, y credenciales.
-- Soporta DB_USER/DB_PASSWORD o pares por rol:
-  DB_USER_ADMIN/DB_PASSWORD_ADMIN, DB_USER_LOGIN/DB_PASSWORD_LOGIN, DB_USER_USER/DB_PASSWORD_USER
-- Intenta varias credenciales si se proporcionan.
-- Reintentos con backoff exponencial.
-- Salida 0 si la conexión funciona, 1 si falla después de los reintentos.
+wait-for-db: espera a que MySQL esté disponible (docker-compose).
 """
 import os
 import time
@@ -99,7 +92,6 @@ def main():
                 else:
                     print(f"    -> Connection failed for user='{user}': {err}")
 
-        # no candidate worked this round
         # exponential backoff with jitter
         sleep_time = base_delay * (2 ** (attempt - 1))
         if sleep_time > 30:

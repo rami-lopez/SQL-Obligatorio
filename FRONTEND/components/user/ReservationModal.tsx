@@ -153,7 +153,7 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
     const uid = getUserId(userToRemove);
     const currentUid = getUserId(currentUser);
     if (!uid) return;
-    if (uid === currentUid) return; // Cannot remove the organizer
+    if (uid === currentUid) return;
     setParticipants((prev) => prev.filter((p) => getUserId(p as any) !== uid));
   };
 
@@ -204,12 +204,10 @@ export const ReservationModal: React.FC<ReservationModalProps> = ({
       return;
     }
 
-    // Build payload matching backend model: only primitive fields and participantes as array of ids
     const participantIds = participants
       .map((p) => getUserId(p as any))
       .filter((x): x is number => typeof x === "number");
 
-    // Build payload matching backend model (minimal): use snake_case keys as backend expects them
     const newReservationData = {
       id_sala: room.idSala ?? room.id,
       fecha: selectedDate,

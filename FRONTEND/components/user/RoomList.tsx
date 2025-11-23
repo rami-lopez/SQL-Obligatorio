@@ -29,7 +29,7 @@ export const RoomList: React.FC<RoomListProps> = ({ building }) => {
       <h2 className="text-2xl font-bold text-ucu-primary mb-1">Salas disponibles en: <span className="text-ucu-dark-gray">{building.nombre}</span></h2>
       <p className="text-gray-500 mb-6">Seleccioná una sala para ver los horarios y realizar una reserva.</p>
       
-      {/* TODO: Add filtering UI */}
+      
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {roomsInBuilding.length > 0 ? (

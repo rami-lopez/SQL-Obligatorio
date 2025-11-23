@@ -112,7 +112,6 @@ export const UserManagement: React.FC<UserManagementProps> = ({
       try {
         if (!isSanctioned) {
           // apply sanction - include participante id
-          // Ensure fechaInicio is datetime (append time if only date provided)
           let fInicio = payload?.fechaInicio;
           if (fInicio && fInicio.length === 10) fInicio = fInicio + "T00:00:00";
           await createSanction({
@@ -122,7 +121,6 @@ export const UserManagement: React.FC<UserManagementProps> = ({
             motivo: payload?.motivo,
           });
         } else {
-          // revoke: fetch active sanctions for participant and delete them
           const sanctions = await getParticipantSanctions(
             toSanction.idParticipante
           );

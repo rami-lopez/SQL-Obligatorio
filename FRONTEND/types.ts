@@ -45,7 +45,6 @@ export enum ProgramType {
 // Para minimizar rompimientos en frontend, incluyo algunos alias camelCase opcionales
 
 export interface User { // participante / ParticipanteResponse
-  // Backend fields
   id_participante?: number;
   ci: string;
   nombre: string;
@@ -53,19 +52,16 @@ export interface User { // participante / ParticipanteResponse
   email: string;
   rol: Role;
   activo: boolean;
-  created_at?: string; // ISO datetime
-  updated_at?: string; // ISO datetime | null
+  created_at?: string;
+  updated_at?: string;
   // Relaciones opcionales
   program_ids?: number[]; // si el backend las incluye
-
-  // Optional frontend-friendly aliases (no confiar en ellos en la API)
   id?: number;
   name?: string;
   lastName?: string;
   role?: Role;
   active?: boolean;
   programIds?: number[];
-  // Additional camelCase shapes seen in some responses
   idParticipante?: number;
   createdAt?: string;
   updatedAt?: string;
@@ -75,11 +71,8 @@ export interface User { // participante / ParticipanteResponse
 export interface Faculty { // facultad / Facultad
   id_facultad?: number;
   nombre: string;
-
-  // aliases
   id?: number;
   name?: string;
-  // camelCase alias
   idFacultad?: number;
 }
 
@@ -90,13 +83,10 @@ export interface Program { // programa_academico / ProgramaResponse
   tipo: ProgramType;
   created_at?: string;
   updated_at?: string | null;
-
-  // aliases
   id?: number;
   facultyId?: number;
   name?: string;
   type?: ProgramType;
-  // camelCase aliases
   idPrograma?: number;
   idFacultad?: number;
 }
@@ -106,16 +96,12 @@ export interface Building { // edificio
   nombre: string;
   direccion?: string;
   departamento?: string;
-
-  // Frontend specific property (opcional)
   map_position?: {
     top: string;
     left: string;
     width: string;
     height: string;
   } | null;
-
-  // aliases
   idEdificio?: number;
   id?: number;
   name?: string;
@@ -130,33 +116,27 @@ export interface Room { // sala / SalaResponse
   nombre: string;
   tipo: RoomType;
   capacidad: number;
-
-  // aliases
   id?: number;
   buildingId?: number;
   name?: string;
   type?: RoomType;
   capacity?: number;
   idSala?: number;
-  // camelCase aliases seen in some responses
   idEdificio?: number;
 }
 
 export interface TimeSlot { // turno
   id_turno?: number;
   order_index: number;
-  hora_inicio: string; // "HH:MM:SS"
-  hora_fin: string; // "HH:MM:SS"
+  hora_inicio: string;
+  hora_fin: string;
   descripcion?: string;
-
-  // aliases
   id?: number;
   idTurno?: number;
   orderIndex?: number;
   startTime?: string;
   endTime?: string;
   description?: string;
-  // camelCase/time-as-seconds forms
   horaInicio?: number | string;
   horaFin?: number | string;
 }
@@ -164,16 +144,12 @@ export interface TimeSlot { // turno
 export interface ReservationParticipant { // reserva_participante
   id?: number;
   id_participante: number;
-  fecha_solicitud_reserva?: string; // ISO datetime
   estado_participacion: ParticipantStatus;
   asistencia: AttendanceStatus;
   marcado_en?: string | null; // ISO datetime
-
-  // aliases
   participantId?: number;
   participationStatus?: ParticipantStatus;
   attendance?: AttendanceStatus;
-  // camelCase aliases
   idParticipante?: number;
   fechaSolicitudReserva?: string;
   estadoParticipacion?: ParticipantStatus;
@@ -192,8 +168,6 @@ export interface Reservation { // reserva / ReservaResponse
   updated_at?: string;
 
   participantes?: ReservationParticipant[];
-
-  // aliases
   id?: number;
   roomId?: number;
   organizerId?: number;
@@ -202,7 +176,6 @@ export interface Reservation { // reserva / ReservaResponse
   endTurnId?: number;
   status?: ReservationStatus;
   participants?: ReservationParticipant[];
-  // camelCase aliases observed in responses
   idReserva?: number;
   idSala?: number;
   creadoPor?: number | null;

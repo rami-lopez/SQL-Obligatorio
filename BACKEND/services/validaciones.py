@@ -25,7 +25,6 @@ def validar_fechas_sancion(fecha_inicio, fecha_fin):
             return v.date()
         if isinstance(v, date):
             return v
-        # try to handle strings (ISO) defensively
         try:
             return datetime.fromisoformat(str(v)).date()
         except Exception:
@@ -80,17 +79,19 @@ def validar_limite_horas_diarias(ci_participante: int, fecha: date, horas_a_rese
                             SELECT tipo FROM sala s
                             WHERE s.id_sala = %s AND s.tipo IN ('docente','posgrado')
                             """, (id_sala,))
-    if not sala_exclusiva:
-        return # no aplicar limite de horas diarias 
-    
     participante_exclusivo = fetch_all("""
                                     SELECT rol FROM participante p
                                     WHERE p.id_participante = %s
                                     """, (ci_participante,))
-    if participante_exclusivo[0]['rol'] == 'docente' and sala_exclusiva[0]['tipo'] == 'docente':
-        return  # no aplicar limite de horas diarias
-    if participante_exclusivo[0]['rol'] == 'alumno_posgrado' and sala_exclusiva[0]['tipo'] == 'posgrado':
-        return  # no aplicar limite de horas diarias
+
+    # Si la sala es de tipo 'docente' o 'posgrado' y el participante tiene el rol
+    # correspondiente, entonces no aplicamos el límite. En cualquier otro caso
+    # sí aplicamos la validación (incluyendo salas de tipo 'libre').
+    if sala_exclusiva:
+        if participante_exclusivo and participante_exclusivo[0].get('rol') == 'docente' and sala_exclusiva[0].get('tipo') == 'docente':
+            return
+        if participante_exclusivo and participante_exclusivo[0].get('rol') == 'alumno_posgrado' and sala_exclusiva[0].get('tipo') == 'posgrado':
+            return
         
     
     query = """
@@ -114,17 +115,18 @@ def validar_limite_reservas_semanales(ci_participante: int, fecha_reserva: date,
                               SELECT tipo FROM sala s
                               WHERE s.id_sala = %s AND s.tipo IN ('docente','posgrado')
                                """, (id_sala,))
-    if not sala_exclusiva:
-        return # no aplicar limite de horas diarias 
-    
     participante_exclusivo = fetch_all("""
                                       SELECT rol FROM participante p
                                       WHERE p.id_participante = %s
                                       """, (ci_participante,))
-    if participante_exclusivo[0]['rol'] == 'docente' and sala_exclusiva[0]['tipo'] == 'docente':
-        return  # no aplicar limite de horas diarias
-    if participante_exclusivo[0]['rol'] == 'alumno_posgrado' and sala_exclusiva[0]['tipo'] == 'posgrado':
-        return  # no aplicar limite de horas diarias
+
+    # Igual que en la validación diaria: solo eximimos cuando la sala es
+    # exclusiva y el participante tiene el rol correspondiente.
+    if sala_exclusiva:
+        if participante_exclusivo and participante_exclusivo[0].get('rol') == 'docente' and sala_exclusiva[0].get('tipo') == 'docente':
+            return
+        if participante_exclusivo and participante_exclusivo[0].get('rol') == 'alumno_posgrado' and sala_exclusiva[0].get('tipo') == 'posgrado':
+            return
     
     
     dia_semana = fecha_reserva.weekday()  # lunes=0
@@ -221,21 +223,21 @@ def validar_unica_reserva_en_horario(id_participante: int, fecha: date, start_tu
     """
     Valida que un participante no tenga más de una reserva en la misma hora.
     """
+    # Comprobamos en la tabla reserva_participante para cubrir reservas donde
+    # el participante puede no ser quien creó la reserva.
     query = """
         SELECT COUNT(*) AS total
-        FROM reserva
-        WHERE creado_por = %s
-        AND fecha = %s
-        AND estado IN ('activa', 'confirmada')
-        AND (
-            start_turn_id <= %s  
-            AND %s <= end_turn_id    
-            )
-        """
-    params = [id_participante, fecha, end_turn_id, start_turn_id]
+        FROM reserva r
+        JOIN reserva_participante rp ON rp.id_reserva = r.id_reserva
+        WHERE rp.id_participante = %s
+          AND r.fecha = %s
+          AND r.estado IN ('activa', 'confirmada')
+          AND NOT (r.end_turn_id < %s OR r.start_turn_id > %s)
+    """
+    params = [id_participante, fecha, start_turn_id, end_turn_id]
 
     if exclude_reserva_id:
-        query += " AND id_reserva != %s"
+        query += " AND r.id_reserva != %s"
         params.append(exclude_reserva_id)
 
     resultado = fetch_all(query, tuple(params))

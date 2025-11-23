@@ -127,8 +127,7 @@ async def attach_user_role_middleware(request: Request, call_next):
             # Token inválido/expirado -> dejamos user/role en None
             print("JWTError: token inválido o expirado")
 
-    # Map application role to DB connection role para la ejecución del request
-    # Elegimos userRol según request.state.role (si no está, uso 'login' por defecto)
+    
     try:
         if request.state.role == 'admin':
             token_ctx_after = userRol.set('admin')

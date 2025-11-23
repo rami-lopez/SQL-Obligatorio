@@ -8,15 +8,11 @@ import { getBuildingId } from '../../utils';
 
 interface MapaEdificiosProps {
   onSelectBuilding: (buildingId: number) => void;
-  // Optional manual override for map button positions. Keyed by building id.
-  // If provided, these positions will be used instead of any `building.mapPosition` data
-  // or the default `BUILDING_MAP_POSITIONS` from constants.
+  
   mapPositions?: { [key: number]: { top: string; left: string; width: string; height: string } };
 }
 
-// MapaEdificios renders clickable areas over a campus map. You can hardcode positions by
-// passing the `mapPositions` prop or by adding entries to `BUILDING_MAP_POSITIONS` in
-// `constants.ts`.
+ 
 export const MapaEdificios: React.FC<MapaEdificiosProps> = ({ onSelectBuilding, mapPositions }) => {
   const appContext = useContext(AppContext);
   const buildings = appContext?.buildings || [];

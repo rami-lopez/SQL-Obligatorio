@@ -18,7 +18,6 @@ from datetime import date
 
 router = APIRouter(prefix="/reservas", tags=["reserva"])
 
-# keep a reference to the service function before this module defines a same-named handler
 eliminar_reserva_service = eliminar_reserva
 
 class ReservaCreateConParticipantes(BaseModel):

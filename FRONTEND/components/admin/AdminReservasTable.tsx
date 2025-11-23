@@ -63,7 +63,7 @@ export const AdminReservasTable: React.FC<AdminReservasTableProps> = () => {
     fetchReservations();
   }, []);
 
-  // Use shared helpers from utils for normalization
+  
   const getReservationStatus = (r: any) => r.estado ?? r.status ?? r.estado;
   const [filterRoomName, setFilterRoomName] = useState<string>("");
   const [filterStatus, setFilterStatus] = useState<string>("");

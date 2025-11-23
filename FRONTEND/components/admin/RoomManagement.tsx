@@ -51,7 +51,6 @@ export const RoomManagement: React.FC<RoomManagementProps> = ({ rooms, setRooms 
   const handleAddRoom = async (newRoomData: Omit<Room, 'id'>) => {
     try {
         await createRoom(newRoomData);
-        // Re-fetch rooms from the server so UI reflects server-side state
         const refreshed = await getRooms();
         setRooms(refreshed);
         setIsAddModalOpen(false);
