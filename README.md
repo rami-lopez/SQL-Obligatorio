@@ -1,7 +1,7 @@
 # SQL-Obligatorio
 Proyecto entregable del curso de Bases de Datos I. Realizado por Lucía Iriarte, Nicolás Lenzuen y Ramiro López.
 
-# **README**
+# README
 **Sistema de Gestión de Reservas de Salas (FastAPI + React)**
 
 ## **Descripción general**
@@ -24,21 +24,14 @@ Los administradores cuentan con un panel especial para gestionar participantes, 
 * JWT tokens con expiración.
 * Distinción de roles (estudiante, docente, admin).
 
-### **Gestión de reservas**
-
-* Visualizar salas disponibles.
-* Crear reservas (estudiantes y docentes).
-* Modificar o cancelar reservas existentes.
-* Ver historial personal de reservas.
-
 ### **Panel de administrador**
 
 Los administradores pueden:
 
 * Gestionar **participantes** (crear, actualizar, eliminar).
 * Gestionar **salas**.
-* Ver todas las reservas del sistema.
-* Crear o cancelar reservas de cualquier usuario.
+* Ver resportes con las consultas propuestas por la consigna. 
+* ABM todas las reservas del sistema.
 
 ## **Servicios (Capa de Lógica)**
 
@@ -56,24 +49,6 @@ Cada recurso tiene su propio archivo en `/services`:
 * `sala_service.py`
 * `reserva_service.py`
 
-Esta capa se encarga de:
-
-* Validar datos
-* Interactuar con la base
-* Manejar errores
-* Implementar reglas de negocio
-
-## **Base de datos**
-
-La base existente **no se modifica**.
-Se usan las tablas ya provistas:
-
-* `participantes`
-* `salas`
-* `reservas`
-
-El back se adapta a la estructura tal como está.
-
 ## **Flujo de uso**
 
 1. El usuario inicia sesión.
@@ -87,22 +62,23 @@ El back se adapta a la estructura tal como está.
 
 ## **Tecnologías utilizadas**
 
-* **FastAPI** + **Pydantic** (backend)
-* **React** + **TailwindCSS** (frontend)
-* **MySQL**
+* **FastAPI** (backend)
+* **React**  (frontend)
+* **MySQL** (BD)
 
-## **Cómo correr el proyecto?**
+## ** ¿Cómo correr el proyecto? **
 
-### **Backend**
-```bash
-# Clonar el repositorio
-git clone https://github.com/rami-lopez/SQL-Obligatorio
-# Moverse al directiorio
-cd SQL-Obligatorio
-# Correr docker
+Hacer un fork y clonar el repositorio desde el link del repositorio:
+
+https://github.com/rami-lopez/SQL-Obligatorio
+
+Luego de pararse sobre la carpeta, ejecutar el siguiente comando, que se encarga de correr todo lo necesario: 
 docker-compose up --build
-```
-* Front corre en http://localhost:3000
-* Back corre en http://localhost:8000
-* Documentación de la api http://localhost:3000/docs
+Una vez realizados los pasos anteriores, se puede ingresar al sistema como admin, estudiante de grado, estudiante de posgrado o como docente. Perfiles existentes para ingresar y visualizar y probar las distintas pantallas y funcionalidades/posibilidades:
+Admin: mateo.silva39@ucu.edu.uy
+Docente: juan.ruiz60@ucu.edu.uy
+Estudiante grado: ana.vega61@correo.ucu.edu.uy
+Estudiante posgrado: marta.torres74@correo.ucu.edu.uy
+Todas las contraseñas son “Password1234”
+
 
