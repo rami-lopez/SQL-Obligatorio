@@ -66,19 +66,21 @@ Cada recurso tiene su propio archivo en `/services`:
 * **React**  (frontend)
 * **MySQL** (BD)
 
-## ** ¿Cómo correr el proyecto? **
+## **¿Cómo correr el proyecto?**
 
-Hacer un fork y clonar el repositorio desde el link del repositorio:
-
+1- Hacer un fork y clonar el repositorio desde el link del repositorio:
 https://github.com/rami-lopez/SQL-Obligatorio
 
-Luego de pararse sobre la carpeta, ejecutar el siguiente comando, que se encarga de correr todo lo necesario: 
-docker-compose up --build
-Una vez realizados los pasos anteriores, se puede ingresar al sistema como admin, estudiante de grado, estudiante de posgrado o como docente. Perfiles existentes para ingresar y visualizar y probar las distintas pantallas y funcionalidades/posibilidades:
-Admin: mateo.silva39@ucu.edu.uy
-Docente: juan.ruiz60@ucu.edu.uy
-Estudiante grado: ana.vega61@correo.ucu.edu.uy
-Estudiante posgrado: marta.torres74@correo.ucu.edu.uy
+2- Luego de pararse sobre la carpeta, ejecutar el siguiente comando, que se encarga de correr todo lo necesario: 
+docker-compose up --build. En caso de que no corra, mover el archivo .env fuera de la carpeta de BACKEND
+
+2- Una vez realizados los pasos anteriores, se puede ingresar al sistema como admin, estudiante de grado, estudiante de posgrado o como docente. Perfiles existentes para ingresar y visualizar y probar las distintas pantallas y funcionalidades/posibilidades:
+
+a) Admin: mateo.silva39@ucu.edu.uy
+b) Docente: juan.ruiz60@ucu.edu.uy
+c) Estudiante grado: ana.vega61@correo.ucu.edu.uy
+d) Estudiante posgrado: marta.torres74@correo.ucu.edu.uy
+
 Todas las contraseñas son “Password1234”
 
 
