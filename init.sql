@@ -26,7 +26,7 @@ REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'user'@'%';
 
 -- Privilegios amplios que no dependen de tablas existentes
 GRANT ALL PRIVILEGES ON reserva_salas.* TO 'admin'@'%';
-GRANT SELECT ON reserva_salas.* TO 'login'@'%';
+
 GRANT USAGE ON *.* TO 'user'@'%';
 
 FLUSH PRIVILEGES;
@@ -187,6 +187,9 @@ VALUES
 (14,'21:00:00','22:00:00','21-22'),
 (15,'22:00:00','23:00:00','22-23');
 
+GRANT SELECT ON reserva_salas.login TO 'login'@'%';
+-- Hubo que darle SELECT a participante para que pueda validar rol y estado
+GRANT SELECT ON reserva_salas.participante TO 'login'@'%';
 GRANT SELECT ON reserva_salas.facultad TO 'user'@'%';
 GRANT SELECT ON reserva_salas.programa_academico TO 'user'@'%';
 GRANT SELECT ON reserva_salas.edificio TO 'user'@'%';
