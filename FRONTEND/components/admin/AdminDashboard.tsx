@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { Reservation, ReservationStatus } from '../../types';
 import { AppContext } from '../../App';
-import { getAllReservations, getSalasMasReservadas, getTurnosMasDemandados, getPorcentajeReservasUtilizadas, getSalasMenosUtilizadas, getParticipantesMasActivos, getReservasPorDiaSemana, getReservasPorCarreraFacultad, getReservasAsistenciasPorRol, getSancionesPorRol, getPromedioParticipantesPorSala, getDiaMasCreacionReservas } from '@/services/api';
+import { getAllReservations, getSalasMasReservadas, getTurnosMasDemandados, getPorcentajeReservasUtilizadas, getSalasMenosUtilizadas, getParticipantesMasActivos, getReservasPorDiaSemana, getReservasPorCarreraFacultad, getReservasAsistenciasPorRol, getSancionesPorRol, getPromedioParticipantesPorSala, getDiaMasCreacionReservas, getOcupacionSalasPorEdificio } from '@/services/api';
 
 interface AdminDashboardProps {
     reservations: Reservation[];
@@ -28,6 +28,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
     const [reservasAsistenciasPorRol, setReservasAsistenciasPorRol] = useState<any[]>([]);
     const [sancionesPorRol, setSancionesPorRol] = useState<any | null>(null);
     const [promedioParticipantesPorSala, setPromedioParticipantesPorSala] = useState<any[]>([]);
+    const [ocupacionPorEdificio, setOcupacionPorEdificio] = useState<any[]>([]);
     const [diaMasCreacion, setDiaMasCreacion] = useState<any | null>(null);
     const [roomUsageData, setRoomUsageData] = useState<any[]>([]);
     const [reservasDia, setReservasDia] = useState<any[]>([]);
@@ -82,6 +83,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                     getSancionesPorRol(),
                     getPromedioParticipantesPorSala(),
                     getDiaMasCreacionReservas(),
+                    getOcupacionSalasPorEdificio(),
                 ];
 
                 const settled = await Promise.allSettled(promises);
@@ -105,6 +107,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                 const sanciones = val(8);
                 const promedios = val(9);
                 let diaMas = val(10);
+                const ocupacion = val(11);
 
                 if (Array.isArray(diaMas) && diaMas.length > 0) diaMas = diaMas[0];
 
@@ -119,6 +122,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                 setReservasAsistenciasPorRol(asistencias || []);
                 setSancionesPorRol(sanciones || null);
                 setPromedioParticipantesPorSala(promedios || []);
+                setOcupacionPorEdificio(ocupacion || []);
 
                 if (!diaMas && Array.isArray(dias) && dias.length > 0) {
                     try {
@@ -180,6 +184,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
         { name: 'Canceladas', value: reservations.filter(r => r.estado === ReservationStatus.CANCELADA).length },
     ];
     const COLORS = ['#3b82f6', '#16a34a', '#ef4444', '#6b7280'];
+
+
+    const ocupacionTotal = ocupacionPorEdificio.reduce((s, e) => s + Number(e.reservas ?? e.cantidad ?? 0), 0);
+    const ocupacionSorted = [...ocupacionPorEdificio].sort((a, b) => (Number(b.reservas ?? b.cantidad ?? 0) - Number(a.reservas ?? a.cantidad ?? 0)));
 
     return (
         <div className="space-y-6">
@@ -297,6 +305,27 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = () => {
                         <div>Docentes: {sancionesPorRol?.docentes ?? sancionesPorRol?.docentes ?? 0}</div>
                         <div>Alumnos: {sancionesPorRol?.alumnos ?? sancionesPorRol?.alumnos ?? 0}</div>
                     </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-sm border h-full">
+                    <h3 className="text-sm font-medium text-gray-500">Ocupación de Salas por Edificio</h3>
+                    <ul className="mt-3 text-sm space-y-2">
+                        {ocupacionSorted.map((e, i) => {
+                            const count = Number(e.reservas ?? e.cantidad ?? 0);
+                            const pct = ocupacionTotal > 0 ? ((count / ocupacionTotal) * 100) : 0;
+                            return (
+                                <li key={i} className="py-1">
+                                    <div className="flex justify-between items-center">
+                                        <div className="text-sm">{e.nombre ?? e.name ?? `Edificio ${e.idEdificio ?? e.id}`}</div>
+                                        <div className="text-xs text-gray-500">{count} reservas — {pct.toFixed(1)}%</div>
+                                    </div>
+                                    <div className="w-full bg-gray-100 rounded-sm h-2 mt-1">
+                                        <div className="bg-ucu-primary h-2 rounded-sm" style={{ width: `${Math.min(pct, 100)}%` }} />
+                                    </div>
+                                </li>
+                            );
+                        })}
+                    </ul>
                 </div>
             </div>
            
