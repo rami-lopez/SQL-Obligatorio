@@ -76,11 +76,11 @@ docker-compose up --build. En caso de que no corra, mover el archivo .env fuera 
 
 2- Una vez realizados los pasos anteriores, se puede ingresar al sistema como admin, estudiante de grado, estudiante de posgrado o como docente. Perfiles existentes para ingresar y visualizar y probar las distintas pantallas y funcionalidades/posibilidades:
 
-a) Admin: mateo.silva39@ucu.edu.uy
-b) Docente: juan.ruiz60@ucu.edu.uy
-c) Estudiante grado: ana.vega61@correo.ucu.edu.uy
-d) Estudiante posgrado: marta.torres74@correo.ucu.edu.uy
+   a) **Admin:** mateo.silva39@ucu.edu.uy  
+   b) **Docente:** juan.ruiz60@ucu.edu.uy  
+   c) **Estudiante de grado:** ana.vega61@correo.ucu.edu.uy  
+   d) **Estudiante de posgrado:** marta.torres74@correo.ucu.edu.uy  
 
-Todas las contraseñas son “Password1234”
+**Todas las contraseñas son “Password1234”**
 
 
