@@ -23,8 +23,8 @@ def crear_reserva(r: ReservaCreateConParticipantes, creado_por: int):
         validar_participante_sin_sancion(creado_por)
         
         horas = r.end_turn_id - r.start_turn_id + 1
-        validar_limite_horas_diarias(creado_por, r.fecha, horas)
-        validar_limite_reservas_semanales(creado_por, r.fecha)
+        validar_limite_horas_diarias(creado_por, r.fecha, horas, r.id_sala)
+        validar_limite_reservas_semanales(creado_por, r.fecha, r.id_sala)
         validar_unica_reserva_en_horario(creado_por, r.fecha, r.start_turn_id, r.end_turn_id)
 
         sala = fetch_all("SELECT capacidad, tipo FROM sala WHERE id_sala = %s", (r.id_sala,))
@@ -292,7 +292,7 @@ def confirmar_participacion(id_reserva: int, id_participante: int):
     if not existe:
         raise HTTPException(status_code=409, detail="El participante no está asignado a esta reserva")
     
-    validar_limite_reservas_semanales(id_participante, reserva[0]['fecha'])
+    validar_limite_reservas_semanales(id_participante, reserva[0]['fecha'], reserva[0]['id_sala'])
     
     execute_query(
         """

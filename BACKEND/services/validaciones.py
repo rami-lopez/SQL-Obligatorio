@@ -74,7 +74,25 @@ def validar_sancion_superpuesta(id_participante: int, fecha_inicio: date, fecha_
 
 
 
-def validar_limite_horas_diarias(ci_participante: int, fecha: date, horas_a_reservar: int):
+def validar_limite_horas_diarias(ci_participante: int, fecha: date, horas_a_reservar: int, id_sala: int ):
+    
+    sala_exclusiva = fetch_all("""
+                            SELECT tipo FROM sala s
+                            WHERE s.id_sala = %s AND s.tipo IN ('docente','posgrado')
+                            """, (id_sala,))
+    if not sala_exclusiva:
+        return # no aplicar limite de horas diarias 
+    
+    participante_exclusivo = fetch_all("""
+                                    SELECT rol FROM participante p
+                                    WHERE p.id_participante = %s
+                                    """, (ci_participante,))
+    if participante_exclusivo[0]['rol'] == 'docente' and sala_exclusiva[0]['tipo'] == 'docente':
+        return  # no aplicar limite de horas diarias
+    if participante_exclusivo[0]['rol'] == 'alumno_posgrado' and sala_exclusiva[0]['tipo'] == 'posgrado':
+        return  # no aplicar limite de horas diarias
+        
+    
     query = """
         SELECT COALESCE(SUM(r.end_turn_id - r.start_turn_id + 1), 0) AS horas_reservadas
         FROM reserva r
@@ -90,7 +108,25 @@ def validar_limite_horas_diarias(ci_participante: int, fecha: date, horas_a_rese
         raise HTTPException(status_code=400, detail="Excede el límite diario de 2 horas en salas libres")
 
 
-def validar_limite_reservas_semanales(ci_participante: int, fecha_reserva: date):
+def validar_limite_reservas_semanales(ci_participante: int, fecha_reserva: date, id_sala: int):
+    
+    sala_exclusiva = fetch_all("""
+                              SELECT tipo FROM sala s
+                              WHERE s.id_sala = %s AND s.tipo IN ('docente','posgrado')
+                               """, (id_sala,))
+    if not sala_exclusiva:
+        return # no aplicar limite de horas diarias 
+    
+    participante_exclusivo = fetch_all("""
+                                      SELECT rol FROM participante p
+                                      WHERE p.id_participante = %s
+                                      """, (ci_participante,))
+    if participante_exclusivo[0]['rol'] == 'docente' and sala_exclusiva[0]['tipo'] == 'docente':
+        return  # no aplicar limite de horas diarias
+    if participante_exclusivo[0]['rol'] == 'alumno_posgrado' and sala_exclusiva[0]['tipo'] == 'posgrado':
+        return  # no aplicar limite de horas diarias
+    
+    
     dia_semana = fecha_reserva.weekday()  # lunes=0
     inicio_semana = fecha_reserva - timedelta(days=dia_semana)
     fin_semana = inicio_semana + timedelta(days=6)
